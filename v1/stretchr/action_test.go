@@ -93,3 +93,21 @@ func TestAction_GetRequest_DeleteMany(t *testing.T) {
 	AssertNoRequestBody(t, r)
 
 }
+
+func TestAction_Parameters(t *testing.T) {
+
+	a := getTestAction(Get, "people")
+
+	AssertEqual(t, a, a.Limit(10))
+	AssertEqual(t, "10", a.Values.Get(limitKey))
+
+	AssertEqual(t, a, a.Skip(5))
+	AssertEqual(t, "5", a.Values.Get(skipKey))
+
+	AssertEqual(t, a, a.Order("name,-age"))
+	AssertEqual(t, "name,-age", a.Values.Get(orderKey))
+
+	AssertEqual(t, a, a.Context("context"))
+	AssertEqual(t, "context", a.Values.Get(contextKey))
+
+}
