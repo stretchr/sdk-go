@@ -32,5 +32,12 @@ Delete a resource:
 Delete many resources:
 
 	err := session.DeleteMany("people").Now()
+
+Various parameter and limiting methods exist that allow you to fine tune the request.  These methods
+chain, that is they return the same object allowing you to make multiple calls on one line which makes it
+very easy to read and write.  For example, the following code will read page 2 of the "people" resources,
+with 10 resources in a page, ordered by age descending:
+
+	rs, _ := session.ReadMany("people").Skip(9).Limit(10).Order("-age").Now()
 */
 package stretchr
