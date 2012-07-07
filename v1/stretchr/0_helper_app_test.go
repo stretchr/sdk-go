@@ -1,18 +1,17 @@
 package stretchr
 
 import (
-	"testing"
-	"net/http"
 	"fmt"
 	"io/ioutil"
+	"net/http"
+	"testing"
 )
-
 
 func testBaseUrl() string {
 	return fmt.Sprintf("%s://%s.%s/api/%s/", "http", "test", DefaultHost, DefaultVersion)
 }
 
-func testSession() Session {
+func testSession() *Session {
 	return InProject("test").WithKeys("PUB", "PRIV")
 }
 
@@ -29,13 +28,13 @@ func AssertNoRequestBody(t *testing.T, request *http.Request) bool {
 }
 
 func AssertRequestBody(t *testing.T, request *http.Request, body string) bool {
-	
+
 	var actualBody []byte
-	
+
 	if request.Body == nil {
 		actualBody = make([]byte, 0)
 	} else {
-		
+
 		var err error
 		actualBody, err = ioutil.ReadAll(request.Body)
 
@@ -44,7 +43,7 @@ func AssertRequestBody(t *testing.T, request *http.Request, body string) bool {
 		}
 
 	}
-	
+
 	return AssertEqual(t, body, string(actualBody), "Request Body")
-	
+
 }
