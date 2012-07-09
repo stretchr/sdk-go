@@ -22,7 +22,7 @@ const (
 	FailedSignature string = "(failed signature)"
 )
 
-// Hash generates an SHA512 hash of the specified string.
+// Hash generates an SHA1 hash of the specified string.
 func Hash(s string) string {
 
 	hash := sha1.New()
