@@ -113,9 +113,9 @@ func TestDefaultRequester_Client(t *testing.T) {
 
 	client := new(http.Client)
 
-	r.SetClient(client)
+	r.setClient(client)
 
-	AssertEqual(t, client, r.Client())
+	AssertEqual(t, client, r.client())
 
 }
 
@@ -125,7 +125,7 @@ func TestDefaultRequester_Default_Client(t *testing.T) {
 
 	client := new(http.Client)
 
-	AssertEqual(t, reflect.TypeOf(client), reflect.TypeOf(r.Client()))
+	AssertEqual(t, reflect.TypeOf(client), reflect.TypeOf(r.client()))
 
 }
 
@@ -136,7 +136,7 @@ func TestDefaultRequester_Signing(t *testing.T) {
 	// use test client
 	c := new(TestClient)
 	c.ResponseToReturn = MakeOKTestResponse()
-	r.SetClient(c)
+	r.setClient(c)
 
 	r.MakeRequest(GetMethod, "http://test.stretchr.com/api/v1/people/ABC?~key=ABC123", "", "PRIVATE")
 

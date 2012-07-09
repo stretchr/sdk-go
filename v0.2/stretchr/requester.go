@@ -19,25 +19,19 @@ type Requester interface {
 
 	// MakeRequest makes a request and returns the response.
 	MakeRequest(method, fullUrl, body, privateKey string) (*StandardResponseObject, *http.Response, error)
-
-	// SetClient tells the Requester which Client to use to make requests.
-	SetClient(client)
-
-	// Client gets the Client to use when making requests.
-	Client() client
 }
 
 // DefaultRequester is a Requester object that makes real HTTP requests.
 type DefaultRequester struct {
 	// client holds the object by which HTTP requests will be made.
-	client client
+	_client client
 }
 
 // MakeRequest makes a request and returns the response.
 func (r *DefaultRequester) MakeRequest(method, fullUrl, body, privateKey string) (*StandardResponseObject, *http.Response, error) {
 
 	// get the client we'll use
-	client := r.Client()
+	client := r.client()
 
 	// sign the request
 	signedUrl, signUrlErr := GetSignedURL(method, fullUrl, body, privateKey)
@@ -79,18 +73,18 @@ func (r *DefaultRequester) MakeRequest(method, fullUrl, body, privateKey string)
 }
 
 // SetClient tells the Requester which Client to use to make requests.
-func (r *DefaultRequester) SetClient(c client) {
-	r.client = c
+func (r *DefaultRequester) setClient(c client) {
+	r._client = c
 }
 
 // Client gets the Client to use when making requests.
-func (r *DefaultRequester) Client() client {
+func (r *DefaultRequester) client() client {
 
-	if r.client == nil {
-		r.client = new(http.Client)
+	if r._client == nil {
+		r._client = new(http.Client)
 	}
 
-	return r.client
+	return r._client
 }
 
 // ActiveRequester is the Requester object this code will use to make requests.
