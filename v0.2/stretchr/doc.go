@@ -43,15 +43,15 @@ To create a new resource:
 To delete a resource when you know the ID:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
- 
+
  // delete person with ID "mat"
  mat, deleteErr := session.Delete("people", "mat")
- 
+
  if deleteErr != nil {
    panic(fmt.Sprintf("Failed to delete 'mat': %s", deleteErr))
  } else {
    log.Printf("Mat has been deleted!")
  }
- 
+
 */
 package stretchr

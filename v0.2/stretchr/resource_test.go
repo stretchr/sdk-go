@@ -81,7 +81,7 @@ func TestID(t *testing.T) {
 	/*
 		Get
 	*/
-	r.data["IDKey"] = "DEF"
+	r.data[IDKey] = "DEF"
 	AssertEqual(t, "DEF", r.GetID())
 	AssertEqual(t, "DEF", r.Get(IDKey))
 

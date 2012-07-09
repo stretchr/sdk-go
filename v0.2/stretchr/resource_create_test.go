@@ -8,9 +8,9 @@ import (
 func TestResource_Create(t *testing.T) {
 
 	// use the test requester
-	ActiveRequester = ActiveTestRequester
+	ActiveRequester = ActiveTestRequester.Reset()
 
-	responseData := map[string]interface{}{"IDKey": "ID_RETURNED_BY_SERVER"}
+	responseData := map[string]interface{}{IDKey: "ID_RETURNED_BY_SERVER"}
 	ActiveTestRequester.ResponseToReturn = MakeTestResponseWithData(http.StatusCreated, makeStandardResponseObject(http.StatusCreated, responseData))
 
 	// make a resource
@@ -26,6 +26,6 @@ func TestResource_Create(t *testing.T) {
 	}
 
 	AssertLastRequest(t, CreateMethod, TestSession.Url("people"), "{\"age\":29,\"developer\":true,\"name\":\"Mat\"}")
-	AssertEqual(t, "ID_RETURNED_BY_SERVER", r.Get("IDKey"), "ID should be set on the resource")
+	AssertEqual(t, "ID_RETURNED_BY_SERVER", r.GetID(), "ID should be set on the resource")
 
 }

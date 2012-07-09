@@ -19,7 +19,7 @@ func (r *Resource) Create() error {
 	if response.Worked {
 
 		// get the new ID
-		r.Set("IDKey", response.Data["IDKey"])
+		r.Set(IDKey, response.Data[IDKey])
 
 	} else {
 		return response.GetError()
