@@ -1,6 +1,7 @@
 package stretchr
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 )
@@ -18,7 +19,7 @@ const (
 type Requester interface {
 
 	// MakeRequest makes a request and returns the response.
-	MakeRequest(method, fullUrl, body, privateKey string) (*StandardResponseObject, *http.Response, error)
+	MakeRequest(method, fullUrl, body, publicKey, privateKey string) (*StandardResponseObject, *http.Response, error)
 }
 
 // DefaultRequester is a Requester object that makes real HTTP requests.
@@ -28,10 +29,17 @@ type DefaultRequester struct {
 }
 
 // MakeRequest makes a request and returns the response.
-func (r *DefaultRequester) MakeRequest(method, fullUrl, body, privateKey string) (*StandardResponseObject, *http.Response, error) {
+func (r *DefaultRequester) MakeRequest(method, fullUrl, body, publicKey, privateKey string) (*StandardResponseObject, *http.Response, error) {
 
 	// get the client we'll use
 	client := r.client()
+
+	// add the public key
+	if strings.Contains(fullUrl, "?") {
+		fullUrl = fmt.Sprintf("%s&%s=%s", fullUrl, PublicKeyKey, publicKey)
+	} else {
+		fullUrl = fmt.Sprintf("%s?%s=%s", fullUrl, PublicKeyKey, publicKey)
+	}
 
 	// sign the request
 	signedUrl, signUrlErr := GetSignedURL(method, fullUrl, body, privateKey)

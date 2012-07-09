@@ -10,7 +10,7 @@ func (r *Resource) Create() error {
 		return jsonErr
 	}
 
-	response, _, requestErr := ActiveRequester.MakeRequest(CreateMethod, r.AbsoluteURL(), json, r.session.PrivateKey)
+	response, _, requestErr := ActiveRequester.MakeRequest(CreateMethod, r.AbsoluteURL(), json, r.session.PublicKey, r.session.PrivateKey)
 
 	if requestErr != nil {
 		return requestErr

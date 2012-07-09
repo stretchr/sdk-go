@@ -23,19 +23,21 @@ type TestRequester struct {
 	LastURL        string
 	LastBody       string
 	LastPrivateKey string
+	LastPublicKey  string
 
 	ErrorToReturn    error
 	ResponseToReturn *http.Response
 }
 
 // MakeRequest stores the parameters and returns the specified ResponseToReturn and ResponseToReturn.
-func (r *TestRequester) MakeRequest(method, fullUrl, body, privateKey string) (*StandardResponseObject, *http.Response, error) {
+func (r *TestRequester) MakeRequest(method, fullUrl, body, publicKey, privateKey string) (*StandardResponseObject, *http.Response, error) {
 
 	// save the response bits
 	r.LastMethod = method
 	r.LastURL = fullUrl
 	r.LastBody = body
 	r.LastPrivateKey = privateKey
+	r.LastPublicKey = publicKey
 
 	var sro *StandardResponseObject
 	if r.ResponseToReturn != nil {
@@ -58,6 +60,7 @@ func (r *TestRequester) Reset() *TestRequester {
 	r.LastURL = "(none)"
 	r.LastBody = "(none)"
 	r.LastPrivateKey = "(none)"
+	r.LastPublicKey = "(none)"
 	r.ErrorToReturn = nil
 	r.ResponseToReturn = nil
 	return r
@@ -138,9 +141,9 @@ func TestDefaultRequester_Signing(t *testing.T) {
 	c.ResponseToReturn = MakeOKTestResponse()
 	r.setClient(c)
 
-	r.MakeRequest(GetMethod, "http://test.stretchr.com/api/v1/people/ABC?~key=ABC123", "", "PRIVATE")
+	r.MakeRequest(GetMethod, "http://test.stretchr.com/api/v1/people/ABC", "", "PUBLIC", "PRIVATE")
 
 	url := c.LastRequest.URL.String()
-	AssertEqual(t, "http://test.stretchr.com/api/v1/people/ABC?~key=ABC123&~sign=3a4b67d6cba0caab8a5dc13c5dd07dbe11f316ba", url)
+	AssertEqual(t, "http://test.stretchr.com/api/v1/people/ABC?~key=PUBLIC&~sign=0e5d41122841e9c431b9f6c19d4d47882bae706a", url)
 
 }

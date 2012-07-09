@@ -7,7 +7,7 @@ package stretchr
 func (s *Session) Delete(path, id string) error {
 
 	resource := s.MakeResource(path).SetID(id)
-	response, _, requestErr := ActiveRequester.MakeRequest(DeleteMethod, resource.AbsoluteURL(), NoBody, s.PrivateKey)
+	response, _, requestErr := ActiveRequester.MakeRequest(DeleteMethod, resource.AbsoluteURL(), NoBody, s.PublicKey, s.PrivateKey)
 
 	if requestErr != nil {
 		return requestErr

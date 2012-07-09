@@ -15,6 +15,9 @@ const (
 	// PrivateKeyKey is the key for the private key.
 	PrivateKeyKey string = "~private"
 
+	// PublicKeyKey is the key for the public key.
+	PublicKeyKey string = "~key"
+
 	// BodyHashKey is the key for the hash of the body.
 	BodyHashKey string = "~bodyhash"
 
@@ -31,6 +34,7 @@ func Hash(s string) string {
 
 }
 
+// getOrderedParams gets the parameters ordered by key, then by values.
 func getOrderedParams(values url.Values) string {
 
 	// get the keys
