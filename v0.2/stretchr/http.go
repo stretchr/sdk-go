@@ -28,9 +28,9 @@ const (
 	StatusCodesOKMaximum int = 399
 )
 
-// WorkedFromStatusCode gets whether the request was successful based on the given
+// workedFromStatusCode gets whether the request was successful based on the given
 // HTTP status code.
-func WorkedFromStatusCode(statusCode int) bool {
+func workedFromStatusCode(statusCode int) bool {
 	return statusCode >= StatusCodesOKMinimum && statusCode <= StatusCodesOKMaximum
 }
 

@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 )
 
-// ToJson turns a map[string]interface{} object into a JSON string, or
+// toJson turns a map[string]interface{} object into a JSON string, or
 // returns an error if something goes wrong.
-func ToJson(data map[string]interface{}) (string, error) {
+func toJson(data map[string]interface{}) (string, error) {
 
 	bytes, err := json.Marshal(data)
 
@@ -18,9 +18,9 @@ func ToJson(data map[string]interface{}) (string, error) {
 
 }
 
-// FromJson turns the JSON string of an object (not array) into an object,
+// fromJson turns the JSON string of an object (not array) into an object,
 // or returns an error if something goes wrong.
-func FromJson(j string) (map[string]interface{}, error) {
+func fromJson(j string) (map[string]interface{}, error) {
 	var obj map[string]interface{}
 	err := json.Unmarshal([]byte(j), &obj)
 	return obj, err

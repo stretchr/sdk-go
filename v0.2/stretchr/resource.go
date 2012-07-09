@@ -67,7 +67,7 @@ func (r *Resource) AbsoluteURL() string {
 // Create creates a new resource.
 func (r *Resource) Create() error {
 
-	json, jsonErr := ToJson(r.data)
+	json, jsonErr := toJson(r.data)
 
 	if jsonErr != nil {
 		return jsonErr

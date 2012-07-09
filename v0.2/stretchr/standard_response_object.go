@@ -25,6 +25,8 @@ type StandardResponseObject struct {
 	Context string
 }
 
+// ExtractStandardResponseObject extracts the StandardResponseObject from the specified
+// http.Response.
 func ExtractStandardResponseObject(response *http.Response) (*StandardResponseObject, error) {
 
 	obj := new(StandardResponseObject)
@@ -33,7 +35,7 @@ func ExtractStandardResponseObject(response *http.Response) (*StandardResponseOb
 	obj.StatusCode = response.StatusCode
 
 	// set 'worked'
-	obj.Worked = WorkedFromStatusCode(obj.StatusCode)
+	obj.Worked = workedFromStatusCode(obj.StatusCode)
 
 	// read the actual response object
 	responseString, responseStringErr := ioutil.ReadAll(response.Body)
@@ -44,7 +46,7 @@ func ExtractStandardResponseObject(response *http.Response) (*StandardResponseOb
 	}
 
 	// get the object from JSON
-	respObj, jsonErr := FromJson(string(responseString))
+	respObj, jsonErr := fromJson(string(responseString))
 
 	if jsonErr != nil {
 		return nil, jsonErr

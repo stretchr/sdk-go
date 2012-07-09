@@ -14,11 +14,11 @@ func TestMethod(t *testing.T) {
 
 }
 
-func TestWorkedFromStatusCode(t *testing.T) {
+func TestworkedFromStatusCode(t *testing.T) {
 
-	AssertEqual(t, true, WorkedFromStatusCode(200))
-	AssertEqual(t, true, WorkedFromStatusCode(300))
-	AssertEqual(t, false, WorkedFromStatusCode(400))
-	AssertEqual(t, false, WorkedFromStatusCode(500))
+	AssertEqual(t, true, workedFromStatusCode(200))
+	AssertEqual(t, true, workedFromStatusCode(300))
+	AssertEqual(t, false, workedFromStatusCode(400))
+	AssertEqual(t, false, workedFromStatusCode(500))
 
 }
