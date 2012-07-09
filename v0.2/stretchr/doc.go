@@ -40,6 +40,47 @@ To create a new resource:
     log.Printf("New resource created with ID: %s", resource.GetID())
  }
 
+To make some changes to (update) a resource:
+
+ session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
+
+ // find a resource
+ resource := session.MakeResource("people", "mat")
+
+ // set the fields you want to change
+ resource.Set("age", 30)
+
+ // update the resource
+ updateErr := resource.Update()
+
+ if updateErr != nil {
+   panic(fmt.Sprintf("Failed to update resource: %s", updateErr))
+ } else {
+    log.Printf("Updated %s's age", resource.Get("name"))
+ }
+
+Notice that we never actually set the 'name' field, this is because when you do an Update,
+the entire resource is returned by Stretchr and loaded into the resource.
+
+To completely replace a resource:
+
+ session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
+
+ // find a resource
+ resource := session.MakeResource("people", "mat")
+
+ // set the fields you want to change
+ resource.Set("age", 30).Set("name", "Mat")
+
+ // update the resource
+ replaceErr := resource.Replace()
+
+ if replaceErr != nil {
+   panic(fmt.Sprintf("Failed to replace resource: %s", replaceErr))
+ } else {
+    log.Printf("Replaced resource ID: %s", resource.GetID())
+ }
+
 To delete a resource when you know the ID:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")

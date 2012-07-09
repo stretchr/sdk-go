@@ -27,4 +27,6 @@ func TestResource_Update(t *testing.T) {
 
 	AssertLastRequest(t, UpdateMethod, TestSession.Url("people/ABC"), "{\"age\":29,\"developer\":true,\"name\":\"Mat\",\"~id\":\"ABC\"}")
 
+	AssertEqual(t, "Ryer", r.Get("surname"))
+
 }
