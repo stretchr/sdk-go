@@ -3,6 +3,7 @@ package stretchr
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -20,7 +21,7 @@ func AssertNil(t *testing.T, obj interface{}, message ...string) bool {
 func AssertEqual(t *testing.T, a, b interface{}, message ...string) bool {
 
 	if a != b {
-		t.Errorf("%s Not equal. %s != %s.", message, a, b)
+		t.Errorf("%s Not equal: %s doesn't equal %s.\n%s\n%s.", message, reflect.TypeOf(a), reflect.TypeOf(b), a, b)
 		return false
 	}
 	return true

@@ -50,10 +50,28 @@ func (s *Session) WithKeys(public, private string) *Session {
 	return s
 }
 
+/*
+	Resources
+*/
+
+// MakeResource makes a resource with the given path.
+//
+// 	resource := session.MakeResource("people")
+func (s *Session) MakeResource(path string) *Resource {
+	return MakeResource(s, path)
+}
+
+/*
+	URLs
+*/
+
+// baseUrl gets the base URL for requests based on the settings in this session.
 func (s *Session) baseUrl() string {
 	return fmt.Sprintf("%s://%s.%s/api/%s/", s.Protocol, s.Project, s.Host, s.Version)
 }
 
+// Url gets the absolute URL for the specified path based on the settings in 
+// this session.
 func (s *Session) Url(path string) string {
 	return fmt.Sprintf("%s%s", s.baseUrl(), path)
 }

@@ -61,7 +61,7 @@ func TestRemove(t *testing.T) {
 
 }
 
-func TestGetAndSetID(t *testing.T) {
+func TestID(t *testing.T) {
 
 	r := MakeResource(TestSession, "people")
 
@@ -69,12 +69,14 @@ func TestGetAndSetID(t *testing.T) {
 		Get with no ID
 	*/
 	AssertEqual(t, EmptyID, r.GetID())
+	AssertEqual(t, false, r.HasID())
 
 	/*
 		Set
 	*/
 	AssertEqual(t, r, r.SetID("ABC"))
 	AssertEqual(t, "ABC", r.data[IDKey])
+	AssertEqual(t, true, r.HasID())
 
 	/*
 		Get
@@ -89,6 +91,7 @@ func TestGetAndSetID(t *testing.T) {
 	AssertEqual(t, r, r.ClearID())
 	AssertEqual(t, EmptyID, r.GetID())
 	AssertEqual(t, nil, r.data[IDKey])
+	AssertEqual(t, false, r.HasID())
 
 }
 
@@ -106,7 +109,11 @@ func TestData(t *testing.T) {
 
 func TestAbsoluteURL(t *testing.T) {
 
-	r := MakeResource(TestSession, "people/ABC/books/DEF")
-	AssertEqual(t, "http://test.stretchr.com/api/v1/people/ABC/books/DEF", r.AbsoluteURL())
+	r := MakeResource(TestSession, "people/ABC/books")
+	AssertEqual(t, "http://test.stretchr.com/api/v1/people/ABC/books", r.AbsoluteURL())
+
+	r.SetID("ABC")
+
+	AssertEqual(t, "http://test.stretchr.com/api/v1/people/ABC/books/ABC", r.AbsoluteURL())
 
 }

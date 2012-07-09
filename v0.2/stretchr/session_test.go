@@ -6,6 +6,21 @@ import (
 
 var TestSession *Session = &Session{"test", "PUBLIC", "PRIVATE", "v1", "stretchr.com", "http"}
 
+func TestSession_MakeResource(t *testing.T) {
+
+	r := TestSession.MakeResource("people")
+
+	if r == nil {
+		t.Error("MakeResource shouldn't return nil.")
+	} else {
+
+		AssertEqual(t, "people", r.path)
+		AssertEqual(t, TestSession, r.session)
+
+	}
+
+}
+
 func TestInProject(t *testing.T) {
 
 	var s *Session = InProject("test")

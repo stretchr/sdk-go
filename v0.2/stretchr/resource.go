@@ -70,6 +70,10 @@ func (r *Resource) Remove(key string) *Resource {
 	return r
 }
 
+/*
+	ID management
+*/
+
 // GetID gets the ID for this resource, or returns EmptyID if there isn't one.
 func (r *Resource) GetID() string {
 
@@ -92,9 +96,26 @@ func (r *Resource) ClearID() *Resource {
 	return r.Remove(IDKey)
 }
 
+// HasID gets whether this resource has an ID or not.
+func (r *Resource) HasID() bool {
+	return r.GetID() != EmptyID
+}
+
+/*
+	URLs
+*/
+
 // AbsoluteURL gets the absolute URL representing this resource.
 func (r *Resource) AbsoluteURL() string {
-	return r.session.Url(r.path)
+
+	url := r.session.Url(r.path)
+
+	// add the ID if we have one
+	if r.HasID() {
+		url = fmt.Sprintf("%s/%s", url, r.GetID())
+	}
+
+	return url
 }
 
 /*
