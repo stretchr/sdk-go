@@ -73,7 +73,8 @@ func (r *Resource) Remove(key string) *Resource {
 	ID management
 */
 
-// GetID gets the ID for this resource, or returns EmptyID if there isn't one.
+// GetID gets the ID for this resource, or returns EmptyID if there isn't one
+// (or if the ID is an invalid type, i.e. non string).
 func (r *Resource) GetID() string {
 
 	idObj := r.Get(IDKey)
