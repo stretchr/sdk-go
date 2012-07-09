@@ -1,6 +1,7 @@
 package stretchr
 
-// Create creates a new resource in Stretchr.  The ID of the new resource will be set.
+// Create creates a new resource in Stretchr.  If you do not specify an ID for this resource,
+// Stretchr will generate one for you and it will be set by this method.
 func (r *Resource) Create() error {
 
 	json, jsonErr := toJson(r.data)

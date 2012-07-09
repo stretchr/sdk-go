@@ -13,10 +13,10 @@ To read a resource when you know the ID:
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
  // read person with ID "mat"
- mat, err := session.Read("people", "mat")
+ mat, readErr := session.Read("people", "mat")
 
  if err != nil {
-   panic(fmt.Sprintf("Failed to load 'mat': %s", createErr))
+   panic(fmt.Sprintf("Failed to load 'mat': %s", readErr))
  } else {
    log.Printf("Mat's full name is: %s %s.", resource.Get("first-name"), resource.Get("last-name"))
  }
