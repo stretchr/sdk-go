@@ -45,11 +45,11 @@ func (r *TestRequester) MakeRequest(method, fullUrl, body, privateKey string) (*
 	return sro, r.ResponseToReturn, r.ErrorToReturn
 }
 
-func (r *TestRequester) SetClient(c Client) {
+func (r *TestRequester) SetClient(c client) {
 
 }
 
-func (r *TestRequester) Client() Client {
+func (r *TestRequester) Client() client {
 	return nil
 }
 

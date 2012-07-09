@@ -39,7 +39,7 @@ func workedFromStatusCode(statusCode int) bool {
 }
 
 // Client describes objects that can perform HTTP requests.
-type Client interface {
-	// Do sends an HTTP request and returns an HTTP response
+type client interface {
+	// Do sends an HTTP request and returns an HTTP response.
 	Do(req *http.Request) (*http.Response, error)
 }

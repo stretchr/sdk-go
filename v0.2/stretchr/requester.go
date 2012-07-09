@@ -21,16 +21,16 @@ type Requester interface {
 	MakeRequest(method, fullUrl, body, privateKey string) (*StandardResponseObject, *http.Response, error)
 
 	// SetClient tells the Requester which Client to use to make requests.
-	SetClient(Client)
+	SetClient(client)
 
 	// Client gets the Client to use when making requests.
-	Client() Client
+	Client() client
 }
 
 // DefaultRequester is a Requester object that makes real HTTP requests.
 type DefaultRequester struct {
 	// client holds the object by which HTTP requests will be made.
-	client Client
+	client client
 }
 
 // MakeRequest makes a request and returns the response.
@@ -79,12 +79,12 @@ func (r *DefaultRequester) MakeRequest(method, fullUrl, body, privateKey string)
 }
 
 // SetClient tells the Requester which Client to use to make requests.
-func (r *DefaultRequester) SetClient(c Client) {
+func (r *DefaultRequester) SetClient(c client) {
 	r.client = c
 }
 
 // Client gets the Client to use when making requests.
-func (r *DefaultRequester) Client() Client {
+func (r *DefaultRequester) Client() client {
 
 	if r.client == nil {
 		r.client = new(http.Client)
