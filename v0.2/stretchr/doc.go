@@ -86,13 +86,33 @@ To delete a resource when you know the ID:
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
  // delete person with ID "mat"
- mat, deleteErr := session.Delete("people", "mat")
+ deleteErr := session.Delete("people", "mat")
 
  if deleteErr != nil {
    panic(fmt.Sprintf("Failed to delete 'mat': %s", deleteErr))
  } else {
    log.Printf("Mat has been deleted!")
  }
+
+If you have the resource object, you can directly delete it using the Delete method:
+
+ session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
+ 
+ // load mat
+ mat, _ := session.Find("people", "mat")
+
+ // delete person with ID "mat"
+ deleteErr := mat.Delete()
+ 
+ if deleteErr != nil {
+   panic(fmt.Sprintf("Failed to delete 'mat': %s", deleteErr))
+ } else {
+   log.Printf("Mat has been deleted!")
+ }
+
+NOTE: There's little point in finding a resource just to delete it, but if you happen to
+need the data of a resource to decide whether or not to delete it, this is the way you would
+achieve that.
 
 */
 package stretchr
