@@ -5,6 +5,15 @@ import (
 	"fmt"
 )
 
+const (
+
+	// IDKey is the key for the ID value of resources.
+	IDKey string = "~id"
+
+	// EmptyID is the string that represents no ID.
+	EmptyID string = ""
+)
+
 // Resource represents a single Stretchr resource object.
 type Resource struct {
 
@@ -53,6 +62,34 @@ func (r *Resource) Get(key string) interface{} {
 func (r *Resource) Set(key string, value interface{}) *Resource {
 	r.data[key] = value
 	return r
+}
+
+// Remove deletes a field from this resource.
+func (r *Resource) Remove(key string) *Resource {
+	delete(r.data, key)
+	return r
+}
+
+// GetID gets the ID for this resource, or returns EmptyID if there isn't one.
+func (r *Resource) GetID() string {
+
+	idObj := r.Get(IDKey)
+
+	if idString, ok := idObj.(string); ok {
+		return idString
+	}
+
+	return EmptyID
+}
+
+// SetID sets the ID of this resource.
+func (r *Resource) SetID(id string) *Resource {
+	return r.Set(IDKey, id)
+}
+
+// ClearID clears the internally stored ID for this resource.
+func (r *Resource) ClearID() *Resource {
+	return r.Remove(IDKey)
 }
 
 // AbsoluteURL gets the absolute URL representing this resource.
