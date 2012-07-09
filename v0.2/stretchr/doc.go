@@ -8,6 +8,19 @@ To access resources, first create a Session object:
 The session object will hold information about your project and your credentials for the
 Stretchr data services.
 
+To read a resource when you know the ID:
+
+ session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
+
+ // read person with ID "mat"
+ mat, err := session.Read("people", "mat")
+
+ if err != nil {
+   panic(fmt.Sprintf("Failed to load 'mat': %s", createErr))
+ } else {
+   log.Printf("Mat's full name is: %s %s.", resource.Get("first-name"), resource.Get("last-name"))
+ }
+
 To create a new resource:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
