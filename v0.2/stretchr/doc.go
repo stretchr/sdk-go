@@ -13,7 +13,7 @@ To create a new resource:
 	session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
 	// make a resource
-	resource := MakeResource(session, "people")
+	resource := session.MakeResource("people")
 
 	// set some data
 	resource.Set("name", "Mat").Set("age", 29).Set("when", time.Now())
