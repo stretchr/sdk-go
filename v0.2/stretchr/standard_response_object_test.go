@@ -1,6 +1,7 @@
 package stretchr
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -49,5 +50,17 @@ func TestExtractStandardResponseObject(t *testing.T) {
 	AssertEqual(t, 0, len(obj.Errors))
 	AssertEqual(t, "Mat", obj.Data["name"])
 	AssertEqual(t, float64(29), obj.Data["age"])
+
+}
+
+func TestStandardResponseObject_Errors(t *testing.T) {
+
+	sro := &StandardResponseObject{500, []interface{}{map[string]interface{}{"Message": "Something went wrong :-("}}, false, nil, ""}
+
+	AssertEqual(t, "Something went wrong :-(", fmt.Sprintf("%s", sro.GetError()))
+
+	sro = &StandardResponseObject{500, make([]interface{}, 0), false, nil, ""}
+
+	AssertEqual(t, UnknownError, sro.GetError())
 
 }

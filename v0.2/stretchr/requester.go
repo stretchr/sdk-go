@@ -4,6 +4,11 @@ import (
 	"net/http"
 )
 
+const (
+	// NoBody is a string that represents no body in a request.
+	NoBody string = ""
+)
+
 // Requester is an interface describing objects capable of making and processing
 // HTTP requests.
 type Requester interface {

@@ -41,6 +41,15 @@ func (r *TestRequester) MakeRequest(method, fullUrl, body string) (*StandardResp
 	return sro, r.ResponseToReturn, r.ErrorToReturn
 }
 
+func (r *TestRequester) Reset() *TestRequester {
+	r.LastMethod = "(none)"
+	r.LastURL = "(none)"
+	r.LastBody = "(none)"
+	r.ErrorToReturn = nil
+	r.ResponseToReturn = nil
+	return r
+}
+
 // ActiveTestRequester represents an instance of the TestRequester.
 var ActiveTestRequester *TestRequester = new(TestRequester)
 

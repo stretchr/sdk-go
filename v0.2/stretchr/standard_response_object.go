@@ -1,9 +1,13 @@
 package stretchr
 
 import (
+	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
+
+var UnknownError = errors.New("Something went wrong, not sure what - sorry.")
 
 // StandardResponseObject is the top level container for all responses.
 type StandardResponseObject struct {
@@ -23,6 +27,20 @@ type StandardResponseObject struct {
 	// Context holds the context modifier value to make it easy to line
 	// responses up with requests
 	Context string
+}
+
+// GetError gets the first error from the Errors array, or returns UnknownError.
+//
+// Check the Worked field before calling this method since this method
+// will always return an error of some sort.
+func (sro *StandardResponseObject) GetError() error {
+
+	if len(sro.Errors) > 0 {
+		return errors.New(fmt.Sprintf("%s", sro.Errors[0].(map[string]interface{})["Message"]))
+	}
+
+	return UnknownError
+
 }
 
 // ExtractStandardResponseObject extracts the StandardResponseObject from the specified

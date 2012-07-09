@@ -7,7 +7,7 @@ import (
 const (
 
 	// IDKey is the key for the ID value of resources.
-	IDKey string = "~id"
+	IDKey string = "IDKey"
 
 	// EmptyID is the string that represents no ID.
 	EmptyID string = ""
