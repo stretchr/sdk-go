@@ -70,7 +70,7 @@ To completely replace a resource:
  resource := session.MakeResource("people", "mat")
 
  // set the fields you want to change
- resource.Set("age", 30).Set("name", "Mat")
+ resource.SetID("ABC123").Set("age", 30).Set("name", "Mat")
 
  // update the resource
  replaceErr := resource.Replace()
