@@ -1,9 +1,5 @@
 package stretchr
 
-import (
-	"net/http"
-)
-
 const (
 	ReadMethod    string = "GET"
 	CreateMethod  string = "POST"
