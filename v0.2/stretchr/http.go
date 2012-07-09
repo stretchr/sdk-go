@@ -1,11 +1,19 @@
 package stretchr
 
+import (
+	"net/http"
+)
+
 const (
-	ReadMethod    string = "GET"
-	CreateMethod  string = "POST"
-	UpdateMethod  string = "PUT"
-	ReplaceMethod string = "POST"
-	DeleteMethod  string = "DELETE"
+	GetMethod    string = "GET"
+	PostMethod   string = "POST"
+	PutMethod    string = "PUT"
+	DeleteMethod string = "DELETE"
+
+	ReadMethod    string = GetMethod
+	CreateMethod  string = PostMethod
+	UpdateMethod  string = PutMethod
+	ReplaceMethod string = PostMethod
 )
 
 const (
@@ -28,4 +36,10 @@ const (
 // HTTP status code.
 func workedFromStatusCode(statusCode int) bool {
 	return statusCode >= StatusCodesOKMinimum && statusCode <= StatusCodesOKMaximum
+}
+
+// Client describes objects that can perform HTTP requests.
+type Client interface {
+	// Do sends an HTTP request and returns an HTTP response
+	Do(req *http.Request) (*http.Response, error)
 }

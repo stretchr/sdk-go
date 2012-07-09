@@ -14,7 +14,7 @@ func (r *Resource) Replace() error {
 		return jsonErr
 	}
 
-	response, _, requestErr := ActiveRequester.MakeRequest(ReplaceMethod, r.AbsoluteURL(), json)
+	response, _, requestErr := ActiveRequester.MakeRequest(ReplaceMethod, r.AbsoluteURL(), json, r.session.PrivateKey)
 
 	if requestErr != nil {
 		return requestErr

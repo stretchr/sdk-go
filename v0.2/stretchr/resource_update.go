@@ -13,7 +13,7 @@ func (r *Resource) Update() error {
 		return jsonErr
 	}
 
-	response, _, requestErr := ActiveRequester.MakeRequest(UpdateMethod, r.AbsoluteURL(), json)
+	response, _, requestErr := ActiveRequester.MakeRequest(UpdateMethod, r.AbsoluteURL(), json, r.session.PrivateKey)
 
 	if requestErr != nil {
 		return requestErr

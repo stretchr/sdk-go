@@ -20,6 +20,6 @@ func TestResource_Delete(t *testing.T) {
 		t.Errorf("Shouldn't throw error: %s", err)
 	}
 
-	AssertLastRequest(t, DeleteMethod, TestSession.Url("people/ABC"), "")
+	AssertLastRequest(t, DeleteMethod, TestSession.Url("people/ABC"), "", "PRIVATE")
 
 }

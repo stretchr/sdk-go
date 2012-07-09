@@ -7,7 +7,9 @@ package stretchr
 import (
 	"io/ioutil"
 	"net/http"
+	"reflect"
 	"strings"
+	"testing"
 )
 
 /*
@@ -17,21 +19,23 @@ import (
 	making HTTP requests.
 */
 type TestRequester struct {
-	LastMethod string
-	LastURL    string
-	LastBody   string
+	LastMethod     string
+	LastURL        string
+	LastBody       string
+	LastPrivateKey string
 
 	ErrorToReturn    error
 	ResponseToReturn *http.Response
 }
 
 // MakeRequest stores the parameters and returns the specified ResponseToReturn and ResponseToReturn.
-func (r *TestRequester) MakeRequest(method, fullUrl, body string) (*StandardResponseObject, *http.Response, error) {
+func (r *TestRequester) MakeRequest(method, fullUrl, body, privateKey string) (*StandardResponseObject, *http.Response, error) {
 
 	// save the response bits
 	r.LastMethod = method
 	r.LastURL = fullUrl
 	r.LastBody = body
+	r.LastPrivateKey = privateKey
 
 	var sro *StandardResponseObject
 	if r.ResponseToReturn != nil {
@@ -41,10 +45,19 @@ func (r *TestRequester) MakeRequest(method, fullUrl, body string) (*StandardResp
 	return sro, r.ResponseToReturn, r.ErrorToReturn
 }
 
+func (r *TestRequester) SetClient(c Client) {
+
+}
+
+func (r *TestRequester) Client() Client {
+	return nil
+}
+
 func (r *TestRequester) Reset() *TestRequester {
 	r.LastMethod = "(none)"
 	r.LastURL = "(none)"
 	r.LastBody = "(none)"
+	r.LastPrivateKey = "(none)"
 	r.ErrorToReturn = nil
 	r.ResponseToReturn = nil
 	return r
@@ -62,6 +75,10 @@ func MakeTestResponse(statusCode int, body string) *http.Response {
 	return resp
 }
 
+func MakeOKTestResponse() *http.Response {
+	return MakeTestResponse(200, "{\"s\":200,\"w\":true}")
+}
+
 // MakeTestResponseWithData makes a test http.Response object initialised with the given
 // properties, with the data object as JSON in the response.
 func MakeTestResponseWithData(statusCode int, data map[string]interface{}) *http.Response {
@@ -69,4 +86,61 @@ func MakeTestResponseWithData(statusCode int, data map[string]interface{}) *http
 	resp.StatusCode = statusCode
 	resp.Body = ioutil.NopCloser(strings.NewReader(ToTestJson(data)))
 	return resp
+}
+
+/*
+	TestClient
+*/
+type TestClient struct {
+	LastRequest *http.Request
+
+	ResponseToReturn *http.Response
+	ErrorToReturn    error
+}
+
+func (c *TestClient) Do(req *http.Request) (*http.Response, error) {
+	c.LastRequest = req
+	return c.ResponseToReturn, c.ErrorToReturn
+}
+
+/*
+	DefaultRequester
+*/
+
+func TestDefaultRequester_Client(t *testing.T) {
+
+	r := new(DefaultRequester)
+
+	client := new(http.Client)
+
+	r.SetClient(client)
+
+	AssertEqual(t, client, r.Client())
+
+}
+
+func TestDefaultRequester_Default_Client(t *testing.T) {
+
+	r := new(DefaultRequester)
+
+	client := new(http.Client)
+
+	AssertEqual(t, reflect.TypeOf(client), reflect.TypeOf(r.Client()))
+
+}
+
+func TestDefaultRequester_Signing(t *testing.T) {
+
+	r := new(DefaultRequester)
+
+	// use test client
+	c := new(TestClient)
+	c.ResponseToReturn = MakeOKTestResponse()
+	r.SetClient(c)
+
+	r.MakeRequest(GetMethod, "http://test.stretchr.com/api/v1/people/ABC?~key=ABC123", "", "PRIVATE")
+
+	url := c.LastRequest.URL.String()
+	AssertEqual(t, "http://test.stretchr.com/api/v1/people/ABC?~key=ABC123&~sign=3a4b67d6cba0caab8a5dc13c5dd07dbe11f316ba", url)
+
 }

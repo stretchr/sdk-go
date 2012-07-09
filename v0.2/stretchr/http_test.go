@@ -6,11 +6,16 @@ import (
 
 func TestMethod(t *testing.T) {
 
-	AssertEqual(t, "GET", ReadMethod)
-	AssertEqual(t, "POST", CreateMethod)
-	AssertEqual(t, "PUT", UpdateMethod)
-	AssertEqual(t, "POST", ReplaceMethod)
+	AssertEqual(t, "GET", GetMethod)
+	AssertEqual(t, "PUT", PutMethod)
+	AssertEqual(t, "POST", PostMethod)
 	AssertEqual(t, "DELETE", DeleteMethod)
+
+	AssertEqual(t, GetMethod, ReadMethod)
+	AssertEqual(t, PostMethod, CreateMethod)
+	AssertEqual(t, PutMethod, UpdateMethod)
+	AssertEqual(t, PostMethod, ReplaceMethod)
+	AssertEqual(t, DeleteMethod, DeleteMethod)
 
 }
 

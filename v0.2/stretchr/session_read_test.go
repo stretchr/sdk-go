@@ -20,7 +20,7 @@ func TestSession_Read(t *testing.T) {
 		t.Errorf("Shouldn't throw error: %s", err)
 	}
 
-	AssertLastRequest(t, ReadMethod, TestSession.Url("people/ABC"), "")
+	AssertLastRequest(t, ReadMethod, TestSession.Url("people/ABC"), "", "PRIVATE")
 
 	if resource == nil {
 		t.Errorf("Resource shouldn't be nil")

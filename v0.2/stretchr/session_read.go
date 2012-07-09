@@ -7,7 +7,7 @@ package stretchr
 func (s *Session) Read(path, id string) (*Resource, error) {
 
 	resource := s.MakeResource(path).SetID(id)
-	response, _, requestErr := ActiveRequester.MakeRequest(ReadMethod, resource.AbsoluteURL(), NoBody)
+	response, _, requestErr := ActiveRequester.MakeRequest(ReadMethod, resource.AbsoluteURL(), NoBody, s.PrivateKey)
 
 	if requestErr != nil {
 		return resource, requestErr

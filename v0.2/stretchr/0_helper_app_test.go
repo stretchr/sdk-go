@@ -5,11 +5,12 @@ import (
 	"testing"
 )
 
-func AssertLastRequest(t *testing.T, method, url, body string) {
+func AssertLastRequest(t *testing.T, method, url, body, privateKey string) {
 
 	AssertEqual(t, method, ActiveTestRequester.LastMethod, "HTTP Method")
 	AssertEqual(t, url, ActiveTestRequester.LastURL, "URL")
 	AssertEqual(t, body, ActiveTestRequester.LastBody, "Body")
+	AssertEqual(t, privateKey, ActiveTestRequester.LastPrivateKey, "Private Key")
 
 }
 

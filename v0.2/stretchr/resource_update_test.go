@@ -25,7 +25,7 @@ func TestResource_Update(t *testing.T) {
 		t.Errorf("Shouldn't throw error: %s", err)
 	}
 
-	AssertLastRequest(t, UpdateMethod, TestSession.Url("people/ABC"), "{\"age\":29,\"developer\":true,\"name\":\"Mat\",\"~id\":\"ABC\"}")
+	AssertLastRequest(t, UpdateMethod, TestSession.Url("people/ABC"), "{\"age\":29,\"developer\":true,\"name\":\"Mat\",\"~id\":\"ABC\"}", "PRIVATE")
 
 	AssertEqual(t, "Ryer", r.Get("surname"))
 

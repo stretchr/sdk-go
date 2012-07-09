@@ -25,7 +25,7 @@ func TestResource_Create(t *testing.T) {
 		t.Errorf("Shouldn't throw error: %s", err)
 	}
 
-	AssertLastRequest(t, CreateMethod, TestSession.Url("people"), "{\"age\":29,\"developer\":true,\"name\":\"Mat\"}")
+	AssertLastRequest(t, CreateMethod, TestSession.Url("people"), "{\"age\":29,\"developer\":true,\"name\":\"Mat\"}", "PRIVATE")
 	AssertEqual(t, "ID_RETURNED_BY_SERVER", r.GetID(), "ID should be set on the resource")
 
 }

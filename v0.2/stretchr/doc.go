@@ -97,13 +97,13 @@ To delete a resource when you know the ID:
 If you have the resource object, you can directly delete it using the Delete method:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
- 
+
  // load mat
  mat, _ := session.Find("people", "mat")
 
  // delete person with ID "mat"
  deleteErr := mat.Delete()
- 
+
  if deleteErr != nil {
    panic(fmt.Sprintf("Failed to delete 'mat': %s", deleteErr))
  } else {

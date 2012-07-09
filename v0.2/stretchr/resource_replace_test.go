@@ -25,6 +25,6 @@ func TestResource_Replace(t *testing.T) {
 		t.Errorf("Shouldn't throw error: %s", err)
 	}
 
-	AssertLastRequest(t, ReplaceMethod, TestSession.Url("people/ABC"), "{\"age\":29,\"developer\":true,\"name\":\"Mat\",\"~id\":\"ABC\"}")
+	AssertLastRequest(t, ReplaceMethod, TestSession.Url("people/ABC"), "{\"age\":29,\"developer\":true,\"name\":\"Mat\",\"~id\":\"ABC\"}", "PRIVATE")
 
 }
