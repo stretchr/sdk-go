@@ -7,6 +7,9 @@ import (
 
 const (
 	// NoBody is a string that represents no body in a request.
+	//
+	// If the body is this value, no body will be included
+	// (as opposed to a body with an empty string). 
 	NoBody string = ""
 )
 
@@ -36,7 +39,7 @@ func (r *DefaultRequester) MakeRequest(method, fullUrl, body, privateKey string)
 	// get the client we'll use
 	client := r.Client()
 
-	// TODO: sign the request
+	// sign the request
 	signedUrl, signUrlErr := GetSignedURL(method, fullUrl, body, privateKey)
 
 	if signUrlErr != nil {
