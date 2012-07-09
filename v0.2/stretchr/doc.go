@@ -24,7 +24,7 @@ To create a new resource:
 	if createErr != nil {
 	  panic(fmt.Sprintf("Failed to create resource: %s", createErr))
 	} else {
-		log.Printf("New resource created with ID: %s", response.GetID())
+    log.Printf("New resource created with ID: %s", response.GetID())
 	}
 
 */
