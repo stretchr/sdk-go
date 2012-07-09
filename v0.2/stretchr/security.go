@@ -58,6 +58,7 @@ func getOrderedParams(values url.Values) string {
 
 }
 
+// GetSignature gets the signature of a request based on the given parameters.
 func GetSignature(method, requestUrl, body, privateKey string) (string, error) {
 
 	// parse the URL
@@ -84,6 +85,7 @@ func GetSignature(method, requestUrl, body, privateKey string) (string, error) {
 
 }
 
+// GetSignedURL gets the URL with the sign parameter added based on the given parameters.
 func GetSignedURL(method, requestUrl, body, privateKey string) (string, error) {
 
 	hash, hashErr := GetSignature(method, requestUrl, body, privateKey)
