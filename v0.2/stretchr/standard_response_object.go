@@ -9,6 +9,8 @@ import (
 
 var UnknownError = errors.New("Something went wrong, not sure what - sorry.")
 
+var UnexpectedDataObject = errors.New("The data 'd' object returned was of an unexpected type.")
+
 // StandardResponseObject is the top level container for all responses.
 type StandardResponseObject struct {
 
@@ -21,8 +23,13 @@ type StandardResponseObject struct {
 	// Worked is a quick way to find out if a request was successful or not
 	Worked bool
 
-	// Data contains the data for the response
+	// Data contains the data for the response.  Only Data or DataCollection will be set 
+	// depending on the type of data.
 	Data map[string]interface{}
+
+	// DataCollection contains a collection of data objects.  Only Data or DataCollection will be set 
+	// depending on the type of data.
+	DataCollection []interface{}
 
 	// Context holds the context modifier value to make it easy to line
 	// responses up with requests
@@ -71,8 +78,22 @@ func ExtractStandardResponseObject(response *http.Response) (*StandardResponseOb
 	}
 
 	// set the data if there is some
+	var ok bool
 	if respObj["d"] != nil {
-		obj.Data = respObj["d"].(map[string]interface{})
+
+		// try map[string]interface{} first
+		if obj.Data, ok = respObj["d"].(map[string]interface{}); !ok {
+
+			// now try []map[string]interface{}
+			if obj.DataCollection, ok = respObj["d"].([]interface{}); !ok {
+
+				// couldn't cast it
+				return obj, UnexpectedDataObject
+
+			}
+
+		}
+
 	}
 
 	/*

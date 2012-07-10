@@ -16,9 +16,23 @@ To read a resource when you know the ID:
  mat, readErr := session.Read("people", "mat")
 
  if readErr != nil {
-   panic(fmt.Sprintf("Failed to load 'mat': %s", readErr))
+   panic(fmt.Sprintf("Failed to read 'mat': %s", readErr))
  } else {
    log.Printf("Mat's full name is: %s %s.", resource.Get("first-name"), resource.Get("last-name"))
+ }
+
+To read a collection of resources:
+
+ session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
+ 
+ people, readErr := session.Many("people").Read()
+
+ if readErr != nil {
+   panic(fmt.Sprintf("Failed to read people: %s", readErr))
+ } else {
+   for _, person := range people.Resources {
+     log.Printf("I have found %s", person.Get("name"))
+   }
  }
 
 To create a new resource:

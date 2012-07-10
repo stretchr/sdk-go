@@ -13,6 +13,10 @@ const (
 	EmptyID string = ""
 )
 
+/*
+	Resource
+*/
+
 // Resource represents a single Stretchr resource object.
 type Resource struct {
 

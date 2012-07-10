@@ -6,36 +6,40 @@ import (
 
 const (
 	// DefaultVersion is the default version of the Stretchr service.
-	DefaultVersion  string = "v1"
-	
+	DefaultVersion string = "v1"
+
 	// DefaultHost is the default host of the Stretchr service.
-	DefaultHost     string = "stretchr.com"
-	
+	DefaultHost string = "stretchr.com"
+
 	// DefaultProtocol is the default protocol of the Stretchr service.
 	DefaultProtocol string = "http"
 )
 
 // Session represents a Stretchr session.
 type Session struct {
-	
+
 	// Project is the name of the project this Session represents.
-	Project    string
-	
+	Project string
+
 	// PublicKey is the public key of the account that this Session represents.
-	PublicKey  string
-	
+	PublicKey string
+
 	// PrivateKey is the private key of the account that this Session represents.
 	PrivateKey string
-	
+
 	// Version is the string representing the version of the Stretchr service to use (see DefaultVersion).
-	Version    string
-	
+	Version string
+
 	// Host is the string representing the host of the Stretchr service to use (see DefaultHost).
-	Host       string
-	
+	Host string
+
 	// Protocol is the string representing the protocol by which to access the Stretchr service to use (see DefaultProtocol).
-	Protocol   string
+	Protocol string
 }
+
+/*
+	Construction and configuration
+*/
 
 // InProject creates a new Session and sets the Project field.
 func InProject(project string) *Session {
@@ -95,4 +99,12 @@ func (s *Session) baseUrl() string {
 // this session.
 func (s *Session) Url(path string) string {
 	return fmt.Sprintf("%s%s", s.baseUrl(), path)
+}
+
+/*
+	Many
+*/
+
+func (s *Session) Many(path string) *Many {
+	return MakeMany(s, path)
 }

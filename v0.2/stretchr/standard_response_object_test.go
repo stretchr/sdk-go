@@ -55,11 +55,11 @@ func TestExtractStandardResponseObject(t *testing.T) {
 
 func TestStandardResponseObject_Errors(t *testing.T) {
 
-	sro := &StandardResponseObject{500, []interface{}{map[string]interface{}{"Message": "Something went wrong :-("}}, false, nil, ""}
+	sro := &StandardResponseObject{500, []interface{}{map[string]interface{}{"Message": "Something went wrong :-("}}, false, nil, nil, ""}
 
 	AssertEqual(t, "Something went wrong :-(", fmt.Sprintf("%s", sro.GetError()))
 
-	sro = &StandardResponseObject{500, make([]interface{}, 0), false, nil, ""}
+	sro = &StandardResponseObject{500, make([]interface{}, 0), false, nil, nil, ""}
 
 	AssertEqual(t, UnknownError, sro.GetError())
 
