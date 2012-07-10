@@ -91,45 +91,6 @@ func TestMany_Page(t *testing.T) {
 
 }
 
-func TestManyRead(t *testing.T) {
-
-	// use the test requester
-	ActiveRequester = ActiveTestRequester.Reset()
-
-	responseData := []map[string]interface{}{map[string]interface{}{"name": "Mat", "age": 29, "developer": true, IDKey: "ABC"}, map[string]interface{}{"name": "Laurie", "age": 28, "developer": false, IDKey: "DEF"}}
-	ActiveTestRequester.ResponseToReturn = MakeTestResponseWithData(http.StatusOK, makeStandardResponseObject(http.StatusOK, responseData))
-
-	// make a resource
-	resourceCollection, err := makeMany(TestSession, "people").Read()
-
-	if err != nil {
-		t.Errorf("Shouldn't throw error: %s", err)
-	}
-
-	AssertLastRequest(t, ReadMethod, TestSession.Url("people"), "", "PRIVATE")
-
-	if resourceCollection == nil {
-		t.Errorf("MakeMany().Read() shouldn't be nil")
-	} else {
-
-		if AssertEqual(t, 2, len(resourceCollection.Resources)) {
-
-			AssertEqual(t, "Mat", resourceCollection.Resources[0].Get("name"))
-			AssertEqual(t, float64(29), resourceCollection.Resources[0].Get("age"))
-			AssertEqual(t, true, resourceCollection.Resources[0].Get("developer"))
-			AssertEqual(t, "ABC", resourceCollection.Resources[0].GetID())
-
-			AssertEqual(t, "Laurie", resourceCollection.Resources[1].Get("name"))
-			AssertEqual(t, float64(28), resourceCollection.Resources[1].Get("age"))
-			AssertEqual(t, false, resourceCollection.Resources[1].Get("developer"))
-			AssertEqual(t, "DEF", resourceCollection.Resources[1].GetID())
-
-		}
-
-	}
-
-}
-
 func TestMany_Order(t *testing.T) {
 
 	m := makeMany(TestSession, "people")
@@ -155,5 +116,62 @@ func TestMany_Where(t *testing.T) {
 	AssertEqual(t, m, m.Where("age", ">=18"))
 	AssertContains(t, m.Path(), "%3Aname=mat")
 	AssertContains(t, m.Path(), "%3Aage=%3E%3D18")
+
+}
+
+func TestMany_Read(t *testing.T) {
+
+	// use the test requester
+	ActiveRequester = ActiveTestRequester.Reset()
+
+	responseData := []map[string]interface{}{map[string]interface{}{"name": "Mat", "age": 29, "developer": true, IDKey: "ABC"}, map[string]interface{}{"name": "Laurie", "age": 28, "developer": false, IDKey: "DEF"}}
+	ActiveTestRequester.ResponseToReturn = MakeTestResponseWithData(http.StatusOK, makeStandardResponseObject(http.StatusOK, responseData))
+
+	// make a resource
+	resourceCollection, err := makeMany(TestSession, "people").Order("age").Read()
+
+	if err != nil {
+		t.Errorf("Shouldn't throw error: %s", err)
+	}
+
+	AssertLastRequest(t, ReadMethod, TestSession.Url("people?~order=age"), "", "PRIVATE")
+
+	if resourceCollection == nil {
+		t.Errorf("MakeMany().Read() shouldn't be nil")
+	} else {
+
+		if AssertEqual(t, 2, len(resourceCollection.Resources)) {
+
+			AssertEqual(t, "Mat", resourceCollection.Resources[0].Get("name"))
+			AssertEqual(t, float64(29), resourceCollection.Resources[0].Get("age"))
+			AssertEqual(t, true, resourceCollection.Resources[0].Get("developer"))
+			AssertEqual(t, "ABC", resourceCollection.Resources[0].GetID())
+
+			AssertEqual(t, "Laurie", resourceCollection.Resources[1].Get("name"))
+			AssertEqual(t, float64(28), resourceCollection.Resources[1].Get("age"))
+			AssertEqual(t, false, resourceCollection.Resources[1].Get("developer"))
+			AssertEqual(t, "DEF", resourceCollection.Resources[1].GetID())
+
+		}
+
+	}
+
+}
+
+func TestMany_Delete(t *testing.T) {
+
+	// use the test requester
+	ActiveRequester = ActiveTestRequester.Reset()
+
+	ActiveTestRequester.ResponseToReturn = MakeTestResponse(http.StatusOK, "{\"s\":200,\"w\":true}")
+
+	// make a resource
+	err := makeMany(TestSession, "people").Where("age", "<18").Delete()
+
+	if err != nil {
+		t.Errorf("Shouldn't throw error: %s", err)
+	}
+
+	AssertLastRequest(t, DeleteMethod, TestSession.Url("people?%3Aage=%3C18"), "", "PRIVATE")
 
 }

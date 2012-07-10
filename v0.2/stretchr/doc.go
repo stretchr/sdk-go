@@ -131,16 +131,29 @@ If you have the resource object, you can directly delete it using the Delete met
    log.Printf("Mat has been deleted!")
  }
 
-NOTE: There's little point in finding a resource just to delete it, but if you happen to
+There's little point in finding a resource just to delete it, but if you happen to
 have the resource anyway it makes sense to use the Resource.Delete method.
+
+To delete multiple resources based on specific criteria, you can use the Many.Delete method:
+
+ session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
+ 
+ // load mat
+ deleteErr := session.Many("people").Where("age", "<18").Delete()
+
+ if deleteErr != nil {
+   panic(fmt.Sprintf("Failed to delete 'mat': %s", deleteErr))
+ } else {
+   log.Printf("Everyone under 18 has been deleted!")
+ }
 
 To find resources of people between the ages of 18 to 30, who have signed up to receive 
 email updates:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
- 
+
  people, readErr := session.Many("people").Where("age", "18..30").Where("get-updates", true).Read()
- 
+
  if readErr != nil {
    panic(fmt.Sprintf("Failed to read people: %s", readErr))
  } else {
@@ -148,6 +161,6 @@ email updates:
      log.Printf("I have found %s", person.Get("name"))
    }
  }
- 
+
 */
 package stretchr

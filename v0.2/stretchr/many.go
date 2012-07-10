@@ -110,7 +110,7 @@ func (m *Many) Where(field string, values ...string) *Many {
 func (m *Many) Read() (*ResourceCollection, error) {
 
 	var resourceCollection *ResourceCollection
-	response, _, requestErr := ActiveRequester.MakeRequest(ReadMethod, m.session.Url(m.path), NoBody, m.session.PublicKey, m.session.PrivateKey)
+	response, _, requestErr := ActiveRequester.MakeRequest(ReadMethod, m.session.Url(m.Path()), NoBody, m.session.PublicKey, m.session.PrivateKey)
 
 	if requestErr != nil {
 		return nil, requestErr
@@ -136,5 +136,21 @@ func (m *Many) Read() (*ResourceCollection, error) {
 	}
 
 	return resourceCollection, nil
+
+}
+
+func (m *Many) Delete() error {
+
+	response, _, deleteErr := ActiveRequester.MakeRequest(DeleteMethod, m.session.Url(m.Path()), NoBody, m.session.PublicKey, m.session.PrivateKey)
+
+	if deleteErr != nil {
+		return deleteErr
+	}
+
+	if !response.Worked {
+		return response.GetError()
+	}
+
+	return nil
 
 }

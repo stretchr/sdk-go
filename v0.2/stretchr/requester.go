@@ -2,6 +2,7 @@ package stretchr
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -71,6 +72,8 @@ func (r *DefaultRequester) MakeRequest(method, fullUrl, body, publicKey, private
 
 	// get the StandardResponseObject
 	sro, sroErr := ExtractStandardResponseObject(response)
+
+	log.Printf("error: %s", sroErr)
 
 	if sroErr != nil {
 		return nil, response, sroErr
