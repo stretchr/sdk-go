@@ -134,5 +134,20 @@ If you have the resource object, you can directly delete it using the Delete met
 NOTE: There's little point in finding a resource just to delete it, but if you happen to
 have the resource anyway it makes sense to use the Resource.Delete method.
 
+To find resources of people between the ages of 18 to 30, who have signed up to receive 
+email updates:
+
+ session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
+ 
+ people, readErr := session.Many("people").Where("age", "18..30").Where("get-updates", true).Read()
+ 
+ if readErr != nil {
+   panic(fmt.Sprintf("Failed to read people: %s", readErr))
+ } else {
+   for _, person := range people.Resources {
+     log.Printf("I have found %s", person.Get("name"))
+   }
+ }
+ 
 */
 package stretchr
