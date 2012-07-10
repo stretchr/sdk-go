@@ -35,6 +35,7 @@ func (m *Many) Path() string {
 
 }
 
+// Parameters gets the url.Values object that holds the parameters.
 func (m *Many) Parameters() url.Values {
 	return m.parameters
 }
