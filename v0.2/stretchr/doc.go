@@ -24,7 +24,7 @@ To read a resource when you know the ID:
 To read a collection of resources:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
- 
+
  people, readErr := session.Many("people").Read()
 
  if readErr != nil {

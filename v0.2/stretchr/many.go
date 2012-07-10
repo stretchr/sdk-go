@@ -1,9 +1,15 @@
 package stretchr
 
+import (
+	"fmt"
+	"net/url"
+)
+
 // Many provides the ability to work on multiple resources, such as finding collections and deleting collections etc.
 type Many struct {
-	session *Session
-	path    string
+	session    *Session
+	path       string
+	parameters url.Values
 }
 
 // MakeMany makes a new Many object with the given session and path.
@@ -13,7 +19,60 @@ func MakeMany(session *Session, path string) *Many {
 	m := new(Many)
 	m.session = session
 	m.path = path
+	m.parameters = make(url.Values)
 	return m
+}
+
+// Path gets the URL segment and query of the request that will be made.
+func (m *Many) Path() string {
+	query := m.parameters.Encode()
+
+	if len(query) > 0 {
+		return fmt.Sprintf("%s?%s", m.path, query)
+	}
+
+	return m.path
+
+}
+
+func (m *Many) Parameters() url.Values {
+	return m.parameters
+}
+
+// SetParameter sets a parameter on the request that will be made.
+func (m *Many) SetParameter(key, value string) *Many {
+	m.parameters.Set(key, value)
+	return m
+}
+
+// RemoveParameter removes a parameter from the request.
+func (m *Many) RemoveParameter(key string) *Many {
+	delete(m.parameters, key)
+	return m
+}
+
+// Limit specifies the maximum number of Resources to return.
+//
+// Instead of using Limit and Skip directly, its easier to use the Page function.
+func (m *Many) Limit(limit int) *Many {
+	return m.SetParameter(LimitKey, fmt.Sprintf("%d", limit))
+}
+
+// Skip specifies how many records to ignore before it starts collecting them.
+//
+// Instead of using Limit and Skip directly, its easier to use the Page function.
+func (m *Many) Skip(skip int) *Many {
+	if skip > 0 {
+		return m.SetParameter(SkipKey, fmt.Sprintf("%d", skip))
+	}
+	return m.RemoveParameter(SkipKey)
+}
+
+// Page specifies the page number and size of the resources to get.
+//
+// For example, Page(1, 10) will get the first page of 10 records.
+func (m *Many) Page(pageNumber, pageSize int) *Many {
+	return m.Limit(pageSize).Skip(pageSize * (pageNumber - 1))
 }
 
 // Read reads many resources from Stretchr based on the configuration in this Many object.

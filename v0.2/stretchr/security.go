@@ -9,18 +9,6 @@ import (
 )
 
 const (
-	// SignatureKey is the key for the signature.
-	SignatureKey string = "~sign"
-
-	// PrivateKeyKey is the key for the private key.
-	PrivateKeyKey string = "~private"
-
-	// PublicKeyKey is the key for the public key.
-	PublicKeyKey string = "~key"
-
-	// BodyHashKey is the key for the hash of the body.
-	BodyHashKey string = "~bodyhash"
-
 	// FailedSignature is the string that is returned when signing fails.
 	FailedSignature string = "(failed signature)"
 )

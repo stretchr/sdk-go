@@ -20,6 +20,77 @@ func TestMakeMany(t *testing.T) {
 
 }
 
+func TestManyPath(t *testing.T) {
+
+	m := MakeMany(TestSession, "people")
+	AssertEqual(t, "people", m.Path())
+
+}
+
+func TestMany_SetParameter(t *testing.T) {
+
+	m := MakeMany(TestSession, "people")
+	AssertEqual(t, m, m.SetParameter("~monkey", "10"))
+	AssertEqual(t, "people?~monkey=10", m.Path())
+
+}
+
+func TestMany_RemoveParameter(t *testing.T) {
+
+	m := MakeMany(TestSession, "people").SetParameter("~monkey", "100")
+	AssertEqual(t, m, m.SetParameter("~limit", "10"))
+
+	AssertContains(t, m.Path(), "people?")
+	AssertContains(t, m.Path(), "~monkey=100")
+	AssertContains(t, m.Path(), "~limit=10")
+
+	AssertEqual(t, m, m.RemoveParameter("~monkey"))
+	AssertEqual(t, "people?~limit=10", m.Path())
+
+}
+
+func TestMany_Parameters(t *testing.T) {
+
+	m := MakeMany(TestSession, "people").SetParameter("~monkey", "100")
+
+	AssertEqual(t, m.parameters.Get("~monkey"), m.Parameters().Get("~monkey"))
+
+}
+
+func TestMany_Limit(t *testing.T) {
+
+	m := MakeMany(TestSession, "people")
+	AssertEqual(t, m, m.Limit(10))
+	AssertEqual(t, "people?~limit=10", m.Path())
+
+}
+
+func TestMany_Skip(t *testing.T) {
+
+	m := MakeMany(TestSession, "people")
+	AssertEqual(t, m, m.Skip(10))
+	AssertEqual(t, "people?~skip=10", m.Path())
+
+}
+
+func TestMany_Page(t *testing.T) {
+
+	m := MakeMany(TestSession, "people")
+	AssertEqual(t, m, m.Page(2, 10))
+	AssertContains(t, m.Path(), "people?")
+	AssertContains(t, m.Path(), "~skip=10")
+	AssertContains(t, m.Path(), "~limit=10")
+
+	AssertEqual(t, m, m.Page(3, 10))
+	AssertContains(t, m.Path(), "people?")
+	AssertContains(t, m.Path(), "~skip=20")
+	AssertContains(t, m.Path(), "~limit=10")
+
+	AssertEqual(t, m, m.Page(1, 5))
+	AssertEqual(t, "people?~limit=5", m.Path())
+
+}
+
 func TestManyRead(t *testing.T) {
 
 	// use the test requester
