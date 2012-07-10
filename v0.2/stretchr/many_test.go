@@ -137,3 +137,23 @@ func TestMany_Order(t *testing.T) {
 	AssertEqual(t, "people?~order=name%2C-age", m.Path())
 
 }
+
+func TestMany_Where(t *testing.T) {
+
+	m := makeMany(TestSession, "people")
+	AssertEqual(t, m, m.Where("name", "mat"))
+	AssertEqual(t, "people?%3Aname=mat", m.Path())
+
+	m = makeMany(TestSession, "people")
+	AssertEqual(t, m, m.Where("name", "mat", "laurie", "simon"))
+	AssertContains(t, m.Path(), "%3Aname=mat")
+	AssertContains(t, m.Path(), "%3Aname=laurie")
+	AssertContains(t, m.Path(), "%3Aname=simon")
+
+	m = makeMany(TestSession, "people")
+	AssertEqual(t, m, m.Where("name", "mat"))
+	AssertEqual(t, m, m.Where("age", ">=18"))
+	AssertContains(t, m.Path(), "%3Aname=mat")
+	AssertContains(t, m.Path(), "%3Aage=%3E%3D18")
+
+}

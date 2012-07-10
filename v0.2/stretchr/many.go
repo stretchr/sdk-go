@@ -89,6 +89,16 @@ func (m *Many) Order(keys ...string) *Many {
 	return m.SetParameter(OrderKey, strings.Join(keys, ","))
 }
 
+// Where specifies filters to be applied to the request.
+//
+// For example, to refer only to resources where 'age' is over 17, and 
+// 'department' is 'IT':
+//  .Where("age", ">17").Where("department", "IT")
+func (m *Many) Where(field string, values ...string) *Many {
+	m.parameters[fmt.Sprintf(":%s", field)] = values
+	return m
+}
+
 /*
 	Data operations
 */
