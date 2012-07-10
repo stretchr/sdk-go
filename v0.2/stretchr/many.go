@@ -12,10 +12,10 @@ type Many struct {
 	parameters url.Values
 }
 
-// MakeMany makes a new Many object with the given session and path.
+// makeMany makes a new Many object with the given session and path.
 //
-// Best practice is to use Session.Many(path) instead.
-func MakeMany(session *Session, path string) *Many {
+// Users should create a Many object using Session.Many(path).
+func makeMany(session *Session, path string) *Many {
 	m := new(Many)
 	m.session = session
 	m.path = path

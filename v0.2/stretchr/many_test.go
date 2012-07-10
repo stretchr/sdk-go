@@ -7,7 +7,7 @@ import (
 
 func TestMakeMany(t *testing.T) {
 
-	m := MakeMany(TestSession, "people")
+	m := makeMany(TestSession, "people")
 
 	if m == nil {
 		t.Error("MakeMany shouldn't return nil")
@@ -22,14 +22,14 @@ func TestMakeMany(t *testing.T) {
 
 func TestManyPath(t *testing.T) {
 
-	m := MakeMany(TestSession, "people")
+	m := makeMany(TestSession, "people")
 	AssertEqual(t, "people", m.Path())
 
 }
 
 func TestMany_SetParameter(t *testing.T) {
 
-	m := MakeMany(TestSession, "people")
+	m := makeMany(TestSession, "people")
 	AssertEqual(t, m, m.SetParameter("~monkey", "10"))
 	AssertEqual(t, "people?~monkey=10", m.Path())
 
@@ -37,7 +37,7 @@ func TestMany_SetParameter(t *testing.T) {
 
 func TestMany_RemoveParameter(t *testing.T) {
 
-	m := MakeMany(TestSession, "people").SetParameter("~monkey", "100")
+	m := makeMany(TestSession, "people").SetParameter("~monkey", "100")
 	AssertEqual(t, m, m.SetParameter("~limit", "10"))
 
 	AssertContains(t, m.Path(), "people?")
@@ -51,7 +51,7 @@ func TestMany_RemoveParameter(t *testing.T) {
 
 func TestMany_Parameters(t *testing.T) {
 
-	m := MakeMany(TestSession, "people").SetParameter("~monkey", "100")
+	m := makeMany(TestSession, "people").SetParameter("~monkey", "100")
 
 	AssertEqual(t, m.parameters.Get("~monkey"), m.Parameters().Get("~monkey"))
 
@@ -59,7 +59,7 @@ func TestMany_Parameters(t *testing.T) {
 
 func TestMany_Limit(t *testing.T) {
 
-	m := MakeMany(TestSession, "people")
+	m := makeMany(TestSession, "people")
 	AssertEqual(t, m, m.Limit(10))
 	AssertEqual(t, "people?~limit=10", m.Path())
 
@@ -67,7 +67,7 @@ func TestMany_Limit(t *testing.T) {
 
 func TestMany_Skip(t *testing.T) {
 
-	m := MakeMany(TestSession, "people")
+	m := makeMany(TestSession, "people")
 	AssertEqual(t, m, m.Skip(10))
 	AssertEqual(t, "people?~skip=10", m.Path())
 
@@ -75,7 +75,7 @@ func TestMany_Skip(t *testing.T) {
 
 func TestMany_Page(t *testing.T) {
 
-	m := MakeMany(TestSession, "people")
+	m := makeMany(TestSession, "people")
 	AssertEqual(t, m, m.Page(2, 10))
 	AssertContains(t, m.Path(), "people?")
 	AssertContains(t, m.Path(), "~skip=10")
@@ -100,7 +100,7 @@ func TestManyRead(t *testing.T) {
 	ActiveTestRequester.ResponseToReturn = MakeTestResponseWithData(http.StatusOK, makeStandardResponseObject(http.StatusOK, responseData))
 
 	// make a resource
-	resourceCollection, err := MakeMany(TestSession, "people").Read()
+	resourceCollection, err := makeMany(TestSession, "people").Read()
 
 	if err != nil {
 		t.Errorf("Shouldn't throw error: %s", err)

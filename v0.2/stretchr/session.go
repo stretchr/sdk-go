@@ -106,5 +106,5 @@ func (s *Session) Url(path string) string {
 */
 
 func (s *Session) Many(path string) *Many {
-	return MakeMany(s, path)
+	return makeMany(s, path)
 }
