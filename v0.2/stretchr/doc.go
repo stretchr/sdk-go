@@ -35,6 +35,13 @@ To read a collection of resources:
    }
  }
 
+To get pages one and two of a collection of resources, with 10 resources in a page:
+
+ session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
+ 
+ peoplePage1, readErr := session.Many("people").Page(1, 10).Read()
+ peoplePage2, readErr := session.Many("people").Page(2, 10).Read()
+
 To create a new resource:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
@@ -125,8 +132,7 @@ If you have the resource object, you can directly delete it using the Delete met
  }
 
 NOTE: There's little point in finding a resource just to delete it, but if you happen to
-need the data of a resource to decide whether or not to delete it, this is the way you would
-achieve that.
+have the resource anyway it makes sense to use the Resource.Delete method.
 
 */
 package stretchr
