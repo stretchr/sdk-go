@@ -8,6 +8,29 @@ To access resources, first create a Session object:
 The session object will hold information about your project and your credentials for the
 Stretchr data services.
 
+You can then use the following methods to interact with the data services:
+
+ // creating a resource
+ err := session.MakeResource("people").Set("name", "Mat").Create()
+
+ // reading a resource by ID
+ resource, err := session.Read("people", "123")
+
+ // reading all resources
+ resources, err := session.Many("people").Read()
+
+ // update a resource
+ err := session.MakeResource("people").SetID("123").Set("surname", "Ryer").Update()
+
+ // replace a resource
+ err := session.MakeResource("people").SetID("123").Set("fullname", "Mat Ryer").Replace()
+
+ // to delete a resource by ID
+ err := session.Delete("people", "123")
+
+ // deleting all resources
+ err := session.Many("people").Delete()
+
 To read a resource when you know the ID:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
@@ -66,7 +89,7 @@ To make some changes to (update) a resource:
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
  // find a resource
- resource := session.MakeResource("people", "mat")
+ resource := session.MakeResource("people").SetID("123")
 
  // set the fields you want to change
  resource.Set("age", 30)
