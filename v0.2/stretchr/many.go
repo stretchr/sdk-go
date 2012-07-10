@@ -93,7 +93,7 @@ func (m *Many) Order(keys ...string) *Many {
 //
 // For example, to refer only to resources where 'age' is over 17, and 
 // 'department' is 'IT':
-//  .Where("age", ">17").Where("department", "IT")
+//  people, err := session.Many("people").Where("age", ">17").Where("department", "IT").Read()
 func (m *Many) Where(field string, values ...string) *Many {
 	m.parameters[fmt.Sprintf(":%s", field)] = values
 	return m
@@ -103,9 +103,9 @@ func (m *Many) Where(field string, values ...string) *Many {
 	Data operations
 */
 
-// Read reads many resources from Stretchr based on the configuration in this Many object.
+// Read reads multiple resources from Stretchr based on the configuration in this Many object.
 //
-// The following code will read the first 10 people:
+// For example, the following code will read the first 10 people:
 //  people, err := session.Many("people").Limit(10).Read()
 func (m *Many) Read() (*ResourceCollection, error) {
 
@@ -139,6 +139,10 @@ func (m *Many) Read() (*ResourceCollection, error) {
 
 }
 
+// Delete deletes multiple resources from Stretchr based on the configuration of this Many object.
+//
+// For example, the following code will delete the youngest person:
+//  err := session.Many("people").Order("age").Limit(1).Delete()
 func (m *Many) Delete() error {
 
 	response, _, deleteErr := ActiveRequester.MakeRequest(DeleteMethod, m.session.Url(m.Path()), NoBody, m.session.PublicKey, m.session.PrivateKey)
