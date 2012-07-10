@@ -1,10 +1,14 @@
 package stretchr
 
+// Many provides the ability to work on multiple resources, such as finding collections and deleting collections etc.
 type Many struct {
 	session *Session
 	path    string
 }
 
+// MakeMany makes a new Many object with the given session and path.
+//
+// Best practice is to use Session.Many(path) instead.
 func MakeMany(session *Session, path string) *Many {
 	m := new(Many)
 	m.session = session
@@ -12,6 +16,10 @@ func MakeMany(session *Session, path string) *Many {
 	return m
 }
 
+// Read reads many resources from Stretchr based on the configuration in this Many object.
+//
+// The following code will read the first 10 people:
+//  people, err := session.Many("people").Limit(10).Read()
 func (m *Many) Read() (*ResourceCollection, error) {
 
 	var resourceCollection *ResourceCollection
