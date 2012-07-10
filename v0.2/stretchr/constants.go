@@ -16,4 +16,5 @@ const (
 
 	LimitKey string = "~limit"
 	SkipKey  string = "~skip"
+	OrderKey string = "~order"
 )

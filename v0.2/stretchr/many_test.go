@@ -129,3 +129,11 @@ func TestManyRead(t *testing.T) {
 	}
 
 }
+
+func TestMany_Order(t *testing.T) {
+
+	m := makeMany(TestSession, "people")
+	AssertEqual(t, m, m.Order("name", "-age"))
+	AssertEqual(t, "people?~order=name%2C-age", m.Path())
+
+}

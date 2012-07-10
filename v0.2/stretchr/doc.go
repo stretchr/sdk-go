@@ -38,7 +38,7 @@ To read a collection of resources:
 To get pages one and two of a collection of resources, with 10 resources in a page:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
- 
+
  peoplePage1, readErr := session.Many("people").Page(1, 10).Read()
  peoplePage2, readErr := session.Many("people").Page(2, 10).Read()
 

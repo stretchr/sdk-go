@@ -3,6 +3,7 @@ package stretchr
 import (
 	"fmt"
 	"net/url"
+	"strings"
 )
 
 // Many provides the ability to work on multiple resources, such as finding collections and deleting collections etc.
@@ -34,6 +35,10 @@ func (m *Many) Path() string {
 	return m.path
 
 }
+
+/*
+	Parameters
+*/
 
 // Parameters gets the url.Values object that holds the parameters.
 func (m *Many) Parameters() url.Values {
@@ -75,6 +80,18 @@ func (m *Many) Skip(skip int) *Many {
 func (m *Many) Page(pageNumber, pageSize int) *Many {
 	return m.Limit(pageSize).Skip(pageSize * (pageNumber - 1))
 }
+
+// Order specifies the order in which resources should be returned.
+//
+// To order first by age (oldest first), then by name:
+//  .Order("-age", "name")
+func (m *Many) Order(keys ...string) *Many {
+	return m.SetParameter(OrderKey, strings.Join(keys, ","))
+}
+
+/*
+	Data operations
+*/
 
 // Read reads many resources from Stretchr based on the configuration in this Many object.
 //
