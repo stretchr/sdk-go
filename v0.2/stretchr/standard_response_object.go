@@ -96,12 +96,10 @@ func ExtractStandardResponseObject(response *http.Response) (*StandardResponseOb
 
 	}
 
-	/*
-		// set the errors if there are any
-		if respObj["e"] != nil {
-			obj.Errors = respObj["e"].([]interface{})
-		}
-	*/
+	// set the errors if there are any
+	if respObj["e"] != nil {
+		obj.Errors = respObj["e"].([]interface{})
+	}
 
 	return obj, nil
 

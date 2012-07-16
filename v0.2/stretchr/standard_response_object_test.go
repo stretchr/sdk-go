@@ -55,6 +55,25 @@ func TestExtractStandardResponseObject(t *testing.T) {
 
 func TestStandardResponseObject_Errors(t *testing.T) {
 
+	var message string = "Test Error Message"
+	response := MakeTestResponseWithData(500, makeFailedStandardResponseObject(500, []string{message}))
+
+	obj, err := ExtractStandardResponseObject(response)
+
+	if err != nil {
+		t.Errorf("ExtractStandardResponseObject shouldn't raise error: %s", err)
+	}
+
+	AssertEqual(t, 500, obj.StatusCode)
+	AssertEqual(t, false, obj.Worked)
+	if AssertEqual(t, 1, len(obj.Errors)) {
+		AssertEqual(t, message, obj.Errors[0].(map[string]interface{})["Message"])
+	}
+
+}
+
+func TestStandardResponseObject_GetError(t *testing.T) {
+
 	sro := &StandardResponseObject{500, []interface{}{map[string]interface{}{"Message": "Something went wrong :-("}}, false, nil, nil, ""}
 
 	AssertEqual(t, "Something went wrong :-(", fmt.Sprintf("%s", sro.GetError()))
