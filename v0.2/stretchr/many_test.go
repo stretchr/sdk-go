@@ -124,7 +124,8 @@ func TestMany_Read(t *testing.T) {
 	// use the test requester
 	ActiveRequester = ActiveTestRequester.Reset()
 
-	responseData := []map[string]interface{}{map[string]interface{}{"name": "Mat", "age": 29, "developer": true, IDKey: "ABC"}, map[string]interface{}{"name": "Laurie", "age": 28, "developer": false, IDKey: "DEF"}}
+	listData := []map[string]interface{}{map[string]interface{}{"name": "Mat", "age": 29, "developer": true, IDKey: "ABC"}, map[string]interface{}{"name": "Laurie", "age": 28, "developer": false, IDKey: "DEF"}}
+	responseData := map[string]interface{}{"c": 2, "i": listData}
 	ActiveTestRequester.ResponseToReturn = MakeTestResponseWithData(http.StatusOK, makeStandardResponseObject(http.StatusOK, responseData))
 
 	// make a resource

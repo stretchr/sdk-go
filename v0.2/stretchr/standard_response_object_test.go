@@ -35,7 +35,7 @@ func makeFailedStandardResponseObject(statusCode int, errors []string) map[strin
 	return makeStandardResponseObject_internal(statusCode, nil, errors)
 }
 
-func TestExtractStandardResponseObject(t *testing.T) {
+func TestExtractStandardResponseObject_SingleDataObject(t *testing.T) {
 
 	data := map[string]interface{}{"name": "Mat", "age": 29}
 	response := MakeTestResponseWithData(200, makeStandardResponseObject(200, data))
@@ -51,6 +51,32 @@ func TestExtractStandardResponseObject(t *testing.T) {
 	AssertEqual(t, 0, len(obj.Errors))
 	AssertEqual(t, "Mat", obj.Data["name"])
 	AssertEqual(t, float64(29), obj.Data["age"])
+
+}
+
+func TestExtractStandardResponseObject_DataCollection(t *testing.T) {
+
+	data1 := map[string]interface{}{"name": "Mat", "age": 29}
+	data2 := map[string]interface{}{"name": "Chris", "age": 29}
+	data3 := map[string]interface{}{"name": "Laurie", "age": 29}
+	data := map[string]interface{}{"c": 3, "i": []interface{}{data1, data2, data3}}
+
+	response := MakeTestResponseWithData(200, makeStandardResponseObject(200, data))
+
+	obj, err := ExtractStandardResponseObject(response)
+
+	if err != nil {
+		t.Errorf("ExtractStandardResponseObject shouldn't raise error: %s", err)
+	}
+
+	AssertEqual(t, 200, obj.StatusCode)
+	AssertEqual(t, true, obj.Worked)
+	AssertEqual(t, 0, len(obj.Errors))
+	AssertEqual(t, float64(3), obj.Data["c"])
+
+	AssertEqual(t, "Mat", obj.Data["i"].([]interface{})[0].(map[string]interface{})["name"])
+	AssertEqual(t, "Chris", obj.Data["i"].([]interface{})[1].(map[string]interface{})["name"])
+	AssertEqual(t, "Laurie", obj.Data["i"].([]interface{})[2].(map[string]interface{})["name"])
 
 }
 
@@ -75,11 +101,11 @@ func TestStandardResponseObject_Errors(t *testing.T) {
 
 func TestStandardResponseObject_GetError(t *testing.T) {
 
-	sro := &StandardResponseObject{500, []interface{}{map[string]interface{}{"Message": "Something went wrong :-("}}, false, nil, nil, ""}
+	sro := &StandardResponseObject{500, []interface{}{map[string]interface{}{"Message": "Something went wrong :-("}}, false, nil, ""}
 
 	AssertEqual(t, "Something went wrong :-(", fmt.Sprintf("%s", sro.GetError()))
 
-	sro = &StandardResponseObject{500, make([]interface{}, 0), false, nil, nil, ""}
+	sro = &StandardResponseObject{500, make([]interface{}, 0), false, nil, ""}
 
 	AssertEqual(t, UnknownError, sro.GetError())
 
@@ -87,7 +113,7 @@ func TestStandardResponseObject_GetError(t *testing.T) {
 
 func TestStandardResponseObject_GetError_NotFound(t *testing.T) {
 
-	sro := &StandardResponseObject{http.StatusNotFound, []interface{}{map[string]interface{}{"Message": "Something went wrong :-("}}, false, nil, nil, ""}
+	sro := &StandardResponseObject{http.StatusNotFound, []interface{}{map[string]interface{}{"Message": "Something went wrong :-("}}, false, nil, ""}
 
 	AssertEqual(t, NotFound, sro.GetError())
 

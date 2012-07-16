@@ -118,8 +118,14 @@ func (m *Many) Read() (*ResourceCollection, error) {
 
 	if response.Worked {
 
+		var dataObjects []interface{}
+
 		// get the array of data objects
-		dataObjects := response.DataCollection
+		if response.Data["c"].(float64) > 0 {
+			dataObjects = response.Data["i"].([]interface{})
+		} else {
+			dataObjects = make([]interface{}, 0)
+		}
 
 		// make the resources
 		resourceCollection = MakeResourceCollection()

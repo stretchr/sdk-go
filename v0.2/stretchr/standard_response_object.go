@@ -27,10 +27,6 @@ type StandardResponseObject struct {
 	// depending on the type of data.
 	Data map[string]interface{}
 
-	// DataCollection contains a collection of data objects.  Only Data or DataCollection will be set 
-	// depending on the type of data.
-	DataCollection []interface{}
-
 	// Context holds the context modifier value to make it easy to line
 	// responses up with requests
 	Context string
@@ -98,13 +94,8 @@ func ExtractStandardResponseObject(response *http.Response) (*StandardResponseOb
 		// try map[string]interface{} first
 		if obj.Data, ok = respObj["d"].(map[string]interface{}); !ok {
 
-			// now try []map[string]interface{}
-			if obj.DataCollection, ok = respObj["d"].([]interface{}); !ok {
-
-				// couldn't cast it
-				return obj, UnexpectedDataObject
-
-			}
+			// couldn't cast it
+			return obj, UnexpectedDataObject
 
 		}
 
