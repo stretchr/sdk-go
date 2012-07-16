@@ -7,9 +7,9 @@ import (
 	"net/http"
 )
 
-var UnknownError = errors.New("Something went wrong, not sure what - sorry.")
+var UnknownError error = errors.New("Something went wrong, not sure what - sorry.")
 
-var UnexpectedDataObject = errors.New("The data 'd' object returned was of an unexpected type.")
+var UnexpectedDataObject error = errors.New("The data 'd' object returned was of an unexpected type.")
 
 // StandardResponseObject is the top level container for all responses.
 type StandardResponseObject struct {
@@ -42,10 +42,24 @@ type StandardResponseObject struct {
 // will always return an error of some sort.
 func (sro *StandardResponseObject) GetError() error {
 
+	/*
+		Handle common HTTP error types
+	*/
+	switch sro.StatusCode {
+	case http.StatusNotFound:
+		return NotFound
+	}
+
+	/*
+		Handle Stretchr specific errors
+	*/
 	if len(sro.Errors) > 0 {
 		return errors.New(fmt.Sprintf("%s", sro.Errors[0].(map[string]interface{})["Message"]))
 	}
 
+	/*
+		We don't know what went wrong :-(
+	*/
 	return UnknownError
 
 }

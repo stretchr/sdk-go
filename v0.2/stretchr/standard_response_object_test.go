@@ -2,6 +2,7 @@ package stretchr
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 )
 
@@ -81,5 +82,13 @@ func TestStandardResponseObject_GetError(t *testing.T) {
 	sro = &StandardResponseObject{500, make([]interface{}, 0), false, nil, nil, ""}
 
 	AssertEqual(t, UnknownError, sro.GetError())
+
+}
+
+func TestStandardResponseObject_GetError_NotFound(t *testing.T) {
+
+	sro := &StandardResponseObject{http.StatusNotFound, []interface{}{map[string]interface{}{"Message": "Something went wrong :-("}}, false, nil, nil, ""}
+
+	AssertEqual(t, NotFound, sro.GetError())
 
 }

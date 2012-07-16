@@ -33,3 +33,22 @@ func TestSession_Read(t *testing.T) {
 	}
 
 }
+
+func TestSession_Read_NotFound(t *testing.T) {
+
+	// use the test requester
+	ActiveRequester = ActiveTestRequester.Reset()
+
+	responseData := map[string]interface{}{"name": "Mat", "age": 29, "developer": true, IDKey: "ABC"}
+	ActiveTestRequester.ResponseToReturn = MakeTestResponseWithData(http.StatusNotFound, makeStandardResponseObject(http.StatusNotFound, responseData))
+
+	// make a resource
+	_, err := TestSession.Read("people", "ABC")
+
+	AssertLastRequest(t, ReadMethod, TestSession.Url("people/ABC"), "", "PRIVATE")
+
+	if err != NotFound {
+		t.Errorf("Error when response is Status Code is %d should be 'NotFound'", http.StatusNotFound)
+	}
+
+}
