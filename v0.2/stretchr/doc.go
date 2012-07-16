@@ -167,7 +167,7 @@ have the resource anyway it makes sense to use the Resource.Delete method.
 To delete multiple resources based on specific criteria, you can use the Many.Delete method:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
- 
+
  // load mat
  deleteErr := session.Many("people").Where("age", "<18").Delete()
 
