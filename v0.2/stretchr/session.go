@@ -86,6 +86,13 @@ func (s *Session) MakeResource(path string) *Resource {
 	return MakeResource(s, path)
 }
 
+// MakeResourcef makes a resource with the given path allowing for formatting.
+//
+// 	resource := session.MakeResource("people/%s/books", personID)
+func (s *Session) MakeResourcef(path string, args ...interface{}) *Resource {
+	return s.MakeResource(fmt.Sprintf(path, args...))
+}
+
 /*
 	URLs
 */
@@ -105,6 +112,16 @@ func (s *Session) Url(path string) string {
 	Many
 */
 
+// Many starts a Many object capable of reading or deleting multiple resources.
 func (s *Session) Many(path string) *Many {
 	return makeMany(s, path)
+}
+
+// Manyf starts a Many object capable of reading or deleting multiple resources
+// but also allows formatting in the path.
+//
+// For example:
+//  s.Manyf("people/%s/books", personID)
+func (s *Session) Manyf(path string, args ...interface{}) *Many {
+	return s.Many(fmt.Sprintf(path, args...))
 }

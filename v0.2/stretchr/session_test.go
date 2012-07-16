@@ -21,6 +21,21 @@ func TestSession_MakeResource(t *testing.T) {
 
 }
 
+func TestSession_MakeResourcef(t *testing.T) {
+
+	r := TestSession.MakeResourcef("people/%s/books", "123")
+
+	if r == nil {
+		t.Error("MakeResourcef shouldn't return nil.")
+	} else {
+
+		AssertEqual(t, "people/123/books", r.path)
+		AssertEqual(t, TestSession, r.session)
+
+	}
+
+}
+
 func TestInProject(t *testing.T) {
 
 	var s *Session = InProject("test")

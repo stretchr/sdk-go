@@ -18,3 +18,18 @@ func TestSession_Many(t *testing.T) {
 	}
 
 }
+
+func TestSession_Manyf(t *testing.T) {
+
+	m := TestSession.Manyf("people/%s/books", "123")
+
+	if m == nil {
+		t.Error("TestSession.Manyf shouldn't return nil")
+	} else {
+
+		AssertEqual(t, TestSession, m.session)
+		AssertEqual(t, "people/123/books", m.path)
+
+	}
+
+}
