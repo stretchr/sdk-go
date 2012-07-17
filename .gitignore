@@ -22,3 +22,5 @@ _testmain.go
 *.exe
 
 .DS_Store
+
+v0.2/commandline/stretchr
