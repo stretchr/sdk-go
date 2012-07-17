@@ -21,4 +21,4 @@ _testmain.go
 
 *.exe
 
-v0.2/.DS_Store
+*/.DS_Store
