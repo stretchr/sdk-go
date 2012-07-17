@@ -2,7 +2,9 @@
 
 This tool allows you to access and manipulate Stretchr services from the command line.
 
-## Building the tool
+## Getting the tool
+
+### Building the tool
 
 Since the tool is written in [Google's Go language](http://www.golang.org/), you will need to install 
 that first.
@@ -10,6 +12,11 @@ that first.
 Then use `go build -o stretchr stretchr_command_line.go` to build it.
 
 Once the `stretchr` executable file has been generated, you can use it directly or add the directory to your `PATH` variable for generic use everywhere.
+
+### Downloading it
+
+Check the [Downloads](https://github.com/stretchrcom/stretchr-go/downloads) section to see if we have already
+built the tool for your platform.  If we haven't, then you'll have to build it yourself (see above).
 
 ## Specifying your public and private keys
 
