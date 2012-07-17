@@ -30,6 +30,9 @@ type StandardResponseObject struct {
 	// Context holds the context modifier value to make it easy to line
 	// responses up with requests
 	Context string
+
+	// ResponseBody holds the body of the response from the servers as a string.
+	ResponseBody string
 }
 
 // GetError gets the first error from the Errors array, or returns UnknownError.
@@ -80,8 +83,11 @@ func ExtractStandardResponseObject(response *http.Response) (*StandardResponseOb
 		return nil, responseStringErr
 	}
 
+	// save the response body
+	obj.ResponseBody = string(responseString)
+
 	// get the object from JSON
-	respObj, jsonErr := fromJson(string(responseString))
+	respObj, jsonErr := fromJson(obj.ResponseBody)
 
 	if jsonErr != nil {
 		return nil, jsonErr
