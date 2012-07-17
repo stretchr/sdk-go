@@ -24,3 +24,5 @@ _testmain.go
 .DS_Store
 
 v0.2/commandline/stretchr
+
+.DS_Store
