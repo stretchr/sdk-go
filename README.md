@@ -1,7 +1,7 @@
 stretchr-go
 ===========
 
-Go SDK for Stretchr platform.
+Go SDK for the Stretchr platform. http://www.stretchr.com/
 
 **NOTE: This project is not yet ready to use, but soon.**
 
