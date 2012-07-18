@@ -11,7 +11,7 @@ Stretchr data services.
 You can then use the following methods to interact with the data services:
 
 
-Examples
+Quick examples
 
 
 creating a resource
@@ -42,7 +42,9 @@ deleting all resources
 
  err := session.Many("people").Delete()
 
-To read a resource when you know the ID:
+
+Reading a resource when you know the ID
+
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -55,7 +57,9 @@ To read a resource when you know the ID:
    log.Printf("Mat's full name is: %s %s.", resource.Get("first-name"), resource.Get("last-name"))
  }
 
-To read a collection of resources:
+
+Reading a collection of resources
+
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -69,14 +73,18 @@ To read a collection of resources:
    }
  }
 
-To get pages one and two of a collection of resources, with 10 resources in a page:
+
+Get pages one and two of a collection of resources, with 10 resources in a page
+
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
  peoplePage1, readErr := session.Many("people").Page(1, 10).Read()
  peoplePage2, readErr := session.Many("people").Page(2, 10).Read()
 
-To create a new resource:
+
+Create a new resource
+
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -95,7 +103,9 @@ To create a new resource:
     log.Printf("New resource created with ID: %s", resource.GetID())
  }
 
-To make some changes to (update) a resource:
+
+Make some changes to (update) a resource
+
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -117,7 +127,9 @@ To make some changes to (update) a resource:
 Notice that we never actually set the 'name' field, this is because when you do an Update,
 the entire resource is returned by Stretchr and loaded into the resource.
 
-To completely replace a resource:
+
+Completely replace a resource
+
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -135,6 +147,9 @@ To completely replace a resource:
  } else {
     log.Printf("Replaced resource ID: %s", resource.GetID())
  }
+
+
+Deleting resources
 
 To delete a resource when you know the ID:
 
@@ -180,6 +195,10 @@ To delete multiple resources based on specific criteria, you can use the Many.De
  } else {
    log.Printf("Everyone under 18 has been deleted!")
  }
+
+
+Filtering
+
 
 To find resources of people between the ages of 18 to 30, who have signed up to receive 
 email updates:
