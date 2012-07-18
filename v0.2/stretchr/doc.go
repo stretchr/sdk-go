@@ -43,7 +43,9 @@ deleting all resources
 
 
 
-Reading a resource when you know the ID
+Reading a resource
+
+To read a resource when you know the ID, use the `Read` method:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -57,8 +59,9 @@ Reading a resource when you know the ID
  }
 
 
+Reading multiple resources
 
-Reading a collection of resources
+To read a collection of resources, use the `Many` and `Read` methods:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -73,8 +76,10 @@ Reading a collection of resources
  }
 
 
+Paging
 
-Get pages one and two of a collection of resources, with 10 resources in a page
+To get pages one and two of a collection of resources, with 10 resources in a page, use
+the `Many`, `Page` and `Read` methods:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -84,6 +89,8 @@ Get pages one and two of a collection of resources, with 10 resources in a page
 
 
 Create a new resource
+
+To create a new resource, use the `Create` method:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -103,8 +110,9 @@ Create a new resource
  }
 
 
+Updating resources
 
-Make some changes to (update) a resource
+To make some changes to (update) a resource, use the `Update` method:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -130,7 +138,7 @@ the entire resource is returned by Stretchr and loaded into the resource.
 
 Replace a resource
 
-To completely replace a resource: 
+To completely replace a resource, use the `Replace` method:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -152,7 +160,7 @@ To completely replace a resource:
 
 Deleting resources
 
-To delete a resource when you know the ID:
+To delete a resource when you know the ID, use the `Delete` method:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -165,7 +173,7 @@ To delete a resource when you know the ID:
    log.Printf("Mat has been deleted!")
  }
 
-If you have the resource object, you can directly delete it using the Delete method:
+If you have the resource object, you can directly delete it using the `Resource.Delete` method:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -182,9 +190,9 @@ If you have the resource object, you can directly delete it using the Delete met
  }
 
 There's little point in finding a resource just to delete it, but if you happen to
-have the resource anyway it makes sense to use the Resource.Delete method.
+have the resource anyway it makes sense to use the `Resource.Delete` method.
 
-To delete multiple resources based on specific criteria, you can use the Many.Delete method:
+To delete multiple resources based on specific criteria, you can use the `Many.Delete` method:
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
