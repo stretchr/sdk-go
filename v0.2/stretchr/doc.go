@@ -10,6 +10,10 @@ Stretchr data services.
 
 You can then use the following methods to interact with the data services:
 
+
+Examples
+
+
 creating a resource
 
  err := session.MakeResource("people").Set("name", "Mat").Create()

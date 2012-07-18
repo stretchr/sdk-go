@@ -30,7 +30,7 @@ To specify the environment variables, open a Terminal and do:
 
 You can also specify your project in a similar way (using `StretchrProjectName`) if you want to.
 
-## Command line flags
+### Command line flags
 
 The `stretchr` command makes heavy use of flags that allow you make requests.
 
