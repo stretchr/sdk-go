@@ -128,7 +128,9 @@ the entire resource is returned by Stretchr and loaded into the resource.
 
 
 
-Completely replace a resource
+Replace a resource
+
+To completely replace a resource: 
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
