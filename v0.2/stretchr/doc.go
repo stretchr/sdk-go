@@ -127,6 +127,7 @@ Notice that we never actually set the 'name' field, this is because when you do 
 the entire resource is returned by Stretchr and loaded into the resource.
 
 
+
 Completely replace a resource
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
