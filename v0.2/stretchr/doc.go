@@ -13,7 +13,6 @@ You can then use the following methods to interact with the data services:
 
 Quick examples
 
-
 creating a resource
 
  err := session.MakeResource("people").Set("name", "Mat").Create()
@@ -43,8 +42,8 @@ deleting all resources
  err := session.Many("people").Delete()
 
 
-Reading a resource when you know the ID
 
+Reading a resource when you know the ID
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -58,8 +57,8 @@ Reading a resource when you know the ID
  }
 
 
-Reading a collection of resources
 
+Reading a collection of resources
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -74,8 +73,8 @@ Reading a collection of resources
  }
 
 
-Get pages one and two of a collection of resources, with 10 resources in a page
 
+Get pages one and two of a collection of resources, with 10 resources in a page
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -83,8 +82,8 @@ Get pages one and two of a collection of resources, with 10 resources in a page
  peoplePage2, readErr := session.Many("people").Page(2, 10).Read()
 
 
-Create a new resource
 
+Create a new resource
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -104,8 +103,8 @@ Create a new resource
  }
 
 
-Make some changes to (update) a resource
 
+Make some changes to (update) a resource
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
@@ -129,7 +128,6 @@ the entire resource is returned by Stretchr and loaded into the resource.
 
 
 Completely replace a resource
-
 
  session := stretchr.InProject("test").WithKeys("PUBLICKEY", "PRIVATEKEY")
 
