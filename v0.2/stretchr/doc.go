@@ -13,31 +13,31 @@ You can then use the following methods to interact with the data services:
 
 Quick examples
 
-creating a resource
+Creating a resource
 
  err := session.MakeResource("people").Set("name", "Mat").Create()
 
-reading a resource by ID
+Reading a resource by ID
 
  resource, err := session.Read("people", "123")
 
-reading all resources
+Reading all resources
 
  resources, err := session.Many("people").Read()
 
-update a resource
+Update a resource
 
  err := session.MakeResource("people").SetID("123").Set("surname", "Ryer").Update()
 
-replace a resource
+Replace a resource
 
  err := session.MakeResource("people").SetID("123").Set("fullname", "Mat Ryer").Replace()
 
-to delete a resource by ID
+To delete a resource by ID
 
  err := session.Delete("people", "123")
 
-deleting all resources
+Deleting all resources
 
  err := session.Many("people").Delete()
 
