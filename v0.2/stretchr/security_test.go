@@ -57,3 +57,11 @@ func TestGetSignedURL(t *testing.T) {
 	AssertEqual(t, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20&~sign=34f55c3a086c260098e75066b38ac42e33e8faab", signed)
 
 }
+
+func TestNoBodyHashWhenNoBody(t *testing.T) {
+
+	signed, _ := GetSignedURL(GetMethod, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20", "", "ABC123-private")
+	AssertEqual(t, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20&~sign=bdf49047abf3c8e56de21e244bc24b1c2a6086a2", signed)
+
+}
+

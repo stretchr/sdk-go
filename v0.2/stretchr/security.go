@@ -65,7 +65,10 @@ func GetSignature(method, requestUrl, body, privateKey string) (string, error) {
 
 	// add the private key parameter
 	values.Set(PrivateKeyKey, privateKey)
-	values.Set(BodyHashKey, Hash(body))
+
+	if len(body) > 0 {
+		values.Set(BodyHashKey, Hash(body))
+	}
 
 	// get the ordered params
 	orderedParams := getOrderedParams(values)

@@ -141,9 +141,9 @@ func TestDefaultRequester_Signing(t *testing.T) {
 	c.ResponseToReturn = MakeOKTestResponse()
 	r.setClient(c)
 
-	r.MakeRequest(GetMethod, "http://test.stretchr.com/api/v1/people/ABC", "", "PUBLIC", "PRIVATE")
+	r.MakeRequest(GetMethod, "http://test.stretchr.com/api/v1/people/ABC", "something", "PUBLIC", "PRIVATE")
 
 	url := c.LastRequest.URL.String()
-	AssertEqual(t, "http://test.stretchr.com/api/v1/people/ABC?~key=PUBLIC&~sign=0e5d41122841e9c431b9f6c19d4d47882bae706a", url)
+	AssertEqual(t, "http://test.stretchr.com/api/v1/people/ABC?~key=PUBLIC&~sign=b8d063f3a461521523a8a57de87ed90cb49f5c68", url)
 
 }
