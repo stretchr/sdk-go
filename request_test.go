@@ -51,6 +51,26 @@ func TestRequest_QueryValues(t *testing.T) {
 
 }
 
+func TestRequest_URL(t *testing.T) {
+
+	r := NewRequest(getTestSession(), "people/123")
+	r.Where("field", "match").Where("field2", "match2")
+
+	fullUrl, urlErr := r.URL()
+
+	if assert.Nil(t, urlErr) {
+		urlString := fullUrl.String()
+		assert.Contains(t, urlString, "http://test.stretchr.com/api/v1/people/123?")
+		assert.Contains(t, urlString, "%3Afield=match")
+		assert.Contains(t, urlString, "%3Afield2=match2")
+	}
+
+}
+
+/*
+	Filtering
+*/
+
 func TestRequest_Where(t *testing.T) {
 
 	r := NewRequest(getTestSession(), "people")
@@ -58,15 +78,20 @@ func TestRequest_Where(t *testing.T) {
 	returnOfWhere := r.Where("age", "18")
 
 	assert.Equal(t, returnOfWhere, r, ".Where should chain")
-	assert.Equal(t, "18", r.queryValues["age"][0])
 
 	// add another where
 	r.Where("age", "<30")
 
-	assert.Equal(t, "18", r.queryValues["age"][0])
-	assert.Equal(t, "<30", r.queryValues["age"][1])
+	if assert.Equal(t, 2, len(r.queryValues[":age"]), "Should be two values for :age") {
+		assert.Equal(t, "18", r.queryValues[":age"][0])
+		assert.Equal(t, "<30", r.queryValues[":age"][1])
+	}
 
 }
+
+/*
+	Actions
+*/
 
 func TestRequest_Read(t *testing.T) {
 

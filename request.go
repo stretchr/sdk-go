@@ -37,13 +37,32 @@ func (r *Request) QueryValues() url.Values {
 	return r.queryValues
 }
 
+// URL generates the absolute URL that will be used to make
+// this request.
+func (r *Request) URL() (*url.URL, error) {
+
+	urlString := MergeStrings(r.session.Host(), pathSeparator, r.path)
+
+	theUrl, urlErr := url.Parse(urlString)
+
+	if urlErr != nil {
+		return nil, urlErr
+	}
+
+	// set the query values
+	theUrl.RawQuery = r.queryValues.Encode()
+
+	return theUrl, nil
+
+}
+
 /*
 	Filtering
 */
 
 // Where adds a filter to the request.
 func (r *Request) Where(field, match string) *Request {
-	r.queryValues.Add(field, match)
+	r.queryValues.Add(MergeStrings(filterFieldPrefix, field), match)
 	return r
 }
 

@@ -1,5 +1,9 @@
 package stretchr
 
+/*
+	HTTP Methods
+*/
+
 const (
 	// HttpMethodGet represents the HTTP Method for GET requests, literally "GET".
 	HttpMethodGet string = "GET"
@@ -9,4 +13,30 @@ const (
 	HttpMethodPut string = "PUT"
 	// HttpMethodGet represents the HTTP Method for DELETE requests, literally "DELETE".
 	HttpMethodDelete string = "DELETE"
+)
+
+/*
+	URL and Path segments
+*/
+
+const (
+	filterFieldPrefix string = ":"
+
+	protocolSeparator string = "://"
+
+	pathSeparator string = "/"
+
+	hostSeparator string = "."
+
+	topLevelHostName string = "stretchr.com"
+
+	apiVersionPathPrefix string = "/api/v"
+)
+
+/*
+	HTTP Protocols
+*/
+const (
+	httpProtocol       string = "http"
+	httpProtocolSecure string = "https"
 )
