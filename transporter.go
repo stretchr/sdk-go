@@ -1,5 +1,9 @@
 package stretchr
 
+import (
+	"net/http"
+)
+
 /*
 	Transporter interface
 */
@@ -24,6 +28,19 @@ type LiveTransporter struct{}
 // MakeRequest makes the Request and returns the Response, or an error
 // if there was a problem communicating with the remote server.
 func (t *LiveTransporter) MakeRequest(request *Request) (*Response, error) {
-	panic("Not implemented")
-	return nil, nil
+
+	httpRequest, requestErr := request.httpRequest()
+
+	if requestErr != nil {
+		return nil, requestErr
+	}
+
+	// make the request
+	httpResponse, httpErr := http.DefaultClient.Do(httpRequest)
+
+	if httpErr != nil {
+		return nil, httpErr
+	}
+
+	return NewResponse(httpResponse), nil
 }

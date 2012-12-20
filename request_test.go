@@ -2,6 +2,7 @@ package stretchr
 
 import (
 	"github.com/stretchrcom/testify/assert"
+	"io/ioutil"
 	"testing"
 )
 
@@ -41,6 +42,18 @@ func TestRequest_signedURL(t *testing.T) {
 
 }
 
+func TestRequest_hasBody(t *testing.T) {
+
+	r := new(Request)
+
+	assert.False(t, r.hasBody())
+
+	r.body = []byte("Hello Stretchr")
+
+	assert.True(t, r.hasBody())
+
+}
+
 func TestRequest_SetBodyObject(t *testing.T) {
 
 	r := NewRequest(getTestSession(), "people/123")
@@ -51,6 +64,21 @@ func TestRequest_SetBodyObject(t *testing.T) {
 	r.setBodyObject(obj)
 	expectedBody, _ := ObjectToBytes(obj) //#codecs
 	assert.Equal(t, r.body, expectedBody)
+
+}
+
+func TestRequest_httpRequest(t *testing.T) {
+
+	r := NewRequest(getTestSession(), "people/123")
+	r.body = []byte("Hello Stretchr")
+
+	httpRequest, _ := r.httpRequest()
+
+	assert.Equal(t, httpRequest.Method, r.httpMethod)
+	expectedUrl, _ := r.signedUrl()
+	assert.Equal(t, httpRequest.URL.String(), expectedUrl.String())
+	expectedBody, _ := ioutil.ReadAll(httpRequest.Body)
+	assert.Equal(t, expectedBody, r.body)
 
 }
 

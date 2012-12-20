@@ -1,8 +1,10 @@
 package stretchr
 
 import (
+	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 // Request represents a kind of interaction that can be made against
@@ -51,6 +53,33 @@ func (r *Request) setBodyObject(object interface{}) error {
 	var err error
 	r.body, err = ObjectToBytes(object) // TODO: #codecs
 	return err
+}
+
+func (r *Request) hasBody() bool {
+	return len(r.body) > 0
+}
+
+// httpRequest gets the http.Request that will be used to perform
+// this request.
+func (r *Request) httpRequest() (*http.Request, error) {
+
+	var httpRequest *http.Request
+	var requestErr error
+
+	signedUrl, urlErr := r.signedUrl()
+
+	if urlErr != nil {
+		return nil, urlErr
+	}
+
+	if r.hasBody() {
+		httpRequest, requestErr = http.NewRequest(r.httpMethod, signedUrl.String(), strings.NewReader(string(r.body)))
+	} else {
+		httpRequest, requestErr = http.NewRequest(r.httpMethod, signedUrl.String(), nil)
+	}
+
+	return httpRequest, requestErr
+
 }
 
 /*
