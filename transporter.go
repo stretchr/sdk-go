@@ -1,6 +1,7 @@
 package stretchr
 
 import (
+	"log"
 	"net/http"
 )
 
@@ -35,12 +36,17 @@ func (t *LiveTransporter) MakeRequest(request *Request) (*Response, error) {
 		return nil, requestErr
 	}
 
+	log.Print("Making request: %s", httpRequest)
+
 	// make the request
 	httpResponse, httpErr := http.DefaultClient.Do(httpRequest)
 
 	if httpErr != nil {
+		log.Print("  Error: %s", httpErr)
 		return nil, httpErr
 	}
+
+	log.Print("  Response: %s", httpResponse)
 
 	return NewResponse(httpResponse), nil
 }
