@@ -85,8 +85,8 @@ func getSignature(method, requestUrl, body, privateKey string) (string, error) {
 
 }
 
-// GetSignedURL gets the URL with the sign parameter added based on the given parameters.
-func GetSignedURL(method, requestUrl, body, privateKey string) (string, error) {
+// getSignedURL gets the URL with the sign parameter added based on the given parameters.
+func getSignedURL(method, requestUrl, body, privateKey string) (string, error) {
 
 	hash, hashErr := getSignature(method, requestUrl, body, privateKey)
 
