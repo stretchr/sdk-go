@@ -12,6 +12,7 @@ type Request struct {
 	path        string
 	queryValues url.Values
 	httpMethod  string
+	body        []byte
 }
 
 // NewRequest makes a new Request object, and sets the Session and path.
@@ -42,6 +43,14 @@ func (r *Request) signedUrl() (*url.URL, error) {
 
 	return theUrl, nil
 
+}
+
+// setBodyObject sets the bytes in .body to a marshalled version of the specified
+// object.
+func (r *Request) setBodyObject(object interface{}) error {
+	var err error
+	r.body, err = ObjectToBytes(object) // TODO: #codecs
+	return err
 }
 
 /*

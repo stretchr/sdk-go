@@ -7,6 +7,10 @@ package stretchr
 	appear on different objects, but are in one place here for simplicity's sake.
 */
 
+/*
+	Request
+*/
+
 // Read executes the Request with a GET method, and returns the Response, or an error
 // if something went wrong communicating with Stretchr.
 func (r *Request) Read() (*Response, error) {
@@ -27,4 +31,25 @@ func (r *Request) Delete() (*Response, error) {
 
 	// get the transporter to do the work
 	return r.session.transporter.MakeRequest(r)
+}
+
+/*
+	Session
+*/
+func (s *Session) Create(resource Resource) (*Response, error) {
+
+	r := s.At(resource.ResourcePath())
+
+	r.httpMethod = HttpMethodPost
+
+	/*
+		Set the body
+	*/
+	var codecErr error
+	r.body, codecErr = ObjectToBytes(resource.ResourceData())
+	if codecErr != nil {
+		return nil, codecErr
+	}
+
+	return s.transporter.MakeRequest(r)
 }

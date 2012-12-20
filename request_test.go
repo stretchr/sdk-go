@@ -41,6 +41,19 @@ func TestRequest_signedURL(t *testing.T) {
 
 }
 
+func TestRequest_SetBodyObject(t *testing.T) {
+
+	r := NewRequest(getTestSession(), "people/123")
+
+	obj := make(map[string]interface{})
+	obj["name"] = "Mat"
+
+	r.setBodyObject(obj)
+	expectedBody, _ := ObjectToBytes(obj) //#codecs
+	assert.Equal(t, r.body, expectedBody)
+
+}
+
 /*
 	Filtering
 */

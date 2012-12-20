@@ -34,6 +34,14 @@ const (
 )
 
 /*
+	Data fields
+*/
+
+const (
+	dataFieldID string = "~id"
+)
+
+/*
 	Modifiers
 */
 
