@@ -13,6 +13,12 @@ func TestStringy_MergeStrings(t *testing.T) {
 
 }
 
+func TestStringy_MergeBytes(t *testing.T) {
+
+	assert.Equal(t, []byte("callback(jsonString)"), MergeBytes([]byte("callback"), []byte("("), []byte("jsonString"), []byte(")")))
+
+}
+
 func TestStringy_Join(t *testing.T) {
 
 	assert.Equal(t, "projects/centivus/accounts/tyler", JoinStrings("/", "projects", "centivus", "accounts", "tyler"))

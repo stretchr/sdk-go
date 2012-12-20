@@ -10,7 +10,7 @@ var testSession *Session
 var mockedTransporter *MockedTransporter
 
 func getTestSession() *Session {
-	testSession = NewSession("test")
+	testSession = NewSession("test", "123", "456")
 	mockedTransporter = new(MockedTransporter)
 	testSession.transporter = mockedTransporter
 	return testSession
@@ -38,6 +38,7 @@ func TestRequest_signedURL(t *testing.T) {
 		assert.Contains(t, urlString, "http://test.stretchr.com/api/v1/people/123?")
 		assert.Contains(t, urlString, "%3Afield=match")
 		assert.Contains(t, urlString, "%3Afield2=match2")
+		assert.Contains(t, urlString, "~sign=897710b77a9de8dfab69ef57485a2a7fb3524690")
 	}
 
 }

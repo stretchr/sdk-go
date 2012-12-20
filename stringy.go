@@ -14,6 +14,16 @@ func MergeStrings(stringArray ...string) string {
 
 }
 
+func MergeBytes(byteArray ...[]byte) []byte {
+
+	var buffer bytes.Buffer
+	for _, v := range byteArray {
+		buffer.Write(v)
+	}
+	return buffer.Bytes()
+
+}
+
 func JoinStrings(separator string, stringArray ...string) string {
 
 	var buffer bytes.Buffer

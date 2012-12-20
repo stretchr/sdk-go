@@ -3,15 +3,19 @@ package stretchr
 // Session provides access to Stretchr services.
 type Session struct {
 	project     string
+	privateKey  string
+	publicKey   string
 	transporter Transporter
 	apiVersion  string
 	useSSL      bool
 }
 
 // NewSession creates a new Session object with the specified project.
-func NewSession(project string) *Session {
+func NewSession(project, publicKey, privateKey string) *Session {
 	s := new(Session)
 	s.project = project
+	s.publicKey = publicKey
+	s.privateKey = privateKey
 	s.transporter = DefaultLiveTransporter
 	s.apiVersion = "1"
 	return s

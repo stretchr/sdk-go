@@ -7,9 +7,11 @@ import (
 
 func TestNewSession(t *testing.T) {
 
-	s := NewSession("project.company")
+	s := NewSession("project.company", "123", "456")
 
 	assert.Equal(t, "project.company", s.project)
+	assert.Equal(t, "123", s.publicKey)
+	assert.Equal(t, "456", s.privateKey)
 	assert.Equal(t, DefaultLiveTransporter, s.transporter, "Should default to DefaultLiveTransporter")
 	assert.Equal(t, "1", s.apiVersion, "apiVersion should default to 1")
 
@@ -27,12 +29,12 @@ func TestSession_host(t *testing.T) {
 
 	var s *Session
 
-	s = NewSession("project.company")
+	s = NewSession("project.company", "123", "456")
 	s.apiVersion = "2"
 	s.useSSL = false
 	assert.Equal(t, "http://project.company.stretchr.com/api/v2", s.host())
 
-	s = NewSession("project.company2")
+	s = NewSession("project.company2", "123", "456")
 	s.apiVersion = "1"
 	s.useSSL = true
 	assert.Equal(t, "https://project.company2.stretchr.com/api/v1", s.host())

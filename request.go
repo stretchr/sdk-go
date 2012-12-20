@@ -41,9 +41,19 @@ func (r *Request) signedUrl() (*url.URL, error) {
 	// set the query values
 	theUrl.RawQuery = r.queryValues.Encode()
 
-	// TODO: add security
+	signedURLString, signErr := getSignedURL(r.httpMethod, theUrl.String(), r.body, r.session.privateKey)
 
-	return theUrl, nil
+	if signErr != nil {
+		return nil, signErr
+	}
+
+	signedURL, signedURLErr := url.Parse(signedURLString)
+
+	if signedURLErr != nil {
+		return nil, signedURLErr
+	}
+
+	return signedURL, nil
 
 }
 

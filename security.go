@@ -18,11 +18,11 @@ const (
 	FailedSignature string = "(failed signature)"
 )
 
-// hash generates an SHA1 hash of the specified string.
-func hash(s string) string {
+// hash generates an SHA1 hash of the specified slice of byte.
+func hash(b []byte) string {
 
 	hash := sha1.New()
-	hash.Write([]byte(s))
+	hash.Write(b)
 	return fmt.Sprintf("%x", hash.Sum(nil))
 
 }
@@ -56,7 +56,7 @@ func getOrderedParams(values url.Values) string {
 }
 
 // getSignature gets the signature of a request based on the given parameters.
-func getSignature(method, requestUrl, body, privateKey string) (string, error) {
+func getSignature(method, requestUrl string, body []byte, privateKey string) (string, error) {
 
 	// parse the URL
 	u, parseErr := url.ParseRequestURI(requestUrl)
@@ -79,14 +79,14 @@ func getSignature(method, requestUrl, body, privateKey string) (string, error) {
 	orderedParams := getOrderedParams(values)
 
 	base := strings.Split(u.String(), "?")[0]
-	combined := fmt.Sprintf("%s&%s?%s", strings.ToUpper(method), base, orderedParams)
+	combined := []byte(MergeStrings(method, "&", base, "?", orderedParams))
 
 	return hash(combined), nil
 
 }
 
 // getSignedURL gets the URL with the sign parameter added based on the given parameters.
-func getSignedURL(method, requestUrl, body, privateKey string) (string, error) {
+func getSignedURL(method, requestUrl string, body []byte, privateKey string) (string, error) {
 
 	hash, hashErr := getSignature(method, requestUrl, body, privateKey)
 
