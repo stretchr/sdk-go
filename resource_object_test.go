@@ -16,6 +16,8 @@ func TestMakeResource(t *testing.T) {
 	r := MakeResourceAt("people/123")
 	r.Data["name"] = "Mat"
 
+	assert.Equal(t, r.Data[dataFieldID], "123", "MakeResourceAt should set the ID in the data")
+
 	if assert.NotNil(t, r) {
 		assert.Equal(t, "people/123", r.ResourcePath())
 		assert.Equal(t, "Mat", r.ResourceData()["name"])

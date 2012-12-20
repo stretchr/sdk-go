@@ -17,6 +17,14 @@ func MakeResourceAt(path string) *ResourceObject {
 	resource := new(ResourceObject)
 	resource.Path = path
 	resource.Data = make(map[string]interface{})
+
+	// do we need to set the ID in the data?
+	pathSegments := strings.Split(path, pathSeparator)
+	if len(pathSegments)%2 == 0 {
+		// yes -
+		resource.Data[dataFieldID] = pathSegments[len(pathSegments)-1]
+	}
+
 	return resource
 }
 
