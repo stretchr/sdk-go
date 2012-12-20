@@ -55,8 +55,8 @@ func (r *Request) CreateMany(resources []Resource) (*Response, error) {
 	Session
 */
 
-// Create tells Stretchr to create the specified resource.
-func (s *Session) Create(resource Resource) (*Response, error) {
+// createOrReplace performs the Create or Replace action (they are currently the same)
+func (s *Session) createOrReplace(resource Resource) (*Response, error) {
 
 	r := s.At(resource.ResourcePath())
 
@@ -66,15 +66,14 @@ func (s *Session) Create(resource Resource) (*Response, error) {
 	return s.transporter.MakeRequest(r)
 }
 
+// Create tells Stretchr to create the specified resource.
+func (s *Session) Create(resource Resource) (*Response, error) {
+	return s.createOrReplace(resource)
+}
+
 // Replace tells Stretchr to replace the specified resource.
 func (s *Session) Replace(resource Resource) (*Response, error) {
-
-	r := s.At(resource.ResourcePath())
-
-	r.httpMethod = HttpMethodPost
-	r.setBodyObject(resource.ResourceData())
-
-	return s.transporter.MakeRequest(r)
+	return s.createOrReplace(resource)
 }
 
 // Update tells Stretchr to update the specified resource.
