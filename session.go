@@ -43,7 +43,7 @@ func (s *Session) Host() string {
 
 }
 
-// On starts a new Request for the specified path.
-func (s *Session) On(path string) *Request {
+// At starts a new Request for the specified path.
+func (s *Session) At(path string) *Request {
 	return NewRequest(s, path)
 }

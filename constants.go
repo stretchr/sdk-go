@@ -34,6 +34,14 @@ const (
 )
 
 /*
+	Modifiers
+*/
+
+const (
+	modifierLimit string = "~limit"
+)
+
+/*
 	HTTP Protocols
 */
 const (

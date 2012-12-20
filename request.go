@@ -2,6 +2,7 @@ package stretchr
 
 import (
 	"net/url"
+	"strconv"
 )
 
 // Request represents a kind of interaction that can be made against
@@ -63,6 +64,11 @@ func (r *Request) URL() (*url.URL, error) {
 // Where adds a filter to the request.
 func (r *Request) Where(field, match string) *Request {
 	r.queryValues.Add(MergeStrings(filterFieldPrefix, field), match)
+	return r
+}
+
+func (r *Request) Limit(value int64) *Request {
+	r.queryValues.Set(modifierLimit, strconv.FormatInt(value, 10))
 	return r
 }
 

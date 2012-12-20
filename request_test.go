@@ -89,6 +89,18 @@ func TestRequest_Where(t *testing.T) {
 
 }
 
+func TestRequest_Limit(t *testing.T) {
+
+	r := NewRequest(getTestSession(), "people")
+
+	returnOfLimit := r.Limit(50)
+
+	assert.Equal(t, returnOfLimit, r, ".Limit should chain")
+
+	assert.Equal(t, "50", r.queryValues[modifierLimit][0])
+
+}
+
 /*
 	Actions
 */

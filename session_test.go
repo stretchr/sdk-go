@@ -39,10 +39,10 @@ func TestSession_Host(t *testing.T) {
 
 }
 
-func TestSession_On(t *testing.T) {
+func TestSession_At(t *testing.T) {
 
 	s := new(Session)
-	var request *Request = s.On("path")
+	var request *Request = s.At("path")
 
 	if assert.NotNil(t, request) {
 		assert.Equal(t, s, request.session)
