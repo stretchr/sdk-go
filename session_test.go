@@ -23,19 +23,19 @@ func TestSession_Project(t *testing.T) {
 
 }
 
-func TestSession_Host(t *testing.T) {
+func TestSession_host(t *testing.T) {
 
 	var s *Session
 
 	s = NewSession("project.company")
 	s.apiVersion = "2"
 	s.useSSL = false
-	assert.Equal(t, "http://project.company.stretchr.com/api/v2", s.Host())
+	assert.Equal(t, "http://project.company.stretchr.com/api/v2", s.host())
 
 	s = NewSession("project.company2")
 	s.apiVersion = "1"
 	s.useSSL = true
-	assert.Equal(t, "https://project.company2.stretchr.com/api/v1", s.Host())
+	assert.Equal(t, "https://project.company2.stretchr.com/api/v1", s.host())
 
 }
 

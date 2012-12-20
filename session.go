@@ -22,8 +22,8 @@ func (s *Session) Project() string {
 	return s.project
 }
 
-// Host gets the host to make requests to.
-func (s *Session) Host() string {
+// host gets the host to make requests to.
+func (s *Session) host() string {
 
 	// get the protocol
 	var protocol string
