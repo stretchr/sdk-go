@@ -48,5 +48,5 @@ func (t *LiveTransporter) MakeRequest(request *Request) (*Response, error) {
 
 	log.Print("  Response: %s", httpResponse)
 
-	return NewResponse(httpResponse), nil
+	return newResponse(httpResponse), nil
 }

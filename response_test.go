@@ -9,7 +9,7 @@ import (
 func TestResponse_NewResponse(t *testing.T) {
 
 	httpResponse := new(http.Response)
-	response := NewResponse(httpResponse)
+	response := newResponse(httpResponse)
 
 	assert.Equal(t, response.HttpResponse, httpResponse)
 

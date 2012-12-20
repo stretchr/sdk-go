@@ -9,7 +9,7 @@ type Response struct {
 	HttpResponse *http.Response
 }
 
-func NewResponse(httpResponse *http.Response) *Response {
+func newResponse(httpResponse *http.Response) *Response {
 
 	repsonse := new(Response)
 
