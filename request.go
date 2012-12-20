@@ -53,6 +53,8 @@ func (r *Request) URL() (*url.URL, error) {
 	// set the query values
 	theUrl.RawQuery = r.queryValues.Encode()
 
+	// TODO: add security
+
 	return theUrl, nil
 
 }
