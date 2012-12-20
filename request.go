@@ -69,6 +69,7 @@ func (r *Request) Where(field, match string) *Request {
 	return r
 }
 
+// Limit sets a limit on the number of resources to get back from Stretchr.
 func (r *Request) Limit(value int64) *Request {
 	r.queryValues.Set(modifierLimit, strconv.FormatInt(value, 10))
 	return r
