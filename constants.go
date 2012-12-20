@@ -47,6 +47,19 @@ const (
 
 const (
 	modifierLimit string = "~limit"
+	modifierSkip  string = "~skip"
+	modifierOrder string = "~order"
+)
+
+/*
+	Signing
+*/
+
+const (
+	signSignature  string = "~sign"
+	signPrivateKey string = "~private"
+	signPublicKey  string = "~public"
+	signBodyHash   string = "~bodyhash"
 )
 
 /*
