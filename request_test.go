@@ -2,7 +2,6 @@ package stretchr
 
 import (
 	"github.com/stretchrcom/testify/assert"
-	"net/url"
 	"testing"
 )
 
@@ -26,37 +25,12 @@ func TestNewRequest(t *testing.T) {
 
 }
 
-func TestRequest_Session(t *testing.T) {
-
-	r := new(Request)
-	r.session = getTestSession()
-	assert.Equal(t, testSession, r.Session())
-
-}
-
-func TestRequest_Path(t *testing.T) {
-
-	r := new(Request)
-	r.path = "path"
-	assert.Equal(t, "path", r.Path())
-
-}
-
-func TestRequest_QueryValues(t *testing.T) {
-
-	r := new(Request)
-	values := make(url.Values)
-	r.queryValues = values
-	assert.Equal(t, values, r.QueryValues())
-
-}
-
-func TestRequest_URL(t *testing.T) {
+func TestRequest_signedURL(t *testing.T) {
 
 	r := NewRequest(getTestSession(), "people/123")
 	r.Where("field", "match").Where("field2", "match2")
 
-	fullUrl, urlErr := r.URL()
+	fullUrl, urlErr := r.signedUrl()
 
 	if assert.Nil(t, urlErr) {
 		urlString := fullUrl.String()
@@ -98,43 +72,5 @@ func TestRequest_Limit(t *testing.T) {
 	assert.Equal(t, returnOfLimit, r, ".Limit should chain")
 
 	assert.Equal(t, "50", r.queryValues[modifierLimit][0])
-
-}
-
-/*
-	Actions
-*/
-
-func TestRequest_Read(t *testing.T) {
-
-	request := NewRequest(getTestSession(), "people")
-
-	returnResponse := new(Response)
-	var returnErr error = nil
-
-	mockedTransporter.On("MakeRequest", request).Return(returnResponse, returnErr)
-	res, err := request.Read()
-
-	assert.Equal(t, returnErr, err)
-	assert.Equal(t, returnResponse, res)
-
-	assert.Equal(t, HttpMethodGet, request.httpMethod)
-
-}
-
-func TestRequest_Delete(t *testing.T) {
-
-	request := NewRequest(getTestSession(), "people")
-
-	returnResponse := new(Response)
-	var returnErr error = nil
-
-	mockedTransporter.On("MakeRequest", request).Return(returnResponse, returnErr)
-	res, err := request.Delete()
-
-	assert.Equal(t, returnErr, err)
-	assert.Equal(t, returnResponse, res)
-
-	assert.Equal(t, HttpMethodDelete, request.httpMethod)
 
 }
