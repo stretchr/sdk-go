@@ -21,7 +21,7 @@ type Transporter interface {
 */
 
 // DefaultLiveTransporter represents the live transporter instance.
-var DefaultLiveTransporter = new(LiveTransporter)
+var DefaultLiveTransporter = &LiveTransporter{}
 
 // liveTransporter makes real HTTP requests to remote servers.
 type LiveTransporter struct{}
