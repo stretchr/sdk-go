@@ -14,6 +14,7 @@ type ResourceObject struct {
 
 // MakeResourceAt makes a new Resource with the specified path.
 func MakeResourceAt(path string) *ResourceObject {
+
 	resource := new(ResourceObject)
 	resource.Path = path
 	resource.Data = make(map[string]interface{})
