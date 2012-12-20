@@ -33,23 +33,57 @@ func (r *Request) Delete() (*Response, error) {
 	return r.session.transporter.MakeRequest(r)
 }
 
+// Read executes the Request with a GET method, and returns the Response, or an error
+// if something went wrong communicating with Stretchr.
+func (r *Request) CreateMany(resources []Resource) (*Response, error) {
+
+	// set the HTTP method
+	r.httpMethod = HttpMethodPost
+
+	// collect the data objects
+	var dataObjects []interface{} = make([]interface{}, len(resources))
+	for resourceIndex, resource := range resources {
+		dataObjects[resourceIndex] = resource.ResourceData()
+	}
+	r.setBodyObject(dataObjects)
+
+	// get the transporter to do the work
+	return r.session.transporter.MakeRequest(r)
+}
+
 /*
 	Session
 */
+
+// Create tells Stretchr to create the specified resource.
 func (s *Session) Create(resource Resource) (*Response, error) {
 
 	r := s.At(resource.ResourcePath())
 
 	r.httpMethod = HttpMethodPost
+	r.setBodyObject(resource.ResourceData())
 
-	/*
-		Set the body
-	*/
-	var codecErr error
-	r.body, codecErr = ObjectToBytes(resource.ResourceData())
-	if codecErr != nil {
-		return nil, codecErr
-	}
+	return s.transporter.MakeRequest(r)
+}
+
+// Replace tells Stretchr to replace the specified resource.
+func (s *Session) Replace(resource Resource) (*Response, error) {
+
+	r := s.At(resource.ResourcePath())
+
+	r.httpMethod = HttpMethodPost
+	r.setBodyObject(resource.ResourceData())
+
+	return s.transporter.MakeRequest(r)
+}
+
+// Update tells Stretchr to update the specified resource.
+func (s *Session) Update(resource Resource) (*Response, error) {
+
+	r := s.At(resource.ResourcePath())
+
+	r.httpMethod = HttpMethodPut
+	r.setBodyObject(resource.ResourceData())
 
 	return s.transporter.MakeRequest(r)
 }
