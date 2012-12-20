@@ -3,7 +3,7 @@ package stretchr
 /*
 	Developers notice
 	=================
-	This file contains actions like Read, Create, Update, Replace and Delete.  They happen to 
+	This file contains actions like Read, Create, Update, Replace and Delete.  They happen to
 	appear on different objects, but are in one place here for simplicity's sake.
 */
 
@@ -33,7 +33,7 @@ func (r *Request) Delete() (*Response, error) {
 	return r.session.transporter.MakeRequest(r)
 }
 
-// Read executes the Request with a GET method, and returns the Response, or an error
+// CreateMany executes the Request with a POST method, and returns the Response, or an error
 // if something went wrong communicating with Stretchr.
 func (r *Request) CreateMany(resources []Resource) (*Response, error) {
 
