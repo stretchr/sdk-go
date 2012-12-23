@@ -1,4 +1,4 @@
-package stretchr
+package api
 
 // Resource describes objects that can be used in conjunction with Stretchr services.
 type Resource interface {

@@ -1,6 +1,7 @@
-package stretchr
+package api
 
 import (
+	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"strings"
 )
 
@@ -17,10 +18,10 @@ func MakeTestResourceAt(path string) *TestResource {
 	resource.Data = make(map[string]interface{})
 
 	// do we need to set the ID in the data?
-	pathSegments := strings.Split(path, pathSeparator)
+	pathSegments := strings.Split(path, common.PathSeparator)
 	if len(pathSegments)%2 == 0 {
 		// yes -
-		resource.Data[dataFieldID] = pathSegments[len(pathSegments)-1]
+		resource.Data[common.DataFieldID] = pathSegments[len(pathSegments)-1]
 	}
 
 	return resource
@@ -31,10 +32,10 @@ func MakeTestResourceAt(path string) *TestResource {
 func (r *TestResource) ResourcePath() string {
 
 	// break the path apart
-	pathSegments := strings.Split(r.Path, pathSeparator)
+	pathSegments := strings.Split(r.Path, common.PathSeparator)
 
 	// do we have an ID in the data?
-	if id, hasId := r.Data[dataFieldID]; hasId {
+	if id, hasId := r.Data[common.DataFieldID]; hasId {
 		// do we have an ID in the path?
 		if len(pathSegments)%2 == 0 {
 			// update the ID
@@ -45,7 +46,7 @@ func (r *TestResource) ResourcePath() string {
 		}
 	}
 
-	return JoinStrings(pathSeparator, pathSegments...)
+	return JoinStrings(common.PathSeparator, pathSegments...)
 }
 
 // ResourceData gets the data for this Resource.

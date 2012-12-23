@@ -1,8 +1,9 @@
-package stretchr
+package api
 
 import (
 	"github.com/stretchrcom/codecs"
 	"github.com/stretchrcom/codecs/json"
+	"github.com/stretchrcom/stretchr-sdk-go/common"
 )
 
 // Session provides access to Stretchr services.
@@ -49,17 +50,17 @@ func (s *Session) host() string {
 	// get the protocol
 	var protocol string
 	if s.useSSL {
-		protocol = httpProtocolSecure
+		protocol = common.HttpProtocolSecure
 	} else {
-		protocol = httpProtocol
+		protocol = common.HttpProtocol
 	}
 
 	return MergeStrings(protocol,
-		protocolSeparator,
+		common.ProtocolSeparator,
 		s.project,
-		hostSeparator,
-		topLevelHostName,
-		apiVersionPathPrefix,
+		common.HostSeparator,
+		common.TopLevelHostName,
+		common.ApiVersionPathPrefix,
 		s.apiVersion)
 
 }

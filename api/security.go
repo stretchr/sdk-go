@@ -1,8 +1,9 @@
-package stretchr
+package api
 
 import (
 	"crypto/sha1"
 	"fmt"
+	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"net/url"
 	"sort"
 	"strings"
@@ -69,10 +70,10 @@ func getSignature(method, requestUrl string, body []byte, privateKey string) (st
 	values := u.Query()
 
 	// add the private key parameter
-	values.Set(signPrivateKey, privateKey)
+	values.Set(common.SignPrivateKey, privateKey)
 
 	if len(body) > 0 {
-		values.Set(signBodyHash, hash(body))
+		values.Set(common.SignBodyHash, hash(body))
 	}
 
 	// get the ordered params
@@ -94,7 +95,7 @@ func getSignedURL(method, requestUrl string, body []byte, privateKey string) (st
 		return FailedSignature, hashErr
 	}
 
-	signed := fmt.Sprintf("%s&%s=%s", requestUrl, url.QueryEscape(signSignature), url.QueryEscape(hash))
+	signed := fmt.Sprintf("%s&%s=%s", requestUrl, url.QueryEscape(common.SignSignature), url.QueryEscape(hash))
 
 	return signed, nil
 

@@ -1,6 +1,7 @@
-package stretchr
+package api
 
 import (
+	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"github.com/stretchrcom/testify/assert"
 	"github.com/stretchrcom/testify/mock"
 	"testing"
@@ -19,7 +20,7 @@ func TestRequest_Read(t *testing.T) {
 	assert.Equal(t, returnErr, err)
 	assert.Equal(t, returnResponse, res)
 
-	assert.Equal(t, HttpMethodGet, request.httpMethod)
+	assert.Equal(t, common.HttpMethodGet, request.httpMethod)
 
 }
 
@@ -36,7 +37,7 @@ func TestRequest_Delete(t *testing.T) {
 	assert.Equal(t, returnErr, err)
 	assert.Equal(t, returnResponse, res)
 
-	assert.Equal(t, HttpMethodDelete, request.httpMethod)
+	assert.Equal(t, common.HttpMethodDelete, request.httpMethod)
 
 }
 
@@ -58,7 +59,7 @@ func TestRequest_Create(t *testing.T) {
 
 	request := mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
-	assert.Equal(t, request.httpMethod, HttpMethodPost)
+	assert.Equal(t, request.httpMethod, common.HttpMethodPost)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
 	expectedBody, _ := session.codec.Marshal(resource.Data, nil)
@@ -91,7 +92,7 @@ func TestRequest_CreateMany(t *testing.T) {
 
 	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
-	assert.Equal(t, request.httpMethod, HttpMethodPost)
+	assert.Equal(t, request.httpMethod, common.HttpMethodPost)
 	assert.Equal(t, request.path, "monkey")
 
 	expectedBody, _ := request.session.codec.Marshal([]interface{}{resource1.Data, resource2.Data}, nil)
@@ -117,7 +118,7 @@ func TestRequest_Update(t *testing.T) {
 
 	request := mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
-	assert.Equal(t, request.httpMethod, HttpMethodPut)
+	assert.Equal(t, request.httpMethod, common.HttpMethodPut)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
 	expectedBody, _ := session.codec.Marshal(resource.Data, nil)
@@ -143,7 +144,7 @@ func TestRequest_Replace(t *testing.T) {
 
 	request := mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
-	assert.Equal(t, request.httpMethod, HttpMethodPost)
+	assert.Equal(t, request.httpMethod, common.HttpMethodPost)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
 	expectedBody, _ := session.codec.Marshal(resource.Data, nil)

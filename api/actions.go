@@ -1,4 +1,8 @@
-package stretchr
+package api
+
+import (
+	"github.com/stretchrcom/stretchr-sdk-go/common"
+)
 
 /*
 	Developers notice
@@ -16,7 +20,7 @@ package stretchr
 func (r *Request) Read() (*Response, error) {
 
 	// set the HTTP method
-	r.httpMethod = HttpMethodGet
+	r.httpMethod = common.HttpMethodGet
 
 	// get the transporter to do the work
 	return r.session.transporter.MakeRequest(r)
@@ -27,7 +31,7 @@ func (r *Request) Read() (*Response, error) {
 func (r *Request) Delete() (*Response, error) {
 
 	// set the HTTP method
-	r.httpMethod = HttpMethodDelete
+	r.httpMethod = common.HttpMethodDelete
 
 	// get the transporter to do the work
 	return r.session.transporter.MakeRequest(r)
@@ -41,7 +45,7 @@ func (r *Request) Delete() (*Response, error) {
 func (r *Request) CreateMany(resources []Resource) (*Response, error) {
 
 	// set the HTTP method
-	r.httpMethod = HttpMethodPost
+	r.httpMethod = common.HttpMethodPost
 
 	// collect the data objects
 	var dataObjects []interface{} = make([]interface{}, len(resources))
@@ -63,7 +67,7 @@ func (s *Session) createOrReplace(resource Resource) (*Response, error) {
 
 	r := s.At(resource.ResourcePath())
 
-	r.httpMethod = HttpMethodPost
+	r.httpMethod = common.HttpMethodPost
 	r.setBodyObject(resource.ResourceData())
 
 	return s.transporter.MakeRequest(r)
@@ -84,7 +88,7 @@ func (s *Session) Update(resource Resource) (*Response, error) {
 
 	r := s.At(resource.ResourcePath())
 
-	r.httpMethod = HttpMethodPut
+	r.httpMethod = common.HttpMethodPut
 	r.setBodyObject(resource.ResourceData())
 
 	return s.transporter.MakeRequest(r)

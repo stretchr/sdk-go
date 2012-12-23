@@ -1,6 +1,7 @@
-package stretchr
+package api
 
 import (
+	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"github.com/stretchrcom/testify/assert"
 	"io/ioutil"
 	"testing"
@@ -113,6 +114,6 @@ func TestRequest_Limit(t *testing.T) {
 
 	assert.Equal(t, returnOfLimit, r, ".Limit should chain")
 
-	assert.Equal(t, "50", r.queryValues[modifierLimit][0])
+	assert.Equal(t, "50", r.queryValues[common.ModifierLimit][0])
 
 }

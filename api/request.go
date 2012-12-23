@@ -1,6 +1,7 @@
-package stretchr
+package api
 
 import (
+	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -30,7 +31,7 @@ func NewRequest(session *Session, path string) *Request {
 // this request.
 func (r *Request) signedUrl() (*url.URL, error) {
 
-	urlString := MergeStrings(r.session.host(), pathSeparator, r.path)
+	urlString := MergeStrings(r.session.host(), common.PathSeparator, r.path)
 
 	theUrl, urlErr := url.Parse(urlString)
 
@@ -98,12 +99,12 @@ func (r *Request) httpRequest() (*http.Request, error) {
 
 // Where adds a filter to the request.
 func (r *Request) Where(field, match string) *Request {
-	r.queryValues.Add(MergeStrings(filterFieldPrefix, field), match)
+	r.queryValues.Add(MergeStrings(common.FilterFieldPrefix, field), match)
 	return r
 }
 
 // Limit sets a limit on the number of resources to get back from Stretchr.
 func (r *Request) Limit(value int64) *Request {
-	r.queryValues.Set(modifierLimit, strconv.FormatInt(value, 10))
+	r.queryValues.Set(common.ModifierLimit, strconv.FormatInt(value, 10))
 	return r
 }

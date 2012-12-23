@@ -1,4 +1,4 @@
-package stretchr
+package api
 
 import (
 	"github.com/stretchrcom/testify/mock"
