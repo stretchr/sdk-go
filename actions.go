@@ -35,6 +35,9 @@ func (r *Request) Delete() (*Response, error) {
 
 // CreateMany executes the Request with a POST method, and returns the Response, or an error
 // if something went wrong communicating with Stretchr.
+//
+// The ResourcePath is taken from the Request, and the paths of individual resources are
+// ignored.
 func (r *Request) CreateMany(resources []Resource) (*Response, error) {
 
 	// set the HTTP method
