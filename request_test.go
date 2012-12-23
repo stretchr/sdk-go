@@ -63,7 +63,7 @@ func TestRequest_SetBodyObject(t *testing.T) {
 	obj["name"] = "Mat"
 
 	r.setBodyObject(obj)
-	expectedBody, _ := ObjectToBytes(obj) //#codecs
+	expectedBody, _ := r.session.codec.Marshal(obj, nil)
 	assert.Equal(t, r.body, expectedBody)
 
 }

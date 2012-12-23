@@ -61,7 +61,7 @@ func TestRequest_Create(t *testing.T) {
 	assert.Equal(t, request.httpMethod, HttpMethodPost)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
-	expectedBody, _ := ObjectToBytes(resource.Data) //#codecs
+	expectedBody, _ := session.codec.Marshal(resource.Data, nil)
 	assert.Equal(t, request.body, expectedBody)
 
 }
@@ -94,7 +94,7 @@ func TestRequest_CreateMany(t *testing.T) {
 	assert.Equal(t, request.httpMethod, HttpMethodPost)
 	assert.Equal(t, request.path, "monkey")
 
-	expectedBody, _ := ObjectToBytes([]interface{}{resource1.Data, resource2.Data}) //#codecs
+	expectedBody, _ := request.session.codec.Marshal([]interface{}{resource1.Data, resource2.Data}, nil)
 	assert.Equal(t, request.body, expectedBody)
 
 }
@@ -120,7 +120,7 @@ func TestRequest_Update(t *testing.T) {
 	assert.Equal(t, request.httpMethod, HttpMethodPut)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
-	expectedBody, _ := ObjectToBytes(resource.Data) //#codecs
+	expectedBody, _ := session.codec.Marshal(resource.Data, nil)
 	assert.Equal(t, request.body, expectedBody)
 
 }
@@ -146,7 +146,7 @@ func TestRequest_Replace(t *testing.T) {
 	assert.Equal(t, request.httpMethod, HttpMethodPost)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
-	expectedBody, _ := ObjectToBytes(resource.Data) //#codecs
+	expectedBody, _ := session.codec.Marshal(resource.Data, nil)
 	assert.Equal(t, request.body, expectedBody)
 
 }

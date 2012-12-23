@@ -61,7 +61,7 @@ func (r *Request) signedUrl() (*url.URL, error) {
 // object.
 func (r *Request) setBodyObject(object interface{}) error {
 	var err error
-	r.body, err = ObjectToBytes(object) // TODO: #codecs
+	r.body, err = r.session.codec.Marshal(object, nil)
 	return err
 }
 
