@@ -48,7 +48,7 @@ func TestRequest_Create(t *testing.T) {
 	var returnErr error = nil
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(returnResponse, returnErr)
 
-	resource := MakeResourceAt("monkey/123")
+	resource := MakeTestResourceAt("monkey/123")
 	resource.Data["name"] = "Mat"
 	resource.Data["age"] = 29
 	res, err := session.Create(resource)
@@ -74,11 +74,11 @@ func TestRequest_CreateMany(t *testing.T) {
 	var returnErr error = nil
 	mockedTransporter.On("MakeRequest", request).Return(returnResponse, returnErr)
 
-	resource1 := MakeResourceAt("people/123")
+	resource1 := MakeTestResourceAt("people/123")
 	resource1.Data["name"] = "Mat"
 	resource1.Data["age"] = 29
 
-	resource2 := MakeResourceAt("people/124")
+	resource2 := MakeTestResourceAt("people/124")
 	resource2.Data["name"] = "Tyler"
 	resource2.Data["age"] = 28
 
@@ -107,7 +107,7 @@ func TestRequest_Update(t *testing.T) {
 	var returnErr error = nil
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(returnResponse, returnErr)
 
-	resource := MakeResourceAt("monkey/123")
+	resource := MakeTestResourceAt("monkey/123")
 	resource.Data["name"] = "Mat"
 	resource.Data["age"] = 29
 	res, err := session.Update(resource)
@@ -133,7 +133,7 @@ func TestRequest_Replace(t *testing.T) {
 	var returnErr error = nil
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(returnResponse, returnErr)
 
-	resource := MakeResourceAt("monkey/123")
+	resource := MakeTestResourceAt("monkey/123")
 	resource.Data["name"] = "Mat"
 	resource.Data["age"] = 29
 	res, err := session.Replace(resource)
