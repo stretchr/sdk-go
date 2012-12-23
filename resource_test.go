@@ -1,13 +1,15 @@
 package stretchr
 
 import (
+	"github.com/stretchrcom/stretchr-sdk-go/api"
+	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"github.com/stretchrcom/testify/assert"
 	"testing"
 )
 
-func TestResourceObject_Interface(t *testing.T) {
+func TestResource_Interface(t *testing.T) {
 
-	assert.Implements(t, (*Resource)(nil), new(ResourceObject))
+	assert.Implements(t, (*api.Resource)(nil), new(Resource))
 
 }
 
@@ -25,7 +27,7 @@ func TestMakeResource(t *testing.T) {
 
 }
 
-func TestResourceObject_ResourcePath_GetsIDFromBody(t *testing.T) {
+func TestResource_ResourcePath_GetsIDFromBody(t *testing.T) {
 
 	r := MakeResourceAt("people")
 	r.Data[common.DataFieldID] = "123"
@@ -33,7 +35,7 @@ func TestResourceObject_ResourcePath_GetsIDFromBody(t *testing.T) {
 	assert.Equal(t, "people/123", r.ResourcePath())
 
 }
-func TestResourceObject_ResourcePath_ReplacesIDFromBody(t *testing.T) {
+func TestResource_ResourcePath_ReplacesIDFromBody(t *testing.T) {
 
 	r := MakeResourceAt("people/abc")
 	r.Data[common.DataFieldID] = "123"

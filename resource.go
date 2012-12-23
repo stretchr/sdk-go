@@ -1,11 +1,13 @@
 package stretchr
 
 import (
+	stewstrings "github.com/stretchrcom/stew/strings"
+	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"strings"
 )
 
-// ResourceObject represents a general Resource implementation.
-type ResourceObject struct {
+// Resource represents a resource in Stretchr.
+type Resource struct {
 	// Path is the path of this resource.
 	Path string
 	// Data holds the data for the resource.
@@ -13,9 +15,9 @@ type ResourceObject struct {
 }
 
 // MakeResourceAt makes a new Resource with the specified path.
-func MakeResourceAt(path string) *ResourceObject {
+func MakeResourceAt(path string) *Resource {
 
-	resource := new(ResourceObject)
+	resource := new(Resource)
 	resource.Path = path
 	resource.Data = make(map[string]interface{})
 
@@ -30,7 +32,7 @@ func MakeResourceAt(path string) *ResourceObject {
 }
 
 // ResourcePath gets the path for this Resource.
-func (r *ResourceObject) ResourcePath() string {
+func (r *Resource) ResourcePath() string {
 
 	// break the path apart
 	pathSegments := strings.Split(r.Path, common.PathSeparator)
@@ -47,10 +49,10 @@ func (r *ResourceObject) ResourcePath() string {
 		}
 	}
 
-	return JoinStrings(common.PathSeparator, pathSegments...)
+	return stewstrings.JoinStrings(common.PathSeparator, pathSegments...)
 }
 
 // ResourceData gets the data for this Resource.
-func (r *ResourceObject) ResourceData() map[string]interface{} {
+func (r *Resource) ResourceData() map[string]interface{} {
 	return r.Data
 }
