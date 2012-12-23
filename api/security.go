@@ -3,6 +3,7 @@ package api
 import (
 	"crypto/sha1"
 	"fmt"
+	stewstrings "github.com/stretchrcom/stew/strings"
 	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"net/url"
 	"sort"
@@ -80,7 +81,7 @@ func getSignature(method, requestUrl string, body []byte, privateKey string) (st
 	orderedParams := getOrderedParams(values)
 
 	base := strings.Split(u.String(), "?")[0]
-	combined := []byte(MergeStrings(method, "&", base, "?", orderedParams))
+	combined := []byte(stewstrings.MergeStrings(method, "&", base, "?", orderedParams))
 
 	return hash(combined), nil
 

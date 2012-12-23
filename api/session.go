@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/stretchrcom/codecs"
 	"github.com/stretchrcom/codecs/json"
+	stewstrings "github.com/stretchrcom/stew/strings"
 	"github.com/stretchrcom/stretchr-sdk-go/common"
 )
 
@@ -55,7 +56,7 @@ func (s *Session) host() string {
 		protocol = common.HttpProtocol
 	}
 
-	return MergeStrings(protocol,
+	return stewstrings.MergeStrings(protocol,
 		common.ProtocolSeparator,
 		s.project,
 		common.HostSeparator,

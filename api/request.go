@@ -1,6 +1,7 @@
 package api
 
 import (
+	stewstrings "github.com/stretchrcom/stew/strings"
 	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"net/http"
 	"net/url"
@@ -31,7 +32,7 @@ func NewRequest(session *Session, path string) *Request {
 // this request.
 func (r *Request) signedUrl() (*url.URL, error) {
 
-	urlString := MergeStrings(r.session.host(), common.PathSeparator, r.path)
+	urlString := stewstrings.MergeStrings(r.session.host(), common.PathSeparator, r.path)
 
 	theUrl, urlErr := url.Parse(urlString)
 
@@ -99,7 +100,7 @@ func (r *Request) httpRequest() (*http.Request, error) {
 
 // Where adds a filter to the request.
 func (r *Request) Where(field, match string) *Request {
-	r.queryValues.Add(MergeStrings(common.FilterFieldPrefix, field), match)
+	r.queryValues.Add(stewstrings.MergeStrings(common.FilterFieldPrefix, field), match)
 	return r
 }
 

@@ -1,6 +1,7 @@
 package api
 
 import (
+	stewstrings "github.com/stretchrcom/stew/strings"
 	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"strings"
 )
@@ -46,7 +47,7 @@ func (r *TestResource) ResourcePath() string {
 		}
 	}
 
-	return JoinStrings(common.PathSeparator, pathSegments...)
+	return stewstrings.JoinStrings(common.PathSeparator, pathSegments...)
 }
 
 // ResourceData gets the data for this Resource.
