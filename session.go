@@ -33,12 +33,12 @@ func (s *Session) Project() string {
 	return s.project
 }
 
-// Codec gets the codec currently being used to communicate with Stretchr
+// Codec gets the codec currently being used to communicate with Stretchr.
 func (s *Session) Codec() codecs.Codec {
 	return s.codec
 }
 
-// SetCodec sets the codec to be used to communicate with Stretchr
+// SetCodec sets the codec to be used to communicate with Stretchr.
 func (s *Session) SetCodec(codec codecs.Codec) {
 	s.codec = codec
 }
