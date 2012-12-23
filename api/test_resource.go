@@ -4,18 +4,15 @@ import (
 	"strings"
 )
 
-// ResourceObject represents a general Resource implementation.
-type ResourceObject struct {
+type TestResource struct {
 	// Path is the path of this resource.
 	Path string
 	// Data holds the data for the resource.
 	Data map[string]interface{}
 }
 
-// MakeResourceAt makes a new Resource with the specified path.
-func MakeResourceAt(path string) *ResourceObject {
-
-	resource := new(ResourceObject)
+func MakeTestResourceAt(path string) *TestResource {
+	resource := new(TestResource)
 	resource.Path = path
 	resource.Data = make(map[string]interface{})
 
@@ -27,10 +24,11 @@ func MakeResourceAt(path string) *ResourceObject {
 	}
 
 	return resource
+
 }
 
 // ResourcePath gets the path for this Resource.
-func (r *ResourceObject) ResourcePath() string {
+func (r *TestResource) ResourcePath() string {
 
 	// break the path apart
 	pathSegments := strings.Split(r.Path, pathSeparator)
@@ -51,6 +49,6 @@ func (r *ResourceObject) ResourcePath() string {
 }
 
 // ResourceData gets the data for this Resource.
-func (r *ResourceObject) ResourceData() map[string]interface{} {
+func (r *TestResource) ResourceData() map[string]interface{} {
 	return r.Data
 }
