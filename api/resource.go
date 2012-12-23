@@ -1,5 +1,9 @@
 package api
 
+import (
+	"github.com/stretchrcom/stew/objects"
+)
+
 // Resource describes objects that can be used in conjunction with Stretchr services.
 type Resource interface {
 
@@ -7,5 +11,5 @@ type Resource interface {
 	ResourcePath() string
 
 	// ResourceData gets the data for this Resource.
-	ResourceData() map[string]interface{}
+	ResourceData() objects.Map
 }

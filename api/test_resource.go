@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/stretchrcom/stew/objects"
 	stewstrings "github.com/stretchrcom/stew/strings"
 	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"strings"
@@ -10,7 +11,7 @@ type TestResource struct {
 	// Path is the path of this resource.
 	Path string
 	// Data holds the data for the resource.
-	Data map[string]interface{}
+	Data objects.Map
 }
 
 func MakeTestResourceAt(path string) *TestResource {
@@ -51,6 +52,6 @@ func (r *TestResource) ResourcePath() string {
 }
 
 // ResourceData gets the data for this Resource.
-func (r *TestResource) ResourceData() map[string]interface{} {
+func (r *TestResource) ResourceData() objects.Map {
 	return r.Data
 }
