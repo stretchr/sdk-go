@@ -45,6 +45,19 @@ func (s *Session) SetCodec(codec codecs.Codec) {
 	s.codec = codec
 }
 
+// Transporter gets the current Transporter this Session will use when interacting with
+// Stretchr services.
+func (s *Session) Transporter() Transporter {
+	return s.transporter
+}
+
+// SetTransporter sets the Transporter instance to use when interacting with
+// Stretchr services.
+func (s *Session) SetTransporter(transporter Transporter) *Session {
+	s.transporter = transporter
+	return s
+}
+
 // host gets the host to make requests to.
 func (s *Session) host() string {
 

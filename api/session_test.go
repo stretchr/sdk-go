@@ -51,3 +51,13 @@ func TestSession_At(t *testing.T) {
 	}
 
 }
+
+func TestSession_SetTransporter(t *testing.T) {
+
+	s := new(Session)
+
+	newTransporter := new(LiveTransporter)
+	assert.Equal(t, s.SetTransporter(newTransporter), s, "SetTransporter should chain")
+	assert.Equal(t, newTransporter, s.Transporter())
+
+}
