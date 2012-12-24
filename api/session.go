@@ -24,7 +24,7 @@ func NewSession(project, publicKey, privateKey string) *Session {
 	s.project = project
 	s.publicKey = publicKey
 	s.privateKey = privateKey
-	s.transporter = DefaultLiveTransporter
+	s.transporter = ActiveLiveTransporter
 	s.apiVersion = "1"
 	s.codec = new(json.JsonCodec)
 	return s
