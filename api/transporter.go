@@ -30,6 +30,8 @@ type LiveTransporter struct{}
 // if there was a problem communicating with the remote server.
 func (t *LiveTransporter) MakeRequest(request *Request) (*Response, error) {
 
+	// TODO: figure out a way to test this?
+
 	httpRequest, requestErr := request.httpRequest()
 
 	if requestErr != nil {
@@ -48,5 +50,11 @@ func (t *LiveTransporter) MakeRequest(request *Request) (*Response, error) {
 
 	log.Print("  Response: %s", httpResponse)
 
-	return newResponse(httpResponse), nil
+	response, responseErr := NewResponse(request.session, httpResponse)
+
+	if responseErr != nil {
+		return nil, responseErr
+	}
+
+	return response, nil
 }

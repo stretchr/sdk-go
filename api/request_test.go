@@ -7,7 +7,6 @@ import (
 	"testing"
 )
 
-var testSession *Session
 var mockedTransporter *MockedTransporter
 
 func getTestSession() *Session {
@@ -22,7 +21,7 @@ func TestNewRequest(t *testing.T) {
 	r := NewRequest(getTestSession(), "people")
 
 	assert.Equal(t, "people", r.path, "path")
-	assert.Equal(t, testSession, r.session, "session")
+	assert.Equal(t, GetTestSession(), r.session, "session")
 	assert.NotNil(t, r.queryValues, "queryValues")
 
 }
