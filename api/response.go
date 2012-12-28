@@ -15,6 +15,7 @@ type Response struct {
 	bodyObject     interface{}
 }
 
+// NewReponse creates a new Response object from the given Session and http.Response.
 func NewResponse(session *Session, httpResponse *http.Response) (*Response, error) {
 
 	response := new(Response)
@@ -26,7 +27,7 @@ func NewResponse(session *Session, httpResponse *http.Response) (*Response, erro
 	response.httpResponse = httpResponse
 
 	// process the response
-	processErr := response.processRequest()
+	processErr := response.processResponse()
 
 	if processErr != nil {
 		return nil, processErr
@@ -35,7 +36,8 @@ func NewResponse(session *Session, httpResponse *http.Response) (*Response, erro
 	return response, nil
 }
 
-func (r *Response) processRequest() error {
+// processRequest processes the http.Response and builds the current Response object.
+func (r *Response) processResponse() error {
 
 	// get the repsonse
 	bodyBytes, readAll := ioutil.ReadAll(r.httpResponse.Body)
@@ -58,22 +60,31 @@ func (r *Response) processRequest() error {
 	return nil
 }
 
+// HttpResponse gets the http.Response that this Response represents.
 func (r *Response) HttpResponse() *http.Response {
 	return r.httpResponse
 }
 
+// Session gets the Session that was responsible for obtaining this Response.
 func (r *Response) Session() *Session {
 	return r.session
 }
 
+// HttpStatusCode gets the HTTP Status Code of this response.
 func (r *Response) HttpStatusCode() int {
 	return r.httpResponse.StatusCode
 }
 
+// BodyObject gets a real object unmarshalled from the response data.
+//
+// For better typing, developers should use SingleBodyObject and MultipleBodyObjects,
+// depending on the type of expected response.
 func (r *Response) BodyObject() interface{} {
 	return r.bodyObject
 }
 
+// SingleBodyObject gets a strongly-typed map[string]interface{} from the BodyObject
+// or panics if some unexpected object is in the repsonse.
 func (r *Response) SingleBodyObject() map[string]interface{} {
 	if object, ok := r.BodyObject().(map[string]interface{}); ok {
 		return object
@@ -81,6 +92,8 @@ func (r *Response) SingleBodyObject() map[string]interface{} {
 	panic("stretchr: SingleBodyObject expects the BodyObject() to be a map[string]interface{}.")
 }
 
+// MultipleBodyObjects gets a strongly-typed []map[string]interface{} from the BodyObject
+// or panics if some unexpected object is in the response.
 func (r *Response) MultipleBodyObjects() []map[string]interface{} {
 
 	if bodyObjs, ok := r.BodyObject().([]interface{}); ok {
