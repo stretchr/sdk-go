@@ -75,16 +75,23 @@ func (r *Response) BodyObject() interface{} {
 }
 
 func (r *Response) SingleBodyObject() map[string]interface{} {
-	return r.BodyObject().(map[string]interface{})
+	if object, ok := r.BodyObject().(map[string]interface{}); ok {
+		return object
+	}
+	panic("stretchr: SingleBodyObject expects the BodyObject() to be a map[string]interface{}.")
 }
 
 func (r *Response) MultipleBodyObjects() []map[string]interface{} {
 
-	bodyObjs := r.BodyObject().([]interface{})
-	typedBodyObjs := make([]map[string]interface{}, len(bodyObjs))
-	for objIndex, obj := range bodyObjs {
-		typedBodyObjs[objIndex] = obj.(map[string]interface{})
+	if bodyObjs, ok := r.BodyObject().([]interface{}); ok {
+		typedBodyObjs := make([]map[string]interface{}, len(bodyObjs))
+		for objIndex, obj := range bodyObjs {
+			typedBodyObjs[objIndex] = obj.(map[string]interface{})
+		}
+
+		return typedBodyObjs
+
 	}
 
-	return typedBodyObjs
+	panic("stretchr: MultipleBodyObjects expects the BodyObject() to be an []map[string]interface{}.")
 }

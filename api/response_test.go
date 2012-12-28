@@ -67,6 +67,15 @@ func TestResponse_SingleBodyObject(t *testing.T) {
 
 }
 
+func TestResponse_SingleBodyObject_InvalidObjectType(t *testing.T) {
+
+	response, _ := MakeTestResponseWithBody(`[{"s":200,"d":{"name":"Mat"}}]`)
+	assert.Panics(t, func() {
+		response.SingleBodyObject()
+	}, "Calling SingleBodyObject on an array should panic")
+
+}
+
 func TestResponse_MultipleBodyObjects(t *testing.T) {
 
 	response, _ := MakeTestResponseWithBody(`[{"s":200,"d":{"name":"Mat"}},{"s":200,"d":{"name":"Mat"}}]`)
@@ -77,5 +86,14 @@ func TestResponse_MultipleBodyObjects(t *testing.T) {
 
 	assert.Equal(t, 200, bodyObj.Get("s"))
 	assert.Equal(t, "Mat", bodyObj.Get("d.name"))
+
+}
+
+func TestResponse_MultipleBodyObjects_InvalidObjectType(t *testing.T) {
+
+	response, _ := MakeTestResponseWithBody(`{"s":200,"d":{"name":"Mat"}}`)
+	assert.Panics(t, func() {
+		response.MultipleBodyObjects()
+	}, "Calling MultipleBodyObjects on a single object should panic")
 
 }
