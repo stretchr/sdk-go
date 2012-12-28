@@ -73,3 +73,18 @@ func (r *Response) HttpStatusCode() int {
 func (r *Response) BodyObject() interface{} {
 	return r.bodyObject
 }
+
+func (r *Response) SingleBodyObject() map[string]interface{} {
+	return r.BodyObject().(map[string]interface{})
+}
+
+func (r *Response) MultipleBodyObjects() []map[string]interface{} {
+
+	bodyObjs := r.BodyObject().([]interface{})
+	typedBodyObjs := make([]map[string]interface{}, len(bodyObjs))
+	for objIndex, obj := range bodyObjs {
+		typedBodyObjs[objIndex] = obj.(map[string]interface{})
+	}
+
+	return typedBodyObjs
+}

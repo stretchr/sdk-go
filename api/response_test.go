@@ -55,3 +55,27 @@ func TestResponse_BodyObject(t *testing.T) {
 	assert.Equal(t, "Mat", bodyObj.Get("d.name"))
 
 }
+
+func TestResponse_SingleBodyObject(t *testing.T) {
+
+	response, _ := MakeTestResponseWithBody(`{"s":200,"d":{"name":"Mat"}}`)
+
+	bodyObj := objects.Map(response.SingleBodyObject())
+
+	assert.Equal(t, 200, bodyObj.Get("s"))
+	assert.Equal(t, "Mat", bodyObj.Get("d.name"))
+
+}
+
+func TestResponse_MultipleBodyObjects(t *testing.T) {
+
+	response, _ := MakeTestResponseWithBody(`[{"s":200,"d":{"name":"Mat"}},{"s":200,"d":{"name":"Mat"}}]`)
+
+	bodyObjs := response.MultipleBodyObjects()
+
+	bodyObj := objects.Map(bodyObjs[0])
+
+	assert.Equal(t, 200, bodyObj.Get("s"))
+	assert.Equal(t, "Mat", bodyObj.Get("d.name"))
+
+}
