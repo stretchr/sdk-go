@@ -82,29 +82,3 @@ func (r *Response) HttpStatusCode() int {
 func (r *Response) BodyObject() interface{} {
 	return r.bodyObject
 }
-
-// SingleBodyObject gets a strongly-typed map[string]interface{} from the BodyObject
-// or panics if some unexpected object is in the repsonse.
-func (r *Response) SingleBodyObject() map[string]interface{} {
-	if object, ok := r.BodyObject().(map[string]interface{}); ok {
-		return object
-	}
-	panic("stretchr: SingleBodyObject expects the BodyObject() to be a map[string]interface{}.")
-}
-
-// MultipleBodyObjects gets a strongly-typed []map[string]interface{} from the BodyObject
-// or panics if some unexpected object is in the response.
-func (r *Response) MultipleBodyObjects() []map[string]interface{} {
-
-	if bodyObjs, ok := r.BodyObject().([]interface{}); ok {
-		typedBodyObjs := make([]map[string]interface{}, len(bodyObjs))
-		for objIndex, obj := range bodyObjs {
-			typedBodyObjs[objIndex] = obj.(map[string]interface{})
-		}
-
-		return typedBodyObjs
-
-	}
-
-	panic("stretchr: MultipleBodyObjects expects the BodyObject() to be an []map[string]interface{}.")
-}
