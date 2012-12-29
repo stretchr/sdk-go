@@ -84,6 +84,36 @@ func TestRequest_httpRequest(t *testing.T) {
 }
 
 /*
+	Properties
+*/
+func TestRequest_HttpMethod(t *testing.T) {
+
+	request := new(Request)
+	request.httpMethod = "GET"
+
+	assert.Equal(t, request.httpMethod, request.HttpMethod())
+
+}
+
+func TestRequest_Body(t *testing.T) {
+
+	request := new(Request)
+	request.body = []byte("Byte")
+
+	assert.Equal(t, request.body, request.Body())
+
+}
+
+func TestRequest_Path(t *testing.T) {
+
+	request := new(Request)
+	request.path = "/path"
+
+	assert.Equal(t, request.path, request.Path())
+
+}
+
+/*
 	Filtering
 */
 

@@ -95,6 +95,22 @@ func (r *Request) httpRequest() (*http.Request, error) {
 }
 
 /*
+	Properties
+*/
+
+func (r *Request) Path() string {
+	return r.path
+}
+
+func (r *Request) HttpMethod() string {
+	return r.httpMethod
+}
+
+func (r *Request) Body() []byte {
+	return r.body
+}
+
+/*
 	Filtering
 */
 
