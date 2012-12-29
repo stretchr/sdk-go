@@ -2,6 +2,7 @@ package stretchr
 
 import (
 	"github.com/stretchrcom/stretchr-sdk-go/api"
+	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"github.com/stretchrcom/testify/assert"
 	"github.com/stretchrcom/testify/mock"
 	"testing"
@@ -24,5 +25,10 @@ func TestSession_LoadOne(t *testing.T) {
 	}
 
 	mockedTransporter.AssertExpectations(t)
+	request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
+
+	assert.Equal(t, request.HttpMethod(), common.HttpMethodGet)
+	assert.Equal(t, request.Path(), "people/123")
+	assert.Equal(t, request.Body(), []byte(""))
 
 }
