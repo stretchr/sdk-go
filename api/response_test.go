@@ -2,7 +2,6 @@ package api
 
 import (
 	"bytes"
-	"github.com/stretchrcom/stew/objects"
 	"github.com/stretchrcom/testify/assert"
 	"io/ioutil"
 	"net/http"
@@ -49,9 +48,9 @@ func TestResponse_BodyObject(t *testing.T) {
 
 	response, _ := MakeTestResponseWithBody(`{"s":200,"d":{"name":"Mat"}}`)
 
-	bodyObj := objects.Map(response.BodyObject().(map[string]interface{}))
+	bodyObj := response.BodyObject()
 
-	assert.Equal(t, 200, bodyObj.Get("s"))
-	assert.Equal(t, "Mat", bodyObj.Get("d.name"))
+	assert.Equal(t, 200, bodyObj["s"])
+	assert.Equal(t, "Mat", bodyObj["d"].(map[string]interface{})["name"])
 
 }

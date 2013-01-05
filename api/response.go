@@ -12,7 +12,7 @@ type Response struct {
 
 	// yielded values
 	httpStatusCode int
-	bodyObject     interface{}
+	bodyObject     ResponseObject
 }
 
 // NewReponse creates a new Response object from the given Session and http.Response.
@@ -46,7 +46,7 @@ func (r *Response) processResponse() error {
 		return readAll
 	}
 
-	var bodyObject interface{}
+	var bodyObject map[string]interface{}
 	unmarshalErr := r.Session().Codec().Unmarshal(bodyBytes, &bodyObject)
 
 	if unmarshalErr != nil {
@@ -54,7 +54,7 @@ func (r *Response) processResponse() error {
 	}
 
 	// set the body object
-	r.bodyObject = bodyObject
+	r.bodyObject = ResponseObject(bodyObject)
 
 	// all went well
 	return nil
@@ -76,9 +76,6 @@ func (r *Response) HttpStatusCode() int {
 }
 
 // BodyObject gets a real object unmarshalled from the response data.
-//
-// For better typing, developers should use SingleBodyObject and MultipleBodyObjects,
-// depending on the type of expected response.
-func (r *Response) BodyObject() interface{} {
+func (r *Response) BodyObject() ResponseObject {
 	return r.bodyObject
 }

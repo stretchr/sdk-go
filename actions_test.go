@@ -13,7 +13,7 @@ func TestSession_LoadOne(t *testing.T) {
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
 
-	response := new(api.Response)
+	response := NewTestResponse(200, map[string]interface{}{"name": "Mat"}, nil, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -30,5 +30,7 @@ func TestSession_LoadOne(t *testing.T) {
 	assert.Equal(t, request.HttpMethod(), common.HttpMethodGet)
 	assert.Equal(t, request.Path(), "people/123")
 	assert.Equal(t, request.Body(), []byte(""))
+
+	assert.Equal(t, resource.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["name"])
 
 }
