@@ -146,3 +146,15 @@ func TestRequest_Limit(t *testing.T) {
 	assert.Equal(t, "50", r.queryValues[common.ModifierLimit][0])
 
 }
+
+func TestRequest_Parameter(t *testing.T) {
+
+	r := NewRequest(getTestSession(), "people")
+
+	assert.Equal(t, r, r.WithParam("name", "Mat"))
+	assert.Equal(t, r, r.WithParam("age", "29"))
+
+	assert.Equal(t, "Mat", r.queryValues["name"][0])
+	assert.Equal(t, "29", r.queryValues["age"][0])
+
+}

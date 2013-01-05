@@ -95,6 +95,16 @@ func (r *Request) httpRequest() (*http.Request, error) {
 }
 
 /*
+	Parameters
+*/
+
+// WithParam sets a query parameter in the request.
+func (r *Request) WithParam(key, value string) *Request {
+	r.queryValues.Add(key, value)
+	return r
+}
+
+/*
 	Properties
 */
 
@@ -116,12 +126,10 @@ func (r *Request) Body() []byte {
 
 // Where adds a filter to the request.
 func (r *Request) Where(field, match string) *Request {
-	r.queryValues.Add(stewstrings.MergeStrings(common.FilterFieldPrefix, field), match)
-	return r
+	return r.WithParam(stewstrings.MergeStrings(common.FilterFieldPrefix, field), match)
 }
 
 // Limit sets a limit on the number of resources to get back from Stretchr.
 func (r *Request) Limit(value int64) *Request {
-	r.queryValues.Set(common.ModifierLimit, strconv.FormatInt(value, 10))
-	return r
+	return r.WithParam(common.ModifierLimit, strconv.FormatInt(value, 10))
 }
