@@ -4,6 +4,7 @@ import (
 	"github.com/stretchrcom/stew/objects"
 )
 
+// LoadOne loads a resource from Stretchr with the given path.
 func (s *Session) LoadOne(path string) (*Resource, error) {
 
 	response, err := s.session.At(path).Read()
@@ -26,11 +27,10 @@ func (s *Session) LoadOne(path string) (*Resource, error) {
 		resource.data = objects.Map(responseObject.Data().(map[string]interface{})).Copy()
 		return resource, nil
 	case []interface{}:
-		panic("stretchr: Array in response data when a single object was expected.")
+		return nil, ErrSingleObjectExpectedButGotArray
 	case nil:
-		panic("stretchr: Nothing in response data when a single object was expected.")
+		return nil, ErrSingleObjectExpectedButGotNil
 	}
 
-	panic("stretchr: Something unexpected in the response data when a single object was expected.")
-	return nil, nil
+	return nil, ErrSingleObjectExpectedButGotSomethingElse
 }
