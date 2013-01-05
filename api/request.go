@@ -108,14 +108,17 @@ func (r *Request) WithParam(key, value string) *Request {
 	Properties
 */
 
+// Path gets the path for this request.
 func (r *Request) Path() string {
 	return r.path
 }
 
+// HttpMethod gets the HTTP Method that this request will use.
 func (r *Request) HttpMethod() string {
 	return r.httpMethod
 }
 
+// Body gets the bytes that make up the body of this request.
 func (r *Request) Body() []byte {
 	return r.body
 }
