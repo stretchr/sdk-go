@@ -19,6 +19,10 @@ type Session struct {
 // For example,
 //
 //     Stretchr := stretchr.NewSession(project, publicKey, privateKey)
+//
+// This enables the following code:
+//
+//     person, err := Stretchr.LoadOne("people/123")
 func NewSession(project, publicKey, privateKey string) *Session {
 	s := new(Session)
 	s.session = api.NewSession(project, publicKey, privateKey)
