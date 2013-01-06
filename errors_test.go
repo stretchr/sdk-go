@@ -18,3 +18,11 @@ func TestErrors_GetErrorsFromResponseObject(t *testing.T) {
 	}
 
 }
+
+func TestErrors_GetErrorFromResponseObject(t *testing.T) {
+
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"m": "Oops One"}, map[string]interface{}{"m": "Oops Two"}}, "", nil)
+
+	assert.Equal(t, "Oops One", fmt.Sprintf("%s", GetErrorFromResponseObject(response.BodyObject())))
+
+}

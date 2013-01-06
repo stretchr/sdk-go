@@ -4,6 +4,8 @@ import (
 	"github.com/stretchrcom/stretchr-sdk-go/api"
 )
 
+// Session contains project and account information and enables access to 
+// Stretchr services.
 type Session struct {
 	// session holds the underlying api.Session object.
 	session *api.Session
