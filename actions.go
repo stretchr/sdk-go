@@ -34,3 +34,12 @@ func (s *Session) LoadOne(path string) (*Resource, error) {
 
 	return nil, ErrSingleObjectExpectedButGotSomethingElse
 }
+
+// LoadMany loads many resources from Stretchr with the given path.
+func (s *Session) LoadMany(path string) ([]*Resource, error) {
+
+	//s.session.At(path).Read()
+
+	return nil, nil
+
+}
