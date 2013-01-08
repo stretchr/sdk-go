@@ -9,7 +9,11 @@ import (
 	"testing"
 )
 
-func TestSession_LoadOne(t *testing.T) {
+/*
+	LoadOne
+*/
+
+func TestRequest_LoadOne(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -38,7 +42,7 @@ func TestSession_LoadOne(t *testing.T) {
 
 }
 
-func TestSession_LoadOne_ReadError(t *testing.T) {
+func TestRequest_LoadOne_ReadError(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -56,7 +60,7 @@ func TestSession_LoadOne_ReadError(t *testing.T) {
 
 }
 
-func TestSession_LoadOne_StretchrError(t *testing.T) {
+func TestRequest_LoadOne_StretchrError(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -75,7 +79,11 @@ func TestSession_LoadOne_StretchrError(t *testing.T) {
 
 }
 
-func TestSession_LoadMany(t *testing.T) {
+/*
+	LoadMany
+*/
+
+func TestRequest_LoadMany(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -112,7 +120,7 @@ func TestSession_LoadMany(t *testing.T) {
 
 }
 
-func TestSession_LoadMany_ReadError(t *testing.T) {
+func TestRequest_LoadMany_ReadError(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -130,7 +138,7 @@ func TestSession_LoadMany_ReadError(t *testing.T) {
 
 }
 
-func TestSession_LoadMany_StretchrError(t *testing.T) {
+func TestRequest_LoadMany_StretchrError(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter

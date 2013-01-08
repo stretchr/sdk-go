@@ -9,7 +9,10 @@ import (
 	Transporter interface
 */
 
-// Transporter describes objects capable of making requests.
+// Transporter describes objects capable of making HTTP requests to Stretchr.
+//
+// The LiveTransporter object makes real HTTP requests, where the MockedTransporter 
+// allows you to write tests against your Stretchr code.
 type Transporter interface {
 	// MakeRequest makes the Request and returns the Response, or an error
 	// if there was a problem communicating with the remote server.
