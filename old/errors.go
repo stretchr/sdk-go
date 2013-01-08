@@ -9,6 +9,10 @@ var (
 	ErrSingleObjectExpectedButGotArray         = errors.New("stretchr: Array in response data when a single object was expected.")
 	ErrSingleObjectExpectedButGotNil           = errors.New("stretchr: Nil in response data when a single object was expected.")
 	ErrSingleObjectExpectedButGotSomethingElse = errors.New("stretchr: Unexpected thing in response data when a single object was expected.")
+
+	ErrArrayObjectExpectedButGotNil           = errors.New("stretchr: Nil is response data when a collection of objects (array) was expected.")
+	ErrArrayObjectExpectedButGotSingleObject  = errors.New("stretchr: Single object in response data when a collection of objects (array) was expected.")
+	ErrArrayObjectExpectedButGotSomethingElse = errors.New("stretchr: Unexpected thing in response data when a collection of objects (array) was expected.")
 )
 
 // GetErrorsFromResponseObject gets the array of errors from the ResponseObject.

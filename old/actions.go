@@ -38,8 +38,33 @@ func (s *Session) LoadOne(path string) (*Resource, error) {
 // LoadMany loads many resources from Stretchr with the given path.
 func (s *Session) LoadMany(path string) ([]*Resource, error) {
 
-	//s.session.At(path).Read()
+	response, err := s.session.At(path).Read()
 
-	return nil, nil
+	if err != nil {
+		return nil, err
+	}
+
+	responseObject := response.BodyObject()
+
+	// return the error if there was one
+	errs := GetErrorsFromResponseObject(responseObject)
+	if len(errs) > 0 {
+		return nil, errs[0]
+	}
+
+	switch responseObject.Data().(type) {
+	case []interface{}:
+
+		data := responseObject.Data().([]interface{})
+		resources := make([]*Resource, len(data))
+
+		return nil, nil
+	case map[string]interface{}:
+		return nil, ErrArrayObjectExpectedButGotSingleObject
+	case nil:
+		return nil, ErrArrayObjectExpectedButGotNil
+	}
+
+	return nil, ErrArrayObjectExpectedButGotSomethingElse
 
 }

@@ -1,6 +1,7 @@
 package stretchr
 
 import (
+	"fmt"
 	"github.com/stretchrcom/stretchr-sdk-go/api"
 	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"github.com/stretchrcom/testify/assert"
@@ -19,7 +20,7 @@ func TestSession_LoadOne(t *testing.T) {
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
 
-	resource, err := session.LoadOne("people/123")
+	resource, err := session.At("people/123").LoadOne()
 
 	if assert.NoError(t, err) {
 		assert.NotNil(t, resource)
@@ -36,6 +37,43 @@ func TestSession_LoadOne(t *testing.T) {
 
 }
 
+func TestSession_LoadOne_ReadError(t *testing.T) {
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(nil, assert.AnError)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	resource, err := session.At("people/123").LoadOne()
+
+	if assert.Nil(t, resource) {
+		assert.Equal(t, assert.AnError, err)
+	}
+
+}
+
+func TestSession_LoadOne_StretchrError(t *testing.T) {
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"m": "Something went wrong"}}, "", nil)
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	resource, err := session.At("people/123").LoadOne()
+
+	if assert.Nil(t, resource) {
+		assert.Equal(t, "Something went wrong", fmt.Sprintf("%s", err))
+	}
+
+}
+
 func TestSession_LoadMany(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
@@ -48,7 +86,7 @@ func TestSession_LoadMany(t *testing.T) {
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
 
-	resources, err := session.LoadMany("people")
+	resources, err := session.At("people").LoadMany()
 
 	if assert.NoError(t, err) {
 		assert.Equal(t, 2, len(resources))
