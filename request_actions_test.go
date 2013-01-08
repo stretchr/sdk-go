@@ -156,3 +156,34 @@ func TestRequest_LoadMany_StretchrError(t *testing.T) {
 	}
 
 }
+
+/*
+	Delete
+*/
+func TestRequest_Delete(t *testing.T) {
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~d": 5}))
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	changeInfo, err := session.At("people/123").Delete()
+
+	if assert.NoError(t, err) {
+		assert.NotNil(t, changeInfo)
+	}
+
+	mockedTransporter.AssertExpectations(t)
+	request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
+
+	assert.Equal(t, request.HttpMethod(), common.HttpMethodDelete)
+	assert.Equal(t, request.Path(), "people/123")
+	assert.Equal(t, request.Body(), []byte(""))
+
+	assert.Equal(t, changeInfo.Deleted(), 5)
+
+}
