@@ -26,6 +26,14 @@ func TestNewRequest(t *testing.T) {
 
 }
 
+func TestRequest_Session(t *testing.T) {
+
+	r := NewRequest(getTestSession(), "people")
+
+	assert.Equal(t, testSession, r.Session())
+
+}
+
 func TestRequest_signedURL(t *testing.T) {
 
 	r := NewRequest(getTestSession(), "people/123")

@@ -34,6 +34,7 @@ func MakeResourceAt(path string) *Resource {
 
 // ResourcePath gets the path for this Resource.
 func (r *Resource) ResourcePath() string {
+	// TODO: have this cache
 
 	// break the path apart
 	pathSegments := strings.Split(r.path, common.PathSeparator)

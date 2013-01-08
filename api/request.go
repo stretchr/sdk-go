@@ -123,6 +123,11 @@ func (r *Request) Body() []byte {
 	return r.body
 }
 
+// Session gets the session object that this request will use when being made.
+func (r *Request) Session() *Session {
+	return r.session
+}
+
 /*
 	Filtering
 */

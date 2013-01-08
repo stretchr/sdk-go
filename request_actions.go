@@ -5,9 +5,9 @@ import (
 )
 
 // LoadOne loads a resource from Stretchr with the given path.
-func (s *Session) LoadOne(path string) (*Resource, error) {
+func (r *Request) LoadOne() (*Resource, error) {
 
-	response, err := s.session.At(path).Read()
+	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Read()
 
 	if err != nil {
 		return nil, err
@@ -23,7 +23,7 @@ func (s *Session) LoadOne(path string) (*Resource, error) {
 
 	switch responseObject.Data().(type) {
 	case map[string]interface{}:
-		resource := MakeResourceAt(path)
+		resource := MakeResourceAt(r.UnderlyingRequest.Path())
 		resource.data = objects.Map(responseObject.Data().(map[string]interface{})).Copy()
 		return resource, nil
 	case []interface{}:
@@ -36,9 +36,9 @@ func (s *Session) LoadOne(path string) (*Resource, error) {
 }
 
 // LoadMany loads many resources from Stretchr with the given path.
-func (s *Session) LoadMany(path string) ([]*Resource, error) {
+func (r *Request) LoadMany() (*ResourceCollection, error) {
 
-	response, err := s.session.At(path).Read()
+	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Read()
 
 	if err != nil {
 		return nil, err
@@ -58,7 +58,16 @@ func (s *Session) LoadMany(path string) ([]*Resource, error) {
 		data := responseObject.Data().([]interface{})
 		resources := make([]*Resource, len(data))
 
-		return nil, nil
+		// populate the resources
+		for resIndex, responseData := range data {
+			resource := MakeResourceAt(r.UnderlyingRequest.Path())
+			resource.data = objects.Map(responseData.(map[string]interface{})).Copy()
+			resources[resIndex] = resource
+		}
+
+		resourceCollection := MakeResourceCollection(resources)
+
+		return resourceCollection, nil
 	case map[string]interface{}:
 		return nil, ErrArrayObjectExpectedButGotSingleObject
 	case nil:

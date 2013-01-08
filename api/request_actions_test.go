@@ -43,7 +43,7 @@ func TestRequest_Delete(t *testing.T) {
 
 func TestRequest_Create(t *testing.T) {
 
-	session := getTestSession()
+	request := NewRequest(getTestSession(), "monkey/123")
 
 	returnResponse := new(Response)
 	var returnErr error = nil
@@ -52,17 +52,17 @@ func TestRequest_Create(t *testing.T) {
 	resource := MakeTestResourceAt("monkey/123")
 	resource.Data["name"] = "Mat"
 	resource.Data["age"] = 29
-	res, err := session.Create(resource)
+	res, err := request.Create(resource)
 
 	assert.Equal(t, res, returnResponse)
 	assert.Equal(t, err, returnErr)
 
-	request := mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
+	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
 	assert.Equal(t, request.httpMethod, common.HttpMethodPost)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
-	expectedBody, _ := session.codec.Marshal(resource.Data, nil)
+	expectedBody, _ := request.session.codec.Marshal(resource.Data, nil)
 	assert.Equal(t, request.body, expectedBody)
 
 }
@@ -102,7 +102,7 @@ func TestRequest_CreateMany(t *testing.T) {
 
 func TestRequest_Update(t *testing.T) {
 
-	session := getTestSession()
+	request := NewRequest(getTestSession(), "monkey/123")
 
 	returnResponse := new(Response)
 	var returnErr error = nil
@@ -111,24 +111,24 @@ func TestRequest_Update(t *testing.T) {
 	resource := MakeTestResourceAt("monkey/123")
 	resource.Data["name"] = "Mat"
 	resource.Data["age"] = 29
-	res, err := session.Update(resource)
+	res, err := request.Update(resource)
 
 	assert.Equal(t, res, returnResponse)
 	assert.Equal(t, err, returnErr)
 
-	request := mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
+	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
 	assert.Equal(t, request.httpMethod, common.HttpMethodPut)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
-	expectedBody, _ := session.codec.Marshal(resource.Data, nil)
+	expectedBody, _ := request.session.codec.Marshal(resource.Data, nil)
 	assert.Equal(t, request.body, expectedBody)
 
 }
 
 func TestRequest_Replace(t *testing.T) {
 
-	session := getTestSession()
+	request := NewRequest(getTestSession(), "monkey/123")
 
 	returnResponse := new(Response)
 	var returnErr error = nil
@@ -137,17 +137,17 @@ func TestRequest_Replace(t *testing.T) {
 	resource := MakeTestResourceAt("monkey/123")
 	resource.Data["name"] = "Mat"
 	resource.Data["age"] = 29
-	res, err := session.Replace(resource)
+	res, err := request.Replace(resource)
 
 	assert.Equal(t, res, returnResponse)
 	assert.Equal(t, err, returnErr)
 
-	request := mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
+	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
 	assert.Equal(t, request.httpMethod, common.HttpMethodPost)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
-	expectedBody, _ := session.codec.Marshal(resource.Data, nil)
+	expectedBody, _ := request.session.codec.Marshal(resource.Data, nil)
 	assert.Equal(t, request.body, expectedBody)
 
 }

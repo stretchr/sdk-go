@@ -4,17 +4,6 @@ import (
 	"github.com/stretchrcom/stretchr-sdk-go/common"
 )
 
-/*
-	Developers notice
-	=================
-	This file contains actions like Read, Create, Update, Replace and Delete.  They happen to
-	appear on different objects, but are in one place here for simplicity's sake.
-*/
-
-/*
-	Request
-*/
-
 // Read executes the Request with a GET method, and returns the Response, or an error
 // if something went wrong communicating with Stretchr.
 func (r *Request) Read() (*Response, error) {
@@ -58,38 +47,30 @@ func (r *Request) CreateMany(resources []Resource) (*Response, error) {
 	return r.session.transporter.MakeRequest(r)
 }
 
-/*
-	Session
-*/
-
 // createOrReplace performs the Create or Replace action (they are currently the same)
-func (s *Session) createOrReplace(resource Resource) (*Response, error) {
-
-	r := s.At(resource.ResourcePath())
+func (r *Request) createOrReplace(resource Resource) (*Response, error) {
 
 	r.httpMethod = common.HttpMethodPost
 	r.setBodyObject(resource.ResourceData())
 
-	return s.transporter.MakeRequest(r)
+	return r.session.transporter.MakeRequest(r)
 }
 
 // Create tells Stretchr to create the specified resource.
-func (s *Session) Create(resource Resource) (*Response, error) {
-	return s.createOrReplace(resource)
+func (r *Request) Create(resource Resource) (*Response, error) {
+	return r.createOrReplace(resource)
 }
 
 // Replace tells Stretchr to replace the specified resource.
-func (s *Session) Replace(resource Resource) (*Response, error) {
-	return s.createOrReplace(resource)
+func (r *Request) Replace(resource Resource) (*Response, error) {
+	return r.createOrReplace(resource)
 }
 
 // Update tells Stretchr to update the specified resource.
-func (s *Session) Update(resource Resource) (*Response, error) {
-
-	r := s.At(resource.ResourcePath())
+func (r *Request) Update(resource Resource) (*Response, error) {
 
 	r.httpMethod = common.HttpMethodPut
 	r.setBodyObject(resource.ResourceData())
 
-	return s.transporter.MakeRequest(r)
+	return r.session.transporter.MakeRequest(r)
 }

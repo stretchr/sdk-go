@@ -34,6 +34,7 @@ func TestSession_LoadOne(t *testing.T) {
 	assert.Equal(t, request.Body(), []byte(""))
 
 	assert.Equal(t, resource.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["name"])
+	assert.Equal(t, resource.ResourcePath(), "people/123")
 
 }
 
@@ -80,16 +81,16 @@ func TestSession_LoadMany(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, []map[string]interface{}{map[string]interface{}{"name": "Mat"},
-		map[string]interface{}{"name": "Tyler"}}, nil, "", nil)
+	response := NewTestResponse(200, []map[string]interface{}{map[string]interface{}{"name": "Mat", "~id": "ABC"},
+		map[string]interface{}{"name": "Tyler", "~id": "DEF"}}, nil, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
 
-	resources, err := session.At("people").LoadMany()
+	resourceCollection, err := session.At("people").LoadMany()
 
 	if assert.NoError(t, err) {
-		assert.Equal(t, 2, len(resources))
+		assert.Equal(t, 2, len(resourceCollection.Resources))
 	}
 
 	mockedTransporter.AssertExpectations(t)
@@ -99,10 +100,51 @@ func TestSession_LoadMany(t *testing.T) {
 	assert.Equal(t, request.Path(), "people")
 	assert.Equal(t, request.Body(), []byte(""))
 
-	resource1 := resources[0]
-	resource2 := resources[1]
+	resource1 := resourceCollection.Resources[0]
+	resource2 := resourceCollection.Resources[1]
 
 	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().([]interface{})[0].(map[string]interface{})["name"])
 	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().([]interface{})[1].(map[string]interface{})["name"])
+	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
+	assert.Equal(t, resource2.ResourcePath(), "people/DEF")
+	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
+	assert.Equal(t, resource2.ResourcePath(), "people/DEF")
+
+}
+
+func TestSession_LoadMany_ReadError(t *testing.T) {
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(nil, assert.AnError)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	resource, err := session.At("people/123").LoadMany()
+
+	if assert.Nil(t, resource) {
+		assert.Equal(t, assert.AnError, err)
+	}
+
+}
+
+func TestSession_LoadMany_StretchrError(t *testing.T) {
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"m": "Something went wrong"}}, "", nil)
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	resource, err := session.At("people/123").LoadMany()
+
+	if assert.Nil(t, resource) {
+		assert.Equal(t, "Something went wrong", fmt.Sprintf("%s", err))
+	}
 
 }

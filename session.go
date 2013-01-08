@@ -7,8 +7,8 @@ import (
 // Session contains project and account information and enables access to 
 // Stretchr services.
 type Session struct {
-	// session holds the underlying api.Session object.
-	session *api.Session
+	// underlyingSession holds the underlying api.Session object.
+	underlyingSession *api.Session
 }
 
 // NewSession creates a new Session object for interacting with Stretchr services.
@@ -27,18 +27,22 @@ type Session struct {
 //     person, err := Stretchr.LoadOne("people/123")
 func NewSession(project, publicKey, privateKey string) *Session {
 	s := new(Session)
-	s.session = api.NewSession(project, publicKey, privateKey)
+	s.underlyingSession = api.NewSession(project, publicKey, privateKey)
 	return s
+}
+
+func (s *Session) At(path string) *Request {
+	return NewRequest(s, path)
 }
 
 // Project gets the name of the project that this Session interacts with.
 func (s *Session) Project() string {
-	return s.session.Project()
+	return s.underlyingSession.Project()
 }
 
 // SetTransporter sets the Transporter instance to use when interacting with
 // Stretchr services.
 func (s *Session) SetTransporter(transporter api.Transporter) *Session {
-	s.session.SetTransporter(transporter)
+	s.underlyingSession.SetTransporter(transporter)
 	return s
 }
