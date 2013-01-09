@@ -79,7 +79,9 @@ func (r *Request) LoadMany() (*ResourceCollection, error) {
 
 }
 
+// Delete deletes one or many resources.
 func (r *Request) Delete() (api.ChangeInfo, error) {
+	// TODO: https://github.com/stretchrcom/stretchr-sdk-go/issues/7
 
 	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Delete()
 
@@ -96,4 +98,8 @@ func (r *Request) Delete() (api.ChangeInfo, error) {
 	}
 
 	return responseObject.ChangeInfo(), nil
+}
+
+func (r *Request) Save() (api.ChangeInfo, error) {
+	return nil, nil
 }

@@ -187,3 +187,80 @@ func TestRequest_Delete(t *testing.T) {
 	assert.Equal(t, changeInfo.Deleted(), 5)
 
 }
+
+func TestRequest_Delete_ReadError(t *testing.T) {
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(nil, assert.AnError)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	resource, err := session.At("people/123").Delete()
+
+	if assert.Nil(t, resource) {
+		assert.Equal(t, assert.AnError, err)
+	}
+
+}
+
+func TestRequest_Delete_StretchrError(t *testing.T) {
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"m": "Something went wrong"}}, "", nil)
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	resource, err := session.At("people/123").Delete()
+
+	if assert.Nil(t, resource) {
+		assert.Equal(t, "Something went wrong", fmt.Sprintf("%s", err))
+	}
+
+}
+
+/*
+	Save
+*/
+
+func TestRequest_Save_Create(t *testing.T) {
+
+	resource := MakeResourceAt("people")
+	resource.Set("name", "Mat").Set("age", 29)
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~d": 5}))
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	changeInfo, err := session.At("people").Save(resource)
+
+	if assert.NoError(t, err) {
+		assert.NotNil(t, changeInfo)
+	}
+
+	mockedTransporter.AssertExpectations(t)
+	request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
+
+	assert.Equal(t, request.HttpMethod(), common.HttpMethodDelete)
+	assert.Equal(t, request.Path(), "people/123")
+	assert.Equal(t, request.Body(), []byte(`{"name":"Mat","age":29}`))
+
+	assert.Equal(t, changeInfo.Created(), 1)
+	assert.Equal(t, changeInfo.Updated(), 0)
+	assert.Equal(t, changeInfo.Deleted(), 0)
+	if assert.Equal(t, 1, len(changeInfo.IDs())) {
+		assert.Equal(t, "ABC")
+	}
+
+}
