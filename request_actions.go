@@ -122,6 +122,20 @@ func (r *Request) Update(resource *Resource) (api.ChangeInfo, error) {
 
 }
 
+// Replace replaces a resource.
+// If the resource does not exist, it will be created.
+func (r *Request) Replace(resource *Resource) (api.ChangeInfo, error) {
+
+	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Replace(resource)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return extractChangeInfo(response)
+
+}
+
 // Delete deletes one or many resources.
 func (r *Request) Delete() (api.ChangeInfo, error) {
 	// TODO: https://github.com/stretchrcom/stretchr-sdk-go/issues/7

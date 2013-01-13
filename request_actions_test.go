@@ -312,6 +312,64 @@ func TestRequest_Update_Create(t *testing.T) {
 
 }
 
+func TestRequest_Replace_Create(t *testing.T) {
+
+	resource := MakeResourceAt("people")
+	resource.Set("name", "Mat").Set("age", 29)
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1}))
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	changeInfo, err := session.At("people").Replace(resource)
+
+	if assert.NoError(t, err) {
+		if assert.NotNil(t, changeInfo) {
+			mockedTransporter.AssertExpectations(t)
+			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
+
+			assert.Equal(t, request.HttpMethod(), common.HttpMethodPost)
+			assert.Equal(t, request.Path(), "people")
+			assert.Equal(t, changeInfo.Created(), 1)
+		}
+	}
+
+}
+
+func TestRequest_Replace_Replace(t *testing.T) {
+
+	resource := MakeResourceAt("people")
+	resource.Set("name", "Mat").Set("age", 29)
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1}))
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	changeInfo, err := session.At("people").Create(resource)
+
+	if assert.NoError(t, err) {
+		if assert.NotNil(t, changeInfo) {
+			mockedTransporter.AssertExpectations(t)
+			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
+
+			assert.Equal(t, request.HttpMethod(), common.HttpMethodPost)
+			assert.Equal(t, request.Path(), "people")
+			assert.Equal(t, changeInfo.Created(), 1)
+		}
+	}
+
+}
+
 /*
 	Save
 */
