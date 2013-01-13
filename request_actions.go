@@ -79,6 +79,27 @@ func (r *Request) LoadMany() (*ResourceCollection, error) {
 
 }
 
+// Create creates a resource.
+func (r *Request) Create(resource *Resource) (api.ChangeInfo, error) {
+
+	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Save(resource)
+
+	if err != nil {
+		return nil, err
+	}
+
+	responseObject := response.BodyObject()
+
+	//return the error if there was one
+	errs := GetErrorsFromResponseObject(responseObject)
+	if len(errs) > 0 {
+		return nil, errs[0]
+	}
+
+	return responseObject.ChangeInfo(), nil
+
+}
+
 // Delete deletes one or many resources.
 func (r *Request) Delete() (api.ChangeInfo, error) {
 	// TODO: https://github.com/stretchrcom/stretchr-sdk-go/issues/7
