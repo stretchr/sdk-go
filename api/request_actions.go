@@ -62,15 +62,30 @@ func (r *Request) Create(resource Resource) (*Response, error) {
 }
 
 // Replace tells Stretchr to replace the specified resource.
+// If the resource does not exist, it will be created.
 func (r *Request) Replace(resource Resource) (*Response, error) {
 	return r.createOrReplace(resource)
 }
 
-// Update tells Stretchr to update the specified resource.
-func (r *Request) Update(resource Resource) (*Response, error) {
+// createOrUpdate perform the Create or Update action.
+func (r *Request) createOrUpdate(resource Resource) (*Response, error) {
 
 	r.httpMethod = common.HttpMethodPut
 	r.setBodyObject(resource.ResourceData())
 
 	return r.session.transporter.MakeRequest(r)
+
+}
+
+// Update tells Stretchr to update the specified resource.
+func (r *Request) Update(resource Resource) (*Response, error) {
+	return r.createOrUpdate(resource)
+}
+
+// Save tells Stretchr to save the resource.
+// If the resource does not exist, it will be created.
+// If the resource does exist, it will be updated.
+// This is the preferred method of saving data to Stretchr.
+func (r *Request) Save(resource Resource) (*Response, error) {
+	return r.createOrUpdate(resource)
 }

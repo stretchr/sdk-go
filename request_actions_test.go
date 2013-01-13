@@ -238,7 +238,7 @@ func TestRequest_Save_Create(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~d": 5}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -246,21 +246,14 @@ func TestRequest_Save_Create(t *testing.T) {
 	changeInfo, err := session.At("people").Save(resource)
 
 	if assert.NoError(t, err) {
-		assert.NotNil(t, changeInfo)
-	}
+		if assert.NotNil(t, changeInfo) {
+			mockedTransporter.AssertExpectations(t)
+			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-	mockedTransporter.AssertExpectations(t)
-	request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
-
-	assert.Equal(t, request.HttpMethod(), common.HttpMethodDelete)
-	assert.Equal(t, request.Path(), "people/123")
-	assert.Equal(t, request.Body(), []byte(`{"name":"Mat","age":29}`))
-
-	assert.Equal(t, changeInfo.Created(), 1)
-	assert.Equal(t, changeInfo.Updated(), 0)
-	assert.Equal(t, changeInfo.Deleted(), 0)
-	if assert.Equal(t, 1, len(changeInfo.IDs())) {
-		assert.Equal(t, "ABC")
+			assert.Equal(t, request.HttpMethod(), common.HttpMethodPut)
+			assert.Equal(t, request.Path(), "people")
+			assert.Equal(t, changeInfo.Created(), 1)
+		}
 	}
 
 }

@@ -100,6 +100,22 @@ func (r *Request) Delete() (api.ChangeInfo, error) {
 	return responseObject.ChangeInfo(), nil
 }
 
-func (r *Request) Save() (api.ChangeInfo, error) {
-	return nil, nil
+func (r *Request) Save(resource *Resource) (api.ChangeInfo, error) {
+
+	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Save(resource)
+
+	if err != nil {
+		return nil, err
+	}
+
+	responseObject := response.BodyObject()
+
+	//return the error if there was one
+	errs := GetErrorsFromResponseObject(responseObject)
+	if len(errs) > 0 {
+		return nil, errs[0]
+	}
+
+	return responseObject.ChangeInfo(), nil
+
 }

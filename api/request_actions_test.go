@@ -151,3 +151,29 @@ func TestRequest_Replace(t *testing.T) {
 	assert.Equal(t, request.body, expectedBody)
 
 }
+
+func TestRequest_Save(t *testing.T) {
+
+	request := NewRequest(getTestSession(), "monkey/123")
+
+	returnResponse := new(Response)
+	var returnErr error = nil
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(returnResponse, returnErr)
+
+	resource := MakeTestResourceAt("monkey/123")
+	resource.Data["name"] = "Mat"
+	resource.Data["age"] = 29
+	res, err := request.Save(resource)
+
+	assert.Equal(t, res, returnResponse)
+	assert.Equal(t, err, returnErr)
+
+	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
+
+	assert.Equal(t, request.httpMethod, common.HttpMethodPut)
+	assert.Equal(t, request.path, resource.ResourcePath())
+
+	expectedBody, _ := request.session.codec.Marshal(resource.Data, nil)
+	assert.Equal(t, request.body, expectedBody)
+
+}
