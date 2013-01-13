@@ -254,10 +254,6 @@ func TestRequest_Create(t *testing.T) {
 
 }
 
-/*
-	Save
-*/
-
 func TestRequest_Save_Create(t *testing.T) {
 
 	resource := MakeResourceAt("people")
@@ -273,6 +269,68 @@ func TestRequest_Save_Create(t *testing.T) {
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
 
 	changeInfo, err := session.At("people").Save(resource)
+
+	if assert.NoError(t, err) {
+		if assert.NotNil(t, changeInfo) {
+			mockedTransporter.AssertExpectations(t)
+			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
+
+			assert.Equal(t, request.HttpMethod(), common.HttpMethodPut)
+			assert.Equal(t, request.Path(), "people")
+			assert.Equal(t, changeInfo.Created(), 1)
+		}
+	}
+
+}
+
+func TestRequest_Update_Create(t *testing.T) {
+
+	resource := MakeResourceAt("people")
+	resource.Set("name", "Mat").Set("age", 29)
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~u": 1}))
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	changeInfo, err := session.At("people").Update(resource)
+
+	if assert.NoError(t, err) {
+		if assert.NotNil(t, changeInfo) {
+			mockedTransporter.AssertExpectations(t)
+			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
+
+			assert.Equal(t, request.HttpMethod(), common.HttpMethodPut)
+			assert.Equal(t, request.Path(), "people")
+			assert.Equal(t, changeInfo.Updated(), 1)
+		}
+	}
+
+}
+
+/*
+	Save
+*/
+
+func TestRequest_Update_Update(t *testing.T) {
+
+	resource := MakeResourceAt("people")
+	resource.Set("name", "Mat").Set("age", 29)
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1}))
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	changeInfo, err := session.At("people").Update(resource)
 
 	if assert.NoError(t, err) {
 		if assert.NotNil(t, changeInfo) {

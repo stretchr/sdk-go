@@ -95,9 +95,24 @@ func extractChangeInfo(response *api.Response) (api.ChangeInfo, error) {
 }
 
 // Create creates a resource.
+// If the resource exists, it will be replaced.
 func (r *Request) Create(resource *Resource) (api.ChangeInfo, error) {
 
-	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Save(resource)
+	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Create(resource)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return extractChangeInfo(response)
+
+}
+
+// Update updates a resource.
+// If the resource does not exist, it will be Updated.
+func (r *Request) Update(resource *Resource) (api.ChangeInfo, error) {
+
+	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Update(resource)
 
 	if err != nil {
 		return nil, err
@@ -120,6 +135,9 @@ func (r *Request) Delete() (api.ChangeInfo, error) {
 	return extractChangeInfo(response)
 }
 
+// Save creates or updates a resource.
+// If the resource doesn't exist, it will be created.
+// If the resource exists, it will be updated.
 func (r *Request) Save(resource *Resource) (api.ChangeInfo, error) {
 
 	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Save(resource)
