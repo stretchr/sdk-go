@@ -79,14 +79,8 @@ func (r *Request) LoadMany() (*ResourceCollection, error) {
 
 }
 
-// Create creates a resource.
-func (r *Request) Create(resource *Resource) (api.ChangeInfo, error) {
-
-	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Save(resource)
-
-	if err != nil {
-		return nil, err
-	}
+// extractChangeInfo checks for errors and returns the change info from a response.
+func extractChangeInfo(response *api.Response) (api.ChangeInfo, error) {
 
 	responseObject := response.BodyObject()
 
@@ -97,6 +91,19 @@ func (r *Request) Create(resource *Resource) (api.ChangeInfo, error) {
 	}
 
 	return responseObject.ChangeInfo(), nil
+
+}
+
+// Create creates a resource.
+func (r *Request) Create(resource *Resource) (api.ChangeInfo, error) {
+
+	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Save(resource)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return extractChangeInfo(response)
 
 }
 
@@ -110,15 +117,7 @@ func (r *Request) Delete() (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	responseObject := response.BodyObject()
-
-	// return the error if there was one
-	errs := GetErrorsFromResponseObject(responseObject)
-	if len(errs) > 0 {
-		return nil, errs[0]
-	}
-
-	return responseObject.ChangeInfo(), nil
+	return extractChangeInfo(response)
 }
 
 func (r *Request) Save(resource *Resource) (api.ChangeInfo, error) {
@@ -129,14 +128,6 @@ func (r *Request) Save(resource *Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	responseObject := response.BodyObject()
-
-	//return the error if there was one
-	errs := GetErrorsFromResponseObject(responseObject)
-	if len(errs) > 0 {
-		return nil, errs[0]
-	}
-
-	return responseObject.ChangeInfo(), nil
+	return extractChangeInfo(response)
 
 }
