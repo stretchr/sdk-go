@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"github.com/stretchrcom/signature"
 	stewstrings "github.com/stretchrcom/stew/strings"
 	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"net/http"
@@ -44,9 +45,7 @@ func (r *Request) signedUrl() (*url.URL, error) {
 	// set the query values
 	theUrl.RawQuery = r.queryValues.Encode()
 
-	signedURLString, signErr := getSignedURL(r.httpMethod, theUrl.String(), r.body, r.session.publicKey, r.session.privateKey)
-
-	fmt.Printf("Signed url is: %s", signedURLString)
+	signedURLString, signErr := signature.GetSignedURL(r.httpMethod, theUrl.String(), string(r.body), r.session.publicKey, r.session.privateKey)
 
 	if signErr != nil {
 		return nil, signErr
