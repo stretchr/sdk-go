@@ -52,17 +52,17 @@ func TestGetSignedURL(t *testing.T) {
 
 	var signed string
 
-	signed, _ = getSignedURL(common.HttpMethodGet, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20", []byte("body"), "ABC123-private")
-	assert.Equal(t, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20&~sign=df073ee4086eed5848d167871c7424937027728e", signed)
+	signed, _ = getSignedURL(common.HttpMethodGet, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20", []byte("body"), "DEF-public", "ABC123-private")
+	assert.Equal(t, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20&~key=DEF-public&~sign=df073ee4086eed5848d167871c7424937027728e", signed)
 
-	signed, _ = getSignedURL(common.HttpMethodGet, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20", []byte("body"), "DIFFERENT-PRIVATE")
-	assert.Equal(t, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20&~sign=34f55c3a086c260098e75066b38ac42e33e8faab", signed)
+	signed, _ = getSignedURL(common.HttpMethodGet, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20", []byte("body"), "DIFFERENT-public", "DIFFERENT-PRIVATE")
+	assert.Equal(t, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20&~key=DIFFERENT-public&~sign=34f55c3a086c260098e75066b38ac42e33e8faab", signed)
 
 }
 
 func TestNoBodyHashWhenNoBody(t *testing.T) {
 
-	signed, _ := getSignedURL(common.HttpMethodGet, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20", []byte(""), "ABC123-private")
-	assert.Equal(t, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20&~sign=bdf49047abf3c8e56de21e244bc24b1c2a6086a2", signed)
+	signed, _ := getSignedURL(common.HttpMethodGet, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20", []byte(""), "DEF-public", "ABC123-private")
+	assert.Equal(t, "http://test.stretchr.com/api/v1?~key=ABC123&:name=!Mat&:name=!Laurie&:age=>20&~key=DEF-public&~sign=bdf49047abf3c8e56de21e244bc24b1c2a6086a2", signed)
 
 }

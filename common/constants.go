@@ -58,7 +58,7 @@ const (
 const (
 	SignSignature  string = "~sign"
 	SignPrivateKey string = "~private"
-	SignPublicKey  string = "~public"
+	SignPublicKey  string = "~key"
 	SignBodyHash   string = "~bodyhash"
 )
 

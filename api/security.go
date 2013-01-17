@@ -83,12 +83,14 @@ func getSignature(method, requestUrl string, body []byte, privateKey string) (st
 	base := strings.Split(u.String(), "?")[0]
 	combined := []byte(stewstrings.MergeStrings(method, "&", base, "?", orderedParams))
 
+	fmt.Printf("Combined string is: %s\n", combined)
+
 	return hash(combined), nil
 
 }
 
 // getSignedURL gets the URL with the sign parameter added based on the given parameters.
-func getSignedURL(method, requestUrl string, body []byte, privateKey string) (string, error) {
+func getSignedURL(method, requestUrl string, body []byte, publicKey, privateKey string) (string, error) {
 
 	hash, hashErr := getSignature(method, requestUrl, body, privateKey)
 
@@ -96,8 +98,10 @@ func getSignedURL(method, requestUrl string, body []byte, privateKey string) (st
 		return FailedSignature, hashErr
 	}
 
-	signed := fmt.Sprintf("%s&%s=%s", requestUrl, url.QueryEscape(common.SignSignature), url.QueryEscape(hash))
+	if strings.Contains(requestUrl, "?") {
+		return fmt.Sprintf("%s&%s=%s&%s=%s", requestUrl, url.QueryEscape(common.SignPublicKey), publicKey, url.QueryEscape(common.SignSignature), url.QueryEscape(hash)), nil
+	}
 
-	return signed, nil
+	return fmt.Sprintf("%s?%s=%s&%s=%s", requestUrl, url.QueryEscape(common.SignPublicKey), publicKey, url.QueryEscape(common.SignSignature), url.QueryEscape(hash)), nil
 
 }
