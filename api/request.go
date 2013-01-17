@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"github.com/stretchrcom/signature"
 	stewstrings "github.com/stretchrcom/stew/strings"
 	"github.com/stretchrcom/stretchr-sdk-go/common"
