@@ -44,7 +44,17 @@ func (r *Request) signedUrl() (*url.URL, error) {
 	// set the query values
 	theUrl.RawQuery = r.queryValues.Encode()
 
-	signedURLString, signErr := signature.GetSignedURL(r.httpMethod, theUrl.String(), string(r.body), r.session.publicKey, r.session.privateKey)
+	urlString = theUrl.String()
+
+	var urlToSign string
+
+	if strings.Contains(urlString, "?") {
+		urlToSign = stewstrings.MergeStrings(urlString, "&", common.SignPublicKey, "=", r.session.publicKey)
+	} else {
+		urlToSign = stewstrings.MergeStrings(urlString, "?", common.SignPublicKey, "=", r.session.publicKey)
+	}
+
+	signedURLString, signErr := signature.GetSignedURL(r.httpMethod, urlToSign, string(r.body), r.session.privateKey)
 
 	if signErr != nil {
 		return nil, signErr
