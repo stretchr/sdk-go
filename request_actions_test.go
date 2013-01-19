@@ -10,10 +10,10 @@ import (
 )
 
 /*
-	LoadOne
+	ReadOne
 */
 
-func TestRequest_LoadOne(t *testing.T) {
+func TestRequest_ReadOne(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -24,7 +24,7 @@ func TestRequest_LoadOne(t *testing.T) {
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
 
-	resource, err := session.At("people/123").LoadOne()
+	resource, err := session.At("people/123").ReadOne()
 
 	if assert.NoError(t, err) {
 		assert.NotNil(t, resource)
@@ -42,7 +42,7 @@ func TestRequest_LoadOne(t *testing.T) {
 
 }
 
-func TestRequest_LoadOne_ReadError(t *testing.T) {
+func TestRequest_ReadOne_ReadError(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -52,7 +52,7 @@ func TestRequest_LoadOne_ReadError(t *testing.T) {
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
 
-	resource, err := session.At("people/123").LoadOne()
+	resource, err := session.At("people/123").ReadOne()
 
 	if assert.Nil(t, resource) {
 		assert.Equal(t, assert.AnError, err)
@@ -60,7 +60,7 @@ func TestRequest_LoadOne_ReadError(t *testing.T) {
 
 }
 
-func TestRequest_LoadOne_StretchrError(t *testing.T) {
+func TestRequest_ReadOne_StretchrError(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -71,7 +71,7 @@ func TestRequest_LoadOne_StretchrError(t *testing.T) {
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
 
-	resource, err := session.At("people/123").LoadOne()
+	resource, err := session.At("people/123").ReadOne()
 
 	if assert.Nil(t, resource) {
 		assert.Equal(t, "Something went wrong", fmt.Sprintf("%s", err))
@@ -80,10 +80,10 @@ func TestRequest_LoadOne_StretchrError(t *testing.T) {
 }
 
 /*
-	LoadMany
+	ReadMany
 */
 
-func TestRequest_LoadMany(t *testing.T) {
+func TestRequest_ReadMany(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -95,7 +95,7 @@ func TestRequest_LoadMany(t *testing.T) {
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
 
-	resourceCollection, err := session.At("people").LoadMany()
+	resourceCollection, err := session.At("people").ReadMany()
 
 	if assert.NoError(t, err) {
 		assert.Equal(t, 2, len(resourceCollection.Resources))
@@ -120,7 +120,7 @@ func TestRequest_LoadMany(t *testing.T) {
 
 }
 
-func TestRequest_LoadMany_ReadError(t *testing.T) {
+func TestRequest_ReadMany_ReadError(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -130,7 +130,7 @@ func TestRequest_LoadMany_ReadError(t *testing.T) {
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
 
-	resource, err := session.At("people/123").LoadMany()
+	resource, err := session.At("people/123").ReadMany()
 
 	if assert.Nil(t, resource) {
 		assert.Equal(t, assert.AnError, err)
@@ -138,7 +138,7 @@ func TestRequest_LoadMany_ReadError(t *testing.T) {
 
 }
 
-func TestRequest_LoadMany_StretchrError(t *testing.T) {
+func TestRequest_ReadMany_StretchrError(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
@@ -149,7 +149,7 @@ func TestRequest_LoadMany_StretchrError(t *testing.T) {
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
 
-	resource, err := session.At("people/123").LoadMany()
+	resource, err := session.At("people/123").ReadMany()
 
 	if assert.Nil(t, resource) {
 		assert.Equal(t, "Something went wrong", fmt.Sprintf("%s", err))

@@ -5,8 +5,8 @@ import (
 	"github.com/stretchrcom/stretchr-sdk-go/api"
 )
 
-// LoadOne loads a resource from Stretchr with the given path.
-func (r *Request) LoadOne() (*Resource, error) {
+// ReadOne loads a resource from Stretchr with the given path.
+func (r *Request) ReadOne() (*Resource, error) {
 
 	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Read()
 
@@ -36,8 +36,8 @@ func (r *Request) LoadOne() (*Resource, error) {
 	return nil, ErrSingleObjectExpectedButGotSomethingElse
 }
 
-// LoadMany loads many resources from Stretchr with the given path.
-func (r *Request) LoadMany() (*ResourceCollection, error) {
+// ReadMany loads many resources from Stretchr with the given path.
+func (r *Request) ReadMany() (*ResourceCollection, error) {
 
 	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Read()
 

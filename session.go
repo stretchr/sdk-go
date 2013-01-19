@@ -4,7 +4,7 @@ import (
 	"github.com/stretchrcom/stretchr-sdk-go/api"
 )
 
-// Session contains project and account information and enables access to 
+// Session contains project and account information and enables access to
 // Stretchr services.
 type Session struct {
 	// underlyingSession holds the underlying api.Session object.
@@ -24,7 +24,7 @@ type Session struct {
 //
 // This enables the following code:
 //
-//     person, err := Stretchr.LoadOne("people/123")
+//     person, err := Stretchr.ReadOne("people/123")
 func NewSession(project, publicKey, privateKey string) *Session {
 	s := new(Session)
 	s.underlyingSession = api.NewSession(project, publicKey, privateKey)
