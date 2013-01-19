@@ -75,3 +75,8 @@ func (r *Resource) Set(keypath string, value interface{}) *Resource {
 	r.data.Set(keypath, value)
 	return r
 }
+
+// SetID sets the ID value to the specified string and returns the Resource for chaining.
+func (r *Resource) SetID(ID string) {
+	r.Set(common.DataFieldID, ID)
+}

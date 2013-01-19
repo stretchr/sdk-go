@@ -68,6 +68,16 @@ func TestResource_Set(t *testing.T) {
 
 }
 
+func TestResource_SetID(t *testing.T) {
+
+	resource := MakeResourceAt("people")
+
+	resource.SetID("tyler")
+
+	assert.Equal(t, resource.data[common.DataFieldID], "tyler")
+
+}
+
 func TestResource_Get(t *testing.T) {
 
 	resource := MakeResourceAt("people")
