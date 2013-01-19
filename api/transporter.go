@@ -11,7 +11,7 @@ import (
 
 // Transporter describes objects capable of making HTTP requests to Stretchr.
 //
-// The LiveTransporter object makes real HTTP requests, where the MockedTransporter 
+// The LiveTransporter object makes real HTTP requests, where the MockedTransporter
 // allows you to write tests against your Stretchr code.
 type Transporter interface {
 	// MakeRequest makes the Request and returns the Response, or an error
@@ -41,17 +41,17 @@ func (t *LiveTransporter) MakeRequest(request *Request) (*Response, error) {
 		return nil, requestErr
 	}
 
-	log.Print("Making request: %s", httpRequest)
+	//log.Printf("Making request: %v", httpRequest)
 
 	// make the request
 	httpResponse, httpErr := http.DefaultClient.Do(httpRequest)
 
 	if httpErr != nil {
-		log.Print("  Error: %s", httpErr)
+		log.Printf("  Error: %v", httpErr)
 		return nil, httpErr
 	}
 
-	log.Print("  Response: %s", httpResponse)
+	//log.Printf("  Response: %v", httpResponse)
 
 	response, responseErr := NewResponse(request.session, httpResponse)
 
