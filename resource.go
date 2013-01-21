@@ -7,6 +7,11 @@ import (
 	"strings"
 )
 
+const (
+	// NoID represents the string indicating the resource has no ID.
+	NoID string = ""
+)
+
 // Resource represents a resource in Stretchr.
 type Resource struct {
 	// Path is the path of this resource.
@@ -65,6 +70,20 @@ func (r *Resource) ResourceData() objects.Map {
 // http://godoc.org/github.com/stretchrcom/stew/objects#Map.Get
 func (r *Resource) Get(keypath string) interface{} {
 	return r.data.Get(keypath)
+}
+
+// ID gets the ID string for this resource.
+//
+// If this resource doesn't have an ID (which can happen if it has not yet
+// been persisted) then `NoID` will be returned.
+func (r *Resource) ID() string {
+	if id, ok := r.data[common.DataFieldID]; ok {
+		if idString, typeOk := id.(string); typeOk {
+			return idString
+		}
+	}
+	// no ID
+	return NoID
 }
 
 // Set sets a value to the specified key and returns the Resource for chaining.

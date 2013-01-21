@@ -106,6 +106,20 @@ func TestResource_Get(t *testing.T) {
 
 }
 
+func TestResource_ID(t *testing.T) {
+
+	id := "ABC123"
+
+	resource := MakeResourceAt("people")
+
+	assert.Equal(t, NoID, resource.ID())
+
+	resource.SetID(id)
+
+	assert.Equal(t, id, resource.ID())
+
+}
+
 func TestResource_Save(t *testing.T) {
 
 	//resource := MakeResourceAt("people")
