@@ -5,7 +5,7 @@ import (
 )
 
 // MockedTransporter is a Transporter object that has been mocked (using github.com/stretchrcom/testify/mock)
-// to allow for the testing of this code, without having to make real HTTP requests.
+// to allow for the testing of Stretchr code, without having to make real HTTP requests.
 type MockedTransporter struct {
 	mock.Mock
 }

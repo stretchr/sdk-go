@@ -31,6 +31,14 @@ func NewSession(project, publicKey, privateKey string) *Session {
 	return s
 }
 
+// At starts a conversation with Stretchr regarding the specified Path.
+//
+// On its own, At is more or less useless, but as part of a chain of commands,
+// is how you specify which resource or set of resources you are referring to.
+//
+// For example, to delete person with ID `123`, you would use At in the following way:
+//
+//    Stretchr.At("people/123").Delete()
 func (s *Session) At(path string) *Request {
 	return NewRequest(s, path)
 }
