@@ -86,7 +86,7 @@ Stretchr allows you to modify the resources that are returned by further _filter
     collection, err := Stretchr.At("people").Order("-age").Limit(3).ReadMany()
 
     // find the next three oldest people (paging)
-    collection, err := Stretchr.At("people").Order("-age").Skip(3).Limit(3).ReadMany()
+    collection, err := Stretchr.At("people").Order("-age").Page(2, 3).ReadMany()
 
     // find people called John
     collection, err := Stretchr.At("people").Where("name", "John").ReadMany()
