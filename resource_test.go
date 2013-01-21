@@ -177,9 +177,11 @@ func TestResource_GetTime(t *testing.T) {
 
 }
 
-func TestResource_Save(t *testing.T) {
+func TestResource_SetNumber(t *testing.T) {
 
-	//resource := MakeResourceAt("people")
-	//resource.
+	resource := MakeResourceAt("people")
+	assert.Equal(t, resource, resource.SetNumber("number", 10))
+
+	assert.Equal(t, float64(10), resource.Get("number"))
 
 }

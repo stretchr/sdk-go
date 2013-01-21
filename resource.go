@@ -139,3 +139,9 @@ func (r *Resource) Set(keypath string, value interface{}) *Resource {
 func (r *Resource) SetID(ID string) *Resource {
 	return r.Set(common.DataFieldID, ID)
 }
+
+// SetNumber sets a number (float64) in the data of this resource and returns the
+// Resource for chaining.
+func (r *Resource) SetNumber(keypath string, value float64) *Resource {
+	return r.Set(keypath, value)
+}
