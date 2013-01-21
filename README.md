@@ -19,7 +19,7 @@ For example:
     Stretchr := stretchr.NewSession("test.project.company", "ABCDEFGHJIKLMNOPQRSTU", "VWXYZABCDEFGHJIKLM")
 
   
-It is good practice to name your variable `Stretchr` (as in the example above) because it makes the rest of your code very easy to read.  The `Stretchr` variable in the following code samples refers to a `stretchr.Session` object.
+It is good practice to name your variable `Stretchr` (as in the example above) because it makes the rest of your code very easy to read.  Be careful to remember the difference between uppercase `Stretchr`, the session variable, and lowercase `stretchr`, the package.  The `Stretchr` variable in the following code samples refers to a `stretchr.Session` object.
 
 ### Creating a resource
 
