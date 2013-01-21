@@ -120,6 +120,63 @@ func TestResource_ID(t *testing.T) {
 
 }
 
+func TestResource_GetString(t *testing.T) {
+
+	resource := MakeResourceAt("people")
+	resource.Set("name", "Mat")
+
+	assert.Equal(t, "Mat", resource.GetString("name"))
+
+	resource.Set("name", 25)
+	assert.Panics(t, func() {
+		resource.GetString("name")
+	})
+
+}
+
+func TestResource_GetBool(t *testing.T) {
+
+	resource := MakeResourceAt("people")
+	resource.Set("key", true)
+
+	assert.Equal(t, true, resource.GetBool("key"))
+
+	resource.Set("key", 25)
+	assert.Panics(t, func() {
+		resource.GetBool("key")
+	})
+
+}
+
+func TestResource_GetNumber(t *testing.T) {
+
+	resource := MakeResourceAt("people")
+	resource.Set("key", float64(123))
+
+	assert.Equal(t, 123, resource.GetNumber("key"))
+
+	resource.Set("key", "not a number")
+	assert.Panics(t, func() {
+		resource.GetNumber("key")
+	})
+
+}
+
+func TestResource_GetTime(t *testing.T) {
+
+	resource := MakeResourceAt("people")
+	atime := float64(time.Now().Unix())
+	resource.Set("key", atime)
+
+	assert.Equal(t, atime, float64(resource.GetTime("key").Unix()))
+
+	resource.Set("key", "not a time")
+	assert.Panics(t, func() {
+		resource.GetTime("key")
+	})
+
+}
+
 func TestResource_Save(t *testing.T) {
 
 	//resource := MakeResourceAt("people")

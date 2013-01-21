@@ -1,10 +1,12 @@
 package stretchr
 
 import (
+	"fmt"
 	"github.com/stretchrcom/stew/objects"
 	stewstrings "github.com/stretchrcom/stew/strings"
 	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"strings"
+	"time"
 )
 
 const (
@@ -70,6 +72,44 @@ func (r *Resource) ResourceData() objects.Map {
 // http://godoc.org/github.com/stretchrcom/stew/objects#Map.Get
 func (r *Resource) Get(keypath string) interface{} {
 	return r.data.Get(keypath)
+}
+
+// GetString gets a strongly typed value from the data of this Resource
+// or panics if that is impossible.
+func (r *Resource) GetString(keypath string) string {
+	if val, ok := r.Get(keypath).(string); ok {
+		return val
+	}
+	panic(fmt.Sprintf("stretchr: Cannot GetString on %s.", r.Get(keypath)))
+}
+
+// GetNumber gets a strongly typed value from the data of this Resource
+// or panics if that is impossible.
+func (r *Resource) GetNumber(keypath string) float64 {
+	if val, ok := r.Get(keypath).(float64); ok {
+		return val
+	}
+	panic(fmt.Sprintf("stretchr: Cannot GetNumber on %s.", r.Get(keypath)))
+}
+
+// GetBool gets a strongly typed value from the data of this Resource
+// or panics if that is impossible.
+func (r *Resource) GetBool(keypath string) bool {
+	if val, ok := r.Get(keypath).(bool); ok {
+		return val
+	}
+	panic(fmt.Sprintf("stretchr: Cannot GetBool on %s.", r.Get(keypath)))
+}
+
+// GetTime gets a strongly typed value from the data of this Resource
+// or panics if that is impossible.
+func (r *Resource) GetTime(keypath string) time.Time {
+
+	if floatTime, floatTimeOk := r.Get(keypath).(float64); floatTimeOk {
+		return time.Unix(int64(floatTime), 0)
+	}
+
+	panic(fmt.Sprintf("stretchr: Cannot GetTime on %s.", r.Get(keypath)))
 }
 
 // ID gets the ID string for this resource.
