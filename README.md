@@ -1,8 +1,10 @@
 # Stretchr Go SDK
 
-The Stretchr Go SDK allows you to interact with Stretchr services in your Go code.
+The Stretchr Go SDK allows you to interact with Stretchr services in your Go code.  You should become familiar with how Stretchr works first by visiting the [Stretchr website](http://www.stretchr.com/).
 
 ## Quick overview
+
+This guide covers the primary functions of Stretchr, and how you execute such activities using the Go SDK.
 
 ### Create a shared `Session` object
 
@@ -33,10 +35,40 @@ To persist something in Stretchr, you just need to create a resource and call th
     // create the resource
     change, err := Stretchr.At(resource.ResourcePath()).Create(resource)
     
-    // check for errors
     if err != nil {
       // TODO: handle errors
     }
     
     // log the ID that Stretchr generated for us
     log.Printf("Person was created and given ID: %s", resource.ID())
+    
+### Reading resources
+
+Once you have data in Stretchr, it would be nice to get it back.  Luckily, we thought of this.
+    
+#### Reading a single resource
+
+If you know the path and ID of a resource you wish to read, you can do so using the `ReadOne` method as in the following example where we read the `people` resource with ID `123`:
+
+    resource, err := Stretchr.At("people/123").ReadOne()
+    
+    if err != nil {
+      // TODO: handle errors
+    }
+    
+    log.Printf("Just loaded %s who is %g years old.", resource.Get("name"), resource.Get("age"))
+
+#### Reading many resources
+
+If you want to load a collection of resources in one go, you can do so using the `ReadMany` function:
+
+    collection, err := Stretchr.At("people").ReadMany()
+    
+    if err != nil {
+      // TODO: handle errors
+    }
+    
+    // iterate over each person
+    for _, resource := range collection.Resources {
+      log.Printf("Did you know %s was %g years old?", resource.Get("name"), resource.Get("age"))
+    }
