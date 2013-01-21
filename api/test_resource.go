@@ -55,3 +55,12 @@ func (r *TestResource) ResourcePath() string {
 func (r *TestResource) ResourceData() objects.Map {
 	return r.Data
 }
+
+func (r *TestResource) ID() string {
+	return r.Data[common.DataFieldID].(string)
+}
+
+func (r *TestResource) SetID(ID string) Resource {
+	r.Data[common.DataFieldID] = ID
+	return r
+}

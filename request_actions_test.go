@@ -234,7 +234,7 @@ func TestRequest_Create(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1, "~ids": []string{"hello"}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -249,6 +249,7 @@ func TestRequest_Create(t *testing.T) {
 			assert.Equal(t, request.HttpMethod(), common.HttpMethodPost)
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Created(), 1)
+			assert.Equal(t, resource.ID(), "hello")
 		}
 	}
 
@@ -263,7 +264,7 @@ func TestRequest_Save_Create(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1, "~ids": []string{"hello"}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -292,7 +293,7 @@ func TestRequest_Update_Create(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~u": 1}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~u": 1, "~ids": []string{"hello"}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -350,7 +351,7 @@ func TestRequest_Replace_Replace(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1, "~ids": []string{"hello"}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -383,7 +384,7 @@ func TestRequest_Update_Update(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~c": 1, "~ids": []string{"hello"}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -412,7 +413,7 @@ func TestRequest_Save_Update(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~u": 1}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{"~u": 1, "~ids": []string{"hello"}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)

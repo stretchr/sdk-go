@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/stretchrcom/stew/objects"
 	stewstrings "github.com/stretchrcom/stew/strings"
+	"github.com/stretchrcom/stretchr-sdk-go/api"
 	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"strings"
 	"time"
@@ -164,6 +165,6 @@ func (r *Resource) Set(keypath string, value interface{}) *Resource {
 }
 
 // SetID sets the ID value to the specified string and returns the Resource for chaining.
-func (r *Resource) SetID(ID string) *Resource {
+func (r *Resource) SetID(ID string) api.Resource {
 	return r.Set(common.DataFieldID, ID)
 }

@@ -104,7 +104,15 @@ func (r *Request) Create(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	return extractChangeInfo(response)
+	changeInfo, err := extractChangeInfo(response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	resource.SetID(changeInfo.IDs()[0])
+
+	return changeInfo, nil
 
 }
 
