@@ -163,3 +163,9 @@ func (r *Request) Limit(value int64) *Request {
 func (r *Request) Skip(value int64) *Request {
 	return r.WithParam(common.ModifierSkip, strconv.FormatInt(value, 10))
 }
+
+// Page sets the page of resources to get by specifying the appropriate Limit and Skip
+// values.
+func (r *Request) Page(pageNumber, resourcesPerPage int64) *Request {
+	return r.Limit(resourcesPerPage).Skip(resourcesPerPage * (pageNumber - 1))
+}

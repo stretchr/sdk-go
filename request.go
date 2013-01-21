@@ -45,6 +45,11 @@ func (r *Request) Skip(value int64) *Request {
 	return r
 }
 
+func (r *Request) Page(pageNumber, resourcesPerPage int64) *Request {
+	r.UnderlyingRequest.Page(pageNumber, resourcesPerPage)
+	return r
+}
+
 // WithParam sets a query parameter in the request.
 func (r *Request) WithParam(key, value string) *Request {
 	r.UnderlyingRequest.WithParam(key, value)

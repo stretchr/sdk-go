@@ -188,3 +188,23 @@ func TestRequest_WithParam(t *testing.T) {
 	assert.Equal(t, "29", r.queryValues["age"][0])
 
 }
+
+func TestRequest_Page(t *testing.T) {
+
+	r := NewRequest(getTestSession(), "people")
+
+	returnOfPage := r.Page(1, 50)
+	assert.Equal(t, r, returnOfPage, "Page should chain")
+
+	assert.Equal(t, "0", r.queryValues[common.ModifierSkip][0])
+	assert.Equal(t, "50", r.queryValues[common.ModifierLimit][0])
+
+	r = NewRequest(getTestSession(), "people").Page(2, 50)
+	assert.Equal(t, "50", r.queryValues[common.ModifierSkip][0])
+	assert.Equal(t, "50", r.queryValues[common.ModifierLimit][0])
+
+	r = NewRequest(getTestSession(), "people").Page(3, 50)
+	assert.Equal(t, "100", r.queryValues[common.ModifierSkip][0])
+	assert.Equal(t, "50", r.queryValues[common.ModifierLimit][0])
+
+}

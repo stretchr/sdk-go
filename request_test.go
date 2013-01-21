@@ -89,3 +89,23 @@ func TestRequest_Skip(t *testing.T) {
 	assert.Equal(t, "20", r.UnderlyingRequest.QueryValues()[common.ModifierSkip][0])
 
 }
+
+func TestRequest_Page(t *testing.T) {
+
+	r := NewRequest(getTestSession(), "people")
+
+	returnOfPage := r.Page(1, 50)
+	assert.Equal(t, r, returnOfPage, "Page should chain")
+
+	assert.Equal(t, "0", r.UnderlyingRequest.QueryValues()[common.ModifierSkip][0])
+	assert.Equal(t, "50", r.UnderlyingRequest.QueryValues()[common.ModifierLimit][0])
+
+	r = NewRequest(getTestSession(), "people").Page(2, 50)
+	assert.Equal(t, "50", r.UnderlyingRequest.QueryValues()[common.ModifierSkip][0])
+	assert.Equal(t, "50", r.UnderlyingRequest.QueryValues()[common.ModifierLimit][0])
+
+	r = NewRequest(getTestSession(), "people").Page(3, 50)
+	assert.Equal(t, "100", r.UnderlyingRequest.QueryValues()[common.ModifierSkip][0])
+	assert.Equal(t, "50", r.UnderlyingRequest.QueryValues()[common.ModifierLimit][0])
+
+}
