@@ -33,14 +33,18 @@ To persist something in Stretchr, you just need to create a resource and call th
                          Set("age", 30)
     
     // create the resource
-    change, err := Stretchr.At(resource.ResourcePath()).Create(resource)
+    changes, err := Stretchr.At(resource.ResourcePath()).Create(resource)
     
     if err != nil {
       // TODO: handle errors
     }
     
-    // log the ID that Stretchr generated for us
-    log.Printf("Person was created and given ID: %s", resource.ID())
+    if changes.Created() == 1 {
+      
+      // log the ID that Stretchr generated for us
+      log.Printf("Person was created and given ID: %s", resource.ID())
+    
+    }
     
 ### Reading resources
 
@@ -72,3 +76,93 @@ If you want to load a collection of resources in one go, you can do so using the
     for _, resource := range collection.Resources {
       log.Printf("Did you know %s was %g years old?", resource.Get("name"), resource.Get("age"))
     }
+
+Stretchr allows you to modify the resources that are returned by further _filtering and ordering_ your request before you call `ReadMany`.  The following examples demonstrate how this works:
+
+    // find people whose age is greater than 18
+    collection, err := Stretchr.At("people").Where("age", ">18").ReadMany()
+
+    // find the three oldest people
+    collection, err := Stretchr.At("people").Order("-age").Limit(3).ReadMany()
+
+    // find the next three oldest people (paging)
+    collection, err := Stretchr.At("people").Order("-age").Skip(3).Limit(3).ReadMany()
+
+    // find people called John
+    collection, err := Stretchr.At("people").Where("name", "John").ReadMany()
+
+    // find people NOT called John
+    collection, err := Stretchr.At("people").Where("name", "!John").ReadMany()
+
+### Updating a resource
+
+To update the data in of existing resource, you can use the `Update` function.  Updating will change any fields present, and leave alone fields not mentioned in the resource.  If you do want to replace the resource wholesale, see `Replace`.
+
+This example updates the name of person `123`:
+
+    resource := stretchr.MakeResourceAt("people/123").
+                         Set("name", "Mathew")
+    
+    changes, err := Stretchr.At(resource.ResourcePath()).Update(resource)
+    
+    if err != nil {
+      // TODO: handle errors
+    }
+    
+    if changes.Updated() == 1 {
+    
+      log.Printf("I just updated person 123's name to: %s", resource.Get("name"))
+      
+    }
+
+### Replacing a resource
+
+Since `Update` modifies a resource with the specified data, it can sometimes leave unwanted data in the resource.  The Go SDK provides a handy `Replace` function that is similar to deleting a resource and recreating it (with the same ID).
+
+Assuming we have an existing resource with lots of data at `people/123`, the following code will leave the same resource with *only* a `name` field:
+
+    resource := stretchr.MakeResourceAt("people/123").
+                         Set("name", "Mathew")
+    
+    changes, err := Stretchr.At(resource.ResourcePath()).Replace(resource)
+    
+    if err != nil {
+      // TODO: handle errors
+    }
+    
+    if changes.Updated() == 1 {
+    
+      log.Printf("I just replaced person %s entirely", resource.ID())
+      
+    }
+    
+### Deleting resources
+    
+#### Deleting a single resource
+
+Once you have finished with a resource and wish to delete it forever, you can use the `Delete` function.  To delete person `123`, we just need to do:
+
+    changes, err := Stretchr.At("people/123").Delete()
+    
+    if err != nil {
+      // handle errors
+    }
+    
+    log.Printf("%d resource(s) were deleted.", changes.Deleted())
+    
+#### Deleting many resources
+
+Deleting many resources uses the same function as when you are deleting a single resource, except that you provide a different path:
+
+     changes, err := Stretchr.At("people").Delete()
+    
+    if err != nil {
+      // handle errors
+    }
+    
+    log.Print("ALL people were deleted")
+
+The same filtering, limiting and skipping methods that work when using `ReadMany` also work when deleting resources.  For example, to delete all people called John you could do:
+
+    changes, err := Stretchr.At("people").Where("name", "John").Delete()
+    
