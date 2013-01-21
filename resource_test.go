@@ -72,7 +72,7 @@ func TestResource_SetID(t *testing.T) {
 
 	resource := MakeResourceAt("people")
 
-	resource.SetID("tyler")
+	assert.Equal(t, resource, resource.SetID("tyler"))
 
 	assert.Equal(t, resource.data[common.DataFieldID], "tyler")
 
