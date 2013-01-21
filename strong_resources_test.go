@@ -109,4 +109,14 @@ func TestStrongResources_UsingTheResource(t *testing.T) {
 
 func TestStrongResources_ReadingAResource(t *testing.T) {
 
+	loadedResource := MakeResourceAt("people/123")
+	loadedResource.Set("name", "Mat")
+	loadedResource.Set("age", float64(30))
+
+	stronglyTypedResource := MakePersonResource(loadedResource.ID())
+	stronglyTypedResource.Resource = *loadedResource
+
+	assert.Equal(t, "Mat", stronglyTypedResource.Name())
+	assert.Equal(t, 30, stronglyTypedResource.Age())
+
 }
