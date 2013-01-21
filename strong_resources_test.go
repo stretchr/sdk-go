@@ -89,6 +89,15 @@ func TestStrongResources_StrongGettersAndSetters(t *testing.T) {
 
 }
 
+/*
+
+	This shows how you can use your strongly typed resource in place
+	of the normal Resource object with zero effort
+
+	The mockedTransporter stuff is just so our call to "Create" doesn't
+	actually try to hit any servers.
+
+*/
 func TestStrongResources_UsingTheResource(t *testing.T) {
 
 	// make a session object
@@ -107,6 +116,16 @@ func TestStrongResources_UsingTheResource(t *testing.T) {
 
 }
 
+/*
+
+	This is how, after reading a Resource, you are able to easily cast it
+	to your strongly typed resource.
+
+	We recommend you wrap this kind of thing in a function, in this case:
+
+	    func ReadPerson(id string) *PersonResource { ... }
+
+*/
 func TestStrongResources_ReadingAResource(t *testing.T) {
 
 	loadedResource := MakeResourceAt("people/123")
