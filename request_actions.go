@@ -110,7 +110,9 @@ func (r *Request) Create(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	resource.SetID(changeInfo.IDs()[0])
+	if changeInfo.Created() == 1 {
+		resource.SetID(changeInfo.IDs()[0])
+	}
 
 	return changeInfo, nil
 
