@@ -15,8 +15,20 @@ import (
 )
 
 // PersonResource represents an example of a strongly-typed Resource object.
+//
+// In your own code, you can follow this pattern:
+//
+//     type MyStrongType struct {
+//       *stretchr.Resource
+//     }
 type PersonResource struct {
-	Resource
+	/*
+
+		Embedding a Resource type pointer as an anonymous field allows
+		this type to act like a Resource in every necessary way.
+
+	*/
+	*Resource
 }
 
 // MakePersonResource makes a new person resource with the given ID.
@@ -25,7 +37,7 @@ type PersonResource struct {
 // new Resource to the .Resource variable. 
 func MakePersonResource(id string) *PersonResource {
 	p := new(PersonResource)
-	p.Resource = *MakeResourceAt(Path("people", id))
+	p.Resource = MakeResourceAt(Path("people", id))
 	return p
 }
 
@@ -62,7 +74,7 @@ func (p *PersonResource) SetAge(value int) *PersonResource {
 func TestStrongResources_MakingPersonResource(t *testing.T) {
 
 	p := new(PersonResource)
-	p.Resource = *MakeResourceAt(Path("people", "123"))
+	p.Resource = MakeResourceAt(Path("people", "123"))
 
 	assert.Equal(t, "people/123", p.ResourcePath())
 
@@ -77,7 +89,7 @@ func TestStrongResources_MakingPersonResource(t *testing.T) {
 func TestStrongResources_StrongGettersAndSetters(t *testing.T) {
 
 	p := new(PersonResource)
-	p.Resource = *MakeResourceAt("people/123")
+	p.Resource = MakeResourceAt("people/123")
 
 	p.SetName("Mat").SetAge(30)
 	assert.Equal(t, "Mat", p.Name())
@@ -133,7 +145,7 @@ func TestStrongResources_ReadingAResource(t *testing.T) {
 	loadedResource.Set("age", float64(30))
 
 	stronglyTypedResource := MakePersonResource(loadedResource.ID())
-	stronglyTypedResource.Resource = *loadedResource
+	stronglyTypedResource.Resource = loadedResource
 
 	assert.Equal(t, "Mat", stronglyTypedResource.Name())
 	assert.Equal(t, 30, stronglyTypedResource.Age())
