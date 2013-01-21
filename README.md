@@ -165,4 +165,11 @@ Deleting many resources uses the same function as when you are deleting a single
 The same filtering, limiting and skipping methods that work when using `ReadMany` also work when deleting resources.  For example, to delete all people called John you could do:
 
     changes, err := Stretchr.At("people").Where("name", "John").Delete()
-    
+
+## Advanced
+
+The Stretchr Go SDK is built on top of a lower level `api` package that deals with requests and responses rather than Resources.  If you wish to perform advanced actions, or be in more control over how your code interacts with the Stretchr services you are free to use the advanced `api` package instead.
+
+Much of the interactions are the same as using the higher level SDK, but you tend to have more control over the specifics, including access to the underlying `http.Request` object that ends up talking to the services.
+
+For more information, check out the `api` documentation.
