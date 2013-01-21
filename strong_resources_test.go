@@ -8,7 +8,9 @@ package stretchr
 */
 
 import (
+	"github.com/stretchrcom/stretchr-sdk-go/api"
 	"github.com/stretchrcom/testify/assert"
+	"github.com/stretchrcom/testify/mock"
 	"testing"
 )
 
@@ -17,6 +19,10 @@ type PersonResource struct {
 	Resource
 }
 
+// MakePersonResource makes a new person resource with the given ID.
+//
+// It also configures the actual Resource part of this object by assigning a 
+// new Resource to the .Resource variable. 
 func MakePersonResource(id string) *PersonResource {
 	p := new(PersonResource)
 	p.Resource = *MakeResourceAt(Path("people", id))
@@ -80,5 +86,27 @@ func TestStrongResources_StrongGettersAndSetters(t *testing.T) {
 	// ensure also that the actual data is set in the resource
 	assert.Equal(t, "Mat", p.Resource.ResourceData().Get("name"))
 	assert.Equal(t, 30, p.Resource.ResourceData().Get("age"))
+
+}
+
+func TestStrongResources_UsingTheResource(t *testing.T) {
+
+	// make a session object
+	session := NewSession("project", "publicKey", "privateKey")
+
+	// don't make real requests
+	mockedTransporter := new(api.MockedTransporter)
+	session.SetTransporter(mockedTransporter)
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(nil, assert.AnError)
+
+	// make a person resource
+	p := MakePersonResource("123")
+
+	//... and use it as normal
+	session.At(p.ResourcePath()).Create(p)
+
+}
+
+func TestStrongResources_ReadingAResource(t *testing.T) {
 
 }
