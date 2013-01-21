@@ -92,6 +92,15 @@ func TestRequest_httpRequest(t *testing.T) {
 
 }
 
+func TestRequest_QueryValues(t *testing.T) {
+
+	r := NewRequest(getTestSession(), "people/123")
+	r.Where("name", "Mat")
+
+	assert.Equal(t, r.queryValues, r.QueryValues())
+
+}
+
 /*
 	Properties
 */
@@ -156,7 +165,19 @@ func TestRequest_Limit(t *testing.T) {
 
 }
 
-func TestRequest_Parameter(t *testing.T) {
+func TestRequest_Skip(t *testing.T) {
+
+	r := NewRequest(getTestSession(), "people")
+
+	returnOfSkip := r.Skip(20)
+
+	assert.Equal(t, returnOfSkip, r, ".Skip should chain")
+
+	assert.Equal(t, "20", r.queryValues[common.ModifierSkip][0])
+
+}
+
+func TestRequest_WithParam(t *testing.T) {
 
 	r := NewRequest(getTestSession(), "people")
 

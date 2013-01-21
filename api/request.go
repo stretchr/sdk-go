@@ -109,6 +109,12 @@ func (r *Request) httpRequest() (*http.Request, error) {
 	Parameters
 */
 
+// QueryValues gets the url.Values that will be passed in the querystring
+// when this request is made.
+func (r *Request) QueryValues() url.Values {
+	return r.queryValues
+}
+
 // WithParam sets a query parameter in the request.
 func (r *Request) WithParam(key, value string) *Request {
 	r.queryValues.Add(key, value)
@@ -151,4 +157,9 @@ func (r *Request) Where(field, match string) *Request {
 // Limit sets a limit on the number of resources to get back from Stretchr.
 func (r *Request) Limit(value int64) *Request {
 	return r.WithParam(common.ModifierLimit, strconv.FormatInt(value, 10))
+}
+
+// Skip sets the number of resources to skip before getting them back from Stretchr.
+func (r *Request) Skip(value int64) *Request {
+	return r.WithParam(common.ModifierSkip, strconv.FormatInt(value, 10))
 }
