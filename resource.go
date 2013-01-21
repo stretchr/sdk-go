@@ -131,7 +131,35 @@ func (r *Resource) ID() string {
 // Keypaths are supported with the dot syntax, for more information see
 // http://godoc.org/github.com/stretchrcom/stew/objects#Map.Set
 func (r *Resource) Set(keypath string, value interface{}) *Resource {
-	r.data.Set(keypath, value)
+
+	toStore := value
+
+	switch value.(type) {
+	case int:
+		toStore = float64(value.(int))
+	case int8:
+		toStore = float64(value.(int8))
+	case int16:
+		toStore = float64(value.(int16))
+	case int32:
+		toStore = float64(value.(int32))
+	case int64:
+		toStore = float64(value.(int64))
+	case uint:
+		toStore = float64(value.(uint))
+	case uint8:
+		toStore = float64(value.(uint8))
+	case uint16:
+		toStore = float64(value.(uint16))
+	case uint32:
+		toStore = float64(value.(uint32))
+	case uint64:
+		toStore = float64(value.(uint64))
+	case float32:
+		toStore = float64(value.(float32))
+	}
+
+	r.data.Set(keypath, toStore)
 	return r
 }
 
@@ -140,8 +168,8 @@ func (r *Resource) SetID(ID string) *Resource {
 	return r.Set(common.DataFieldID, ID)
 }
 
-// SetNumber sets a number (float64) in the data of this resource and returns the
+/*// SetNumber sets a number (float64) in the data of this resource and returns the
 // Resource for chaining.
 func (r *Resource) SetNumber(keypath string, value float64) *Resource {
 	return r.Set(keypath, value)
-}
+}*/

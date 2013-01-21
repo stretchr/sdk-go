@@ -177,11 +177,34 @@ func TestResource_GetTime(t *testing.T) {
 
 }
 
-func TestResource_SetNumber(t *testing.T) {
+func TestResource_Set_NumberConversion(t *testing.T) {
 
 	resource := MakeResourceAt("people")
-	assert.Equal(t, resource, resource.SetNumber("number", 10))
 
-	assert.Equal(t, float64(10), resource.Get("number"))
+	var one int = 1
+	var two int8 = 2
+	var three int16 = 3
+	var four int32 = 4
+	var five int64 = 5
+	var six uint = 6
+	var seven uint8 = 7
+	var eight uint16 = 8
+	var nine uint32 = 9
+	var ten uint64 = 10
+	var eleven float32 = 11.0
+	var twelve float64 = 12.0
+
+	assert.Equal(t, float64(one), resource.Set("number", one).Get("number"))
+	assert.Equal(t, float64(two), resource.Set("number", two).Get("number"))
+	assert.Equal(t, float64(three), resource.Set("number", three).Get("number"))
+	assert.Equal(t, float64(four), resource.Set("number", four).Get("number"))
+	assert.Equal(t, float64(five), resource.Set("number", five).Get("number"))
+	assert.Equal(t, float64(six), resource.Set("number", six).Get("number"))
+	assert.Equal(t, float64(seven), resource.Set("number", seven).Get("number"))
+	assert.Equal(t, float64(eight), resource.Set("number", eight).Get("number"))
+	assert.Equal(t, float64(nine), resource.Set("number", nine).Get("number"))
+	assert.Equal(t, float64(ten), resource.Set("number", ten).Get("number"))
+	assert.Equal(t, float64(eleven), resource.Set("number", eleven).Get("number"))
+	assert.Equal(t, float64(twelve), resource.Set("number", twelve).Get("number"))
 
 }

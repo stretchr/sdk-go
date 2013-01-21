@@ -61,7 +61,7 @@ func (p *PersonResource) Age() int {
 // SetAge is an exmaple of a strongly typed and managed setter that does some
 // casting between int, and the underlying float64 number type.
 func (p *PersonResource) SetAge(value int) *PersonResource {
-	p.SetNumber("age", float64(value))
+	p.Set("age", value)
 	return p
 }
 
