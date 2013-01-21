@@ -154,7 +154,7 @@ Once you have finished with a resource and wish to delete it forever, you can us
 
 Deleting many resources uses the same function as when you are deleting a single resource, except that you provide a different path:
 
-     changes, err := Stretchr.At("people").Delete()
+    changes, err := Stretchr.At("people").Delete()
     
     if err != nil {
       // handle errors
