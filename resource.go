@@ -2,10 +2,10 @@ package stretchr
 
 import (
 	"fmt"
+	"github.com/stretchrcom/sdk-go/api"
+	"github.com/stretchrcom/sdk-go/common"
 	"github.com/stretchrcom/stew/objects"
 	stewstrings "github.com/stretchrcom/stew/strings"
-	"github.com/stretchrcom/stretchr-sdk-go/api"
-	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"strings"
 	"time"
 )

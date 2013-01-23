@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/stretchrcom/stretchr-sdk-go/common"
+	"github.com/stretchrcom/sdk-go/common"
 )
 
 // Read executes the Request with a GET method, and returns the Response, or an error

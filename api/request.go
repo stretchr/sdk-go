@@ -1,9 +1,9 @@
 package api
 
 import (
+	"github.com/stretchrcom/sdk-go/common"
 	"github.com/stretchrcom/signature"
 	stewstrings "github.com/stretchrcom/stew/strings"
-	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"net/http"
 	"net/url"
 	"strconv"

@@ -8,7 +8,7 @@ package stretchr
 */
 
 import (
-	"github.com/stretchrcom/stretchr-sdk-go/api"
+	"github.com/stretchrcom/sdk-go/api"
 	"github.com/stretchrcom/testify/assert"
 	"github.com/stretchrcom/testify/mock"
 	"testing"

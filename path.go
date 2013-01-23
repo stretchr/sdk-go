@@ -1,8 +1,8 @@
 package stretchr
 
 import (
+	"github.com/stretchrcom/sdk-go/common"
 	stewstrings "github.com/stretchrcom/stew/strings"
-	"github.com/stretchrcom/stretchr-sdk-go/common"
 	"strings"
 )
 
