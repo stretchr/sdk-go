@@ -69,3 +69,10 @@ const (
 	HttpProtocol       string = "http"
 	HttpProtocolSecure string = "https"
 )
+
+/*
+	Headers
+*/
+const (
+	HeaderResponseHash string = "X-Stretchr-ResponseHash"
+)

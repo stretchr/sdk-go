@@ -1,7 +1,6 @@
 package api
 
 import (
-	"log"
 	"net/http"
 )
 
@@ -33,25 +32,18 @@ type LiveTransporter struct{}
 // if there was a problem communicating with the remote server.
 func (t *LiveTransporter) MakeRequest(request *Request) (*Response, error) {
 
-	// TODO: figure out a way to test this?
-
 	httpRequest, requestErr := request.httpRequest()
 
 	if requestErr != nil {
 		return nil, requestErr
 	}
 
-	//log.Printf("Making request: %v", httpRequest)
-
 	// make the request
 	httpResponse, httpErr := http.DefaultClient.Do(httpRequest)
 
 	if httpErr != nil {
-		log.Printf("  Error: %v", httpErr)
 		return nil, httpErr
 	}
-
-	//log.Printf("  Response: %v", httpResponse)
 
 	response, responseErr := NewResponse(request.session, httpResponse)
 
