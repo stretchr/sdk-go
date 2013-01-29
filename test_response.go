@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/stretchrcom/sdk-go/api"
+	"github.com/stretchrcom/sdk-go/common"
+	"github.com/stretchrcom/signature"
 	"io/ioutil"
 	"net/http"
 )
@@ -24,6 +26,8 @@ func NewTestResponse(status float64, data interface{}, errors []map[string]inter
 
 	responseBytes, _ := session.Codec().Marshal(sro, nil)
 	httpResponse.Body = ioutil.NopCloser(bytes.NewBuffer(responseBytes))
+	httpResponse.Header = make(map[string][]string)
+	httpResponse.Header[common.HeaderResponseHash] = []string{signature.HashWithKeys(responseBytes, []byte("publicKey"), []byte("privateKey"))}
 
 	response, newResponseErr := api.NewResponse(session, httpResponse)
 
