@@ -1,12 +1,12 @@
 package api
 
 const (
-	ResponseObjectFieldStatusCode    string = "s"
-	ResponseObjectFieldData          string = "d"
-	ResponseObjectFieldContext       string = "x"
-	ResponseObjectFieldChangeInfo    string = "ch"
-	ResponseObjectFieldErrors        string = "e"
-	ResponseObjectFieldErrorsMessage string = "m"
+	ResponseObjectFieldData          string = "~d"
+	ResponseObjectFieldChangeInfo    string = "~ch"
+	ResponseObjectFieldErrors        string = "~e"
+	ResponseObjectFieldStatusCode    string = "~s"
+	ResponseObjectFieldContext       string = "~x"
+	ResponseObjectFieldErrorsMessage string = "~m"
 	responseObjectFieldErrorStrings  string = "_e"
 )
 

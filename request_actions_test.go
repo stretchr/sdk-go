@@ -66,7 +66,7 @@ func TestRequest_ReadOne_StretchrError(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"m": "Something went wrong"}}, "", nil)
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~m": "Something went wrong"}}, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -144,7 +144,7 @@ func TestRequest_ReadMany_StretchrError(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"m": "Something went wrong"}}, "", nil)
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~m": "Something went wrong"}}, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -212,7 +212,7 @@ func TestRequest_Delete_StretchrError(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"m": "Something went wrong"}}, "", nil)
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~m": "Something went wrong"}}, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)

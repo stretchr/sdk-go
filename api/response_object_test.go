@@ -7,7 +7,7 @@ import (
 
 func TestResponseObject_StatusCode(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"s": float64(200)})
+	obj := ResponseObject(map[string]interface{}{"~s": float64(200)})
 
 	assert.Equal(t, 200, obj.StatusCode(), "StatusCode")
 
@@ -15,7 +15,7 @@ func TestResponseObject_StatusCode(t *testing.T) {
 
 func TestResponseObject_Context(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"x": "context"})
+	obj := ResponseObject(map[string]interface{}{"~x": "context"})
 
 	assert.Equal(t, "context", obj.Context(), "Context")
 
@@ -31,7 +31,7 @@ func TestResponseObject_Context_NoContext(t *testing.T) {
 
 func TestResponseObject_Data(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"d": map[string]interface{}{"name": "Mat"}})
+	obj := ResponseObject(map[string]interface{}{"~d": map[string]interface{}{"name": "Mat"}})
 
 	assert.Equal(t, "Mat", obj.Data().(map[string]interface{})["name"])
 
@@ -47,7 +47,7 @@ func TestResponseObject_Data_WithNoData(t *testing.T) {
 
 func TestResponseObject_Errors(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"e": []interface{}{map[string]interface{}{"m": "Something went wrong"}}})
+	obj := ResponseObject(map[string]interface{}{"~e": []interface{}{map[string]interface{}{"~m": "Something went wrong"}}})
 
 	errs := obj.Errors()
 	if assert.Equal(t, 1, len(errs)) {
@@ -58,7 +58,7 @@ func TestResponseObject_Errors(t *testing.T) {
 
 func TestResponseObject_ChangeInfo(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"ch": map[string]interface{}{"~c": float64(1), "~u": float64(2), "~d": float64(3), "~ids": []interface{}{"ABC", "DEF"}}})
+	obj := ResponseObject(map[string]interface{}{"~ch": map[string]interface{}{"~c": float64(1), "~u": float64(2), "~d": float64(3), "~ids": []interface{}{"ABC", "DEF"}}})
 
 	changeInfo := obj.ChangeInfo()
 
