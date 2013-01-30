@@ -57,7 +57,7 @@ func (r *Response) processResponse() error {
 			return errors.New(fmt.Sprintf("Signature validation failed. Got %s. Expected %s.", calculatedHash, responseHash[0]))
 		}
 	} else {
-		return errors.New("Signature not present.")
+		return errors.New(fmt.Sprintf("%s not present. Unable to validate server response.", common.HeaderResponseHash))
 	}
 
 	var bodyObject map[string]interface{}
