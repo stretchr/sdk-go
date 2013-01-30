@@ -74,5 +74,5 @@ const (
 	Headers
 */
 const (
-	HeaderResponseHash string = "X-Stretchr-ResponseHash"
+	HeaderResponseHash string = "X-Stretchr-Response-Hash"
 )
