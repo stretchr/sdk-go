@@ -2,6 +2,7 @@ package stretchr
 
 import (
 	"github.com/stretchrcom/sdk-go/api"
+	"github.com/stretchrcom/sdk-go/common"
 	"github.com/stretchrcom/testify/assert"
 	"testing"
 )
@@ -28,11 +29,11 @@ func TestTestResponse_NewTestResponse(t *testing.T) {
 		assert.Equal(t, 2, r.BodyObject().ChangeInfo().Updated())
 		assert.Equal(t, 3, r.BodyObject().ChangeInfo().Deleted())
 
-		ids := r.BodyObject().ChangeInfo().IDs()
+		deltas := r.BodyObject().ChangeInfo().Deltas()
 
-		if assert.Equal(t, 2, len(ids)) {
-			assert.Equal(t, "ABC", ids[0])
-			assert.Equal(t, "DEF", ids[1])
+		if assert.Equal(t, 2, len(deltas)) {
+			assert.Equal(t, "ABC", deltas[0][common.DataFieldID])
+			assert.Equal(t, "DEF", deltas[1][common.DataFieldID])
 		}
 
 	}

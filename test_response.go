@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-var TestChangeInfo = api.ChangeInfo{"~c": 1, "~u": 2, "~d": 3, "~ids": []string{"ABC", "DEF"}}
+var TestChangeInfo = api.ChangeInfo{api.ChangeInfoFieldCreated: 1, api.ChangeInfoFieldUpdated: 2, api.ChangeInfoFieldDeleted: 3, api.ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "ABC"}, map[string]interface{}{common.DataFieldID: "DEF"}}}
 
 func NewTestResponse(status float64, data interface{}, errors []map[string]interface{}, context string, changeInfo api.ChangeInfo) *api.Response {
 

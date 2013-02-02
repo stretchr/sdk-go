@@ -2,6 +2,7 @@ package stretchr
 
 import (
 	"github.com/stretchrcom/sdk-go/api"
+	"github.com/stretchrcom/sdk-go/common"
 	"github.com/stretchrcom/stew/objects"
 )
 
@@ -111,8 +112,10 @@ func (r *Request) Create(resource api.Resource) (api.ChangeInfo, error) {
 	}
 
 	if changeInfo.Created() == 1 {
-		resource.SetID(changeInfo.IDs()[0])
+		resource.SetID(changeInfo.Deltas()[0][common.DataFieldID].(string))
 	}
+
+	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
 
 	return changeInfo, nil
 
@@ -128,7 +131,15 @@ func (r *Request) Update(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	return extractChangeInfo(response)
+	changeInfo, err := extractChangeInfo(response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+
+	return changeInfo, nil
 
 }
 
@@ -142,7 +153,15 @@ func (r *Request) Replace(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	return extractChangeInfo(response)
+	changeInfo, err := extractChangeInfo(response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+
+	return changeInfo, nil
 
 }
 
@@ -170,6 +189,14 @@ func (r *Request) Save(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	return extractChangeInfo(response)
+	changeInfo, err := extractChangeInfo(response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+
+	return changeInfo, nil
 
 }

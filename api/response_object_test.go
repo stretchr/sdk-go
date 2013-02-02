@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/stretchrcom/sdk-go/common"
 	"github.com/stretchrcom/testify/assert"
 	"testing"
 )
@@ -31,7 +32,7 @@ func TestResponseObject_Context_NoContext(t *testing.T) {
 
 func TestResponseObject_Data(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"~d": map[string]interface{}{"name": "Mat"}})
+	obj := ResponseObject(map[string]interface{}{ResponseObjectFieldData: map[string]interface{}{"name": "Mat"}})
 
 	assert.Equal(t, "Mat", obj.Data().(map[string]interface{})["name"])
 
@@ -47,7 +48,7 @@ func TestResponseObject_Data_WithNoData(t *testing.T) {
 
 func TestResponseObject_Errors(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"~e": []interface{}{map[string]interface{}{"~m": "Something went wrong"}}})
+	obj := ResponseObject(map[string]interface{}{ResponseObjectFieldErrors: []interface{}{map[string]interface{}{"~m": "Something went wrong"}}})
 
 	errs := obj.Errors()
 	if assert.Equal(t, 1, len(errs)) {
@@ -58,7 +59,7 @@ func TestResponseObject_Errors(t *testing.T) {
 
 func TestResponseObject_ChangeInfo(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"~ch": map[string]interface{}{"~c": float64(1), "~u": float64(2), "~d": float64(3), "~ids": []interface{}{"ABC", "DEF"}}})
+	obj := ResponseObject(map[string]interface{}{ResponseObjectFieldChangeInfo: map[string]interface{}{ChangeInfoFieldCreated: float64(1), ChangeInfoFieldUpdated: float64(2), ChangeInfoFieldDeleted: float64(3), ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "ABC"}, map[string]interface{}{common.DataFieldID: "DEF"}}}})
 
 	changeInfo := obj.ChangeInfo()
 
@@ -68,11 +69,11 @@ func TestResponseObject_ChangeInfo(t *testing.T) {
 		assert.Equal(t, 2, changeInfo.Updated())
 		assert.Equal(t, 3, changeInfo.Deleted())
 
-		ids := changeInfo.IDs()
+		deltas := changeInfo.Deltas()
 
-		if assert.Equal(t, 2, len(ids)) {
-			assert.Equal(t, "ABC", ids[0])
-			assert.Equal(t, "DEF", ids[1])
+		if assert.Equal(t, 2, len(deltas)) {
+			assert.Equal(t, "ABC", deltas[0][common.DataFieldID])
+			assert.Equal(t, "DEF", deltas[1][common.DataFieldID])
 		}
 
 	}
@@ -81,7 +82,7 @@ func TestResponseObject_ChangeInfo(t *testing.T) {
 
 func TestResponseObject_ChangeInfo_NoChangeInfo(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"nope": map[string]interface{}{"~c": float64(1), "~u": float64(2), "~d": float64(3), "~ids": []interface{}{"ABC", "DEF"}}})
+	obj := ResponseObject(map[string]interface{}{"nope": map[string]interface{}{ChangeInfoFieldCreated: float64(1), ChangeInfoFieldUpdated: float64(2), ChangeInfoFieldDeleted: float64(3), "~ids": []interface{}{"ABC", "DEF"}}})
 
 	changeInfo := obj.ChangeInfo()
 

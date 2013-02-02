@@ -1,10 +1,12 @@
 package api
 
 const (
-	ChangeInfoFieldCreated string = "~c"
-	ChangeInfoFieldUpdated string = "~u"
-	ChangeInfoFieldDeleted string = "~d"
-	ChangeInfoFieldIDs     string = "~ids"
+	ChangeInfoFieldCreated      string = "~c"
+	ChangeInfoFieldUpdated      string = "~u"
+	ChangeInfoFieldDeleted      string = "~d"
+	ChangeInfoFieldDeltas       string = "~deltas"
+	ChangeInfoFieldDeltaCreated string = "~created"
+	ChangeInfoFieldDeltaUpdated string = "~updated"
 )
 
 // ChangeInfo represents a data object containing information about
@@ -41,14 +43,14 @@ func (c ChangeInfo) Deleted() int {
 	return 0
 }
 
-// IDs gets the array of (string) IDs that were created in the last
+// Deltas gets the array of (map[string]interface{}) Deltas that were created in the last
 // request if any.
-func (c ChangeInfo) IDs() []string {
-	ids := []string{}
-	if val, ok := c[ChangeInfoFieldIDs]; ok {
-		for _, id := range val.([]interface{}) {
-			ids = append(ids, id.(string))
+func (c ChangeInfo) Deltas() []map[string]interface{} {
+	deltas := []map[string]interface{}{}
+	if val, ok := c[ChangeInfoFieldDeltas]; ok {
+		for _, delta := range val.([]interface{}) {
+			deltas = append(deltas, delta.(map[string]interface{}))
 		}
 	}
-	return ids
+	return deltas
 }

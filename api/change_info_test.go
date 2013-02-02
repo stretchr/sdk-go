@@ -1,13 +1,14 @@
 package api
 
 import (
+	"github.com/stretchrcom/sdk-go/common"
 	"github.com/stretchrcom/testify/assert"
 	"testing"
 )
 
 func TestChangeInfo_Changed(t *testing.T) {
 
-	changeInfo := ChangeInfo(map[string]interface{}{"~c": float64(2)})
+	changeInfo := ChangeInfo(map[string]interface{}{ChangeInfoFieldCreated: float64(2)})
 
 	assert.Equal(t, 2, changeInfo.Created())
 
@@ -15,7 +16,7 @@ func TestChangeInfo_Changed(t *testing.T) {
 
 func TestChangeInfo_Updated(t *testing.T) {
 
-	changeInfo := ChangeInfo(map[string]interface{}{"~u": float64(25)})
+	changeInfo := ChangeInfo(map[string]interface{}{ChangeInfoFieldUpdated: float64(25)})
 
 	assert.Equal(t, 25, changeInfo.Updated())
 
@@ -23,19 +24,19 @@ func TestChangeInfo_Updated(t *testing.T) {
 
 func TestChangeInfo_Deleted(t *testing.T) {
 
-	changeInfo := ChangeInfo(map[string]interface{}{"~d": float64(26)})
+	changeInfo := ChangeInfo(map[string]interface{}{ChangeInfoFieldDeleted: float64(26)})
 
 	assert.Equal(t, 26, changeInfo.Deleted())
 
 }
 
-func TestChangeInfo_IDs(t *testing.T) {
+func TestChangeInfo_Deltas(t *testing.T) {
 
-	changeInfo := ChangeInfo(map[string]interface{}{"~ids": []interface{}{"one", "two", "three"}})
+	changeInfo := ChangeInfo(map[string]interface{}{ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "one"}, map[string]interface{}{common.DataFieldID: "two"}, map[string]interface{}{common.DataFieldID: "three"}}})
 
-	assert.Equal(t, "one", changeInfo.IDs()[0])
-	assert.Equal(t, "two", changeInfo.IDs()[1])
-	assert.Equal(t, "three", changeInfo.IDs()[2])
+	assert.Equal(t, "one", changeInfo.Deltas()[0][common.DataFieldID])
+	assert.Equal(t, "two", changeInfo.Deltas()[1][common.DataFieldID])
+	assert.Equal(t, "three", changeInfo.Deltas()[2][common.DataFieldID])
 
 }
 
@@ -46,6 +47,6 @@ func TestChangeInfo_GettersWithNoData(t *testing.T) {
 	assert.Equal(t, 0, changeInfo.Created())
 	assert.Equal(t, 0, changeInfo.Updated())
 	assert.Equal(t, 0, changeInfo.Deleted())
-	assert.Equal(t, 0, len(changeInfo.IDs()))
+	assert.Equal(t, 0, len(changeInfo.Deltas()))
 
 }
