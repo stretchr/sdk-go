@@ -1,12 +1,19 @@
 package api
 
 const (
+<<<<<<< HEAD
 	ChangeInfoFieldCreated      string = "~c"
 	ChangeInfoFieldUpdated      string = "~u"
 	ChangeInfoFieldDeleted      string = "~d"
 	ChangeInfoFieldDeltas       string = "~deltas"
 	ChangeInfoFieldDeltaCreated string = "~created"
 	ChangeInfoFieldDeltaUpdated string = "~updated"
+=======
+	ChangeInfoPublicFieldCreated string = "~c"
+	ChangeInfoPublicFieldUpdated string = "~u"
+	ChangeInfoPublicFieldDeleted string = "~d"
+	ChangeInfoPublicFieldIDs     string = "~ids"
+>>>>>>> renamed fields
 )
 
 // ChangeInfo represents a data object containing information about
@@ -19,7 +26,7 @@ var NoChangeInfo ChangeInfo = nil
 // Created gets the number of records that were created as indicated by
 // this ChangeInfo object.
 func (c ChangeInfo) Created() int {
-	if val, ok := c[ChangeInfoFieldCreated]; ok {
+	if val, ok := c[ChangeInfoPublicFieldCreated]; ok {
 		return int(val.(float64))
 	}
 	return 0
@@ -28,7 +35,7 @@ func (c ChangeInfo) Created() int {
 // Updated gets the number of records that were updated as indicated by
 // this ChangeInfo object.
 func (c ChangeInfo) Updated() int {
-	if val, ok := c[ChangeInfoFieldUpdated]; ok {
+	if val, ok := c[ChangeInfoPublicFieldUpdated]; ok {
 		return int(val.(float64))
 	}
 	return 0
@@ -37,7 +44,7 @@ func (c ChangeInfo) Updated() int {
 // Deleted gets the number of records that were deleted as indicated by
 // this ChangeInfo object.
 func (c ChangeInfo) Deleted() int {
-	if val, ok := c[ChangeInfoFieldDeleted]; ok {
+	if val, ok := c[ChangeInfoPublicFieldDeleted]; ok {
 		return int(val.(float64))
 	}
 	return 0
@@ -45,11 +52,19 @@ func (c ChangeInfo) Deleted() int {
 
 // Deltas gets the array of (map[string]interface{}) Deltas that were created in the last
 // request if any.
+<<<<<<< HEAD
 func (c ChangeInfo) Deltas() []map[string]interface{} {
 	deltas := []map[string]interface{}{}
 	if val, ok := c[ChangeInfoFieldDeltas]; ok {
 		for _, delta := range val.([]interface{}) {
 			deltas = append(deltas, delta.(map[string]interface{}))
+=======
+func (c ChangeInfo) IDs() []string {
+	ids := []string{}
+	if val, ok := c[ChangeInfoPublicFieldIDs]; ok {
+		for _, id := range val.([]interface{}) {
+			ids = append(ids, id.(string))
+>>>>>>> renamed fields
 		}
 	}
 	return deltas
