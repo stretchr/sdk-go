@@ -1,19 +1,12 @@
 package api
 
 const (
-<<<<<<< HEAD
-	ChangeInfoFieldCreated      string = "~c"
-	ChangeInfoFieldUpdated      string = "~u"
-	ChangeInfoFieldDeleted      string = "~d"
-	ChangeInfoFieldDeltas       string = "~deltas"
-	ChangeInfoFieldDeltaCreated string = "~created"
-	ChangeInfoFieldDeltaUpdated string = "~updated"
-=======
-	ChangeInfoPublicFieldCreated string = "~c"
-	ChangeInfoPublicFieldUpdated string = "~u"
-	ChangeInfoPublicFieldDeleted string = "~d"
-	ChangeInfoPublicFieldIDs     string = "~ids"
->>>>>>> renamed fields
+	ChangeInfoPublicFieldCreated      string = "~c"
+	ChangeInfoPublicFieldUpdated      string = "~u"
+	ChangeInfoPublicFieldDeleted      string = "~d"
+	ChangeInfoPublicFieldDeltas       string = "~deltas"
+	ChangeInfoPublicFieldDeltaCreated string = "~created"
+	ChangeInfoPublicFieldDeltaUpdated string = "~updated"
 )
 
 // ChangeInfo represents a data object containing information about
@@ -52,19 +45,11 @@ func (c ChangeInfo) Deleted() int {
 
 // Deltas gets the array of (map[string]interface{}) Deltas that were created in the last
 // request if any.
-<<<<<<< HEAD
 func (c ChangeInfo) Deltas() []map[string]interface{} {
 	deltas := []map[string]interface{}{}
-	if val, ok := c[ChangeInfoFieldDeltas]; ok {
+	if val, ok := c[ChangeInfoPublicFieldDeltas]; ok {
 		for _, delta := range val.([]interface{}) {
 			deltas = append(deltas, delta.(map[string]interface{}))
-=======
-func (c ChangeInfo) IDs() []string {
-	ids := []string{}
-	if val, ok := c[ChangeInfoPublicFieldIDs]; ok {
-		for _, id := range val.([]interface{}) {
-			ids = append(ids, id.(string))
->>>>>>> renamed fields
 		}
 	}
 	return deltas

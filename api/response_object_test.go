@@ -59,7 +59,7 @@ func TestResponseObject_Errors(t *testing.T) {
 
 func TestResponseObject_ChangeInfo(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{ResponseObjectFieldChangeInfo: map[string]interface{}{ChangeInfoFieldCreated: float64(1), ChangeInfoFieldUpdated: float64(2), ChangeInfoFieldDeleted: float64(3), ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "ABC"}, map[string]interface{}{common.DataFieldID: "DEF"}}}})
+	obj := ResponseObject(map[string]interface{}{ResponseObjectFieldChangeInfo: map[string]interface{}{ChangeInfoPublicFieldCreated: float64(1), ChangeInfoPublicFieldUpdated: float64(2), ChangeInfoPublicFieldDeleted: float64(3), ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "ABC"}, map[string]interface{}{common.DataFieldID: "DEF"}}}})
 
 	changeInfo := obj.ChangeInfo()
 
@@ -82,7 +82,7 @@ func TestResponseObject_ChangeInfo(t *testing.T) {
 
 func TestResponseObject_ChangeInfo_NoChangeInfo(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"nope": map[string]interface{}{ChangeInfoFieldCreated: float64(1), ChangeInfoFieldUpdated: float64(2), ChangeInfoFieldDeleted: float64(3), "~ids": []interface{}{"ABC", "DEF"}}})
+	obj := ResponseObject(map[string]interface{}{"nope": map[string]interface{}{ChangeInfoPublicFieldCreated: float64(1), ChangeInfoPublicFieldUpdated: float64(2), ChangeInfoPublicFieldDeleted: float64(3), "~ids": []interface{}{"ABC", "DEF"}}})
 
 	changeInfo := obj.ChangeInfo()
 

@@ -166,7 +166,7 @@ func TestRequest_Delete(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoFieldDeleted: 5}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoPublicFieldDeleted: 5}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -234,7 +234,7 @@ func TestRequest_Create(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoFieldCreated: 1, api.ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoFieldDeltaCreated: 123}}}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoPublicFieldCreated: 1, api.ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoPublicFieldDeltaCreated: 123}}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -250,7 +250,7 @@ func TestRequest_Create(t *testing.T) {
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Created(), 1)
 			assert.Equal(t, resource.ID(), "hello")
-			assert.Equal(t, resource.ResourceData()[api.ChangeInfoFieldDeltaCreated].(float64), 123)
+			assert.Equal(t, resource.ResourceData()[api.ChangeInfoPublicFieldDeltaCreated].(float64), 123)
 		}
 	}
 
@@ -265,7 +265,7 @@ func TestRequest_Save_Create(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoFieldCreated: 1, api.ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoFieldDeltaCreated: 123}}}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoPublicFieldCreated: 1, api.ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoPublicFieldDeltaCreated: 123}}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -294,7 +294,7 @@ func TestRequest_Update_Create(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoFieldUpdated: 1, api.ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoFieldDeltaCreated: 123}}}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoPublicFieldUpdated: 1, api.ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoPublicFieldDeltaCreated: 123}}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -323,7 +323,7 @@ func TestRequest_Replace_Create(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoFieldCreated: 1, api.ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "new"}}}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoPublicFieldCreated: 1, api.ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "new"}}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -352,7 +352,7 @@ func TestRequest_Replace_Replace(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoFieldCreated: 1, api.ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoFieldDeltaCreated: 123}}}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoPublicFieldCreated: 1, api.ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoPublicFieldDeltaCreated: 123}}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -385,7 +385,7 @@ func TestRequest_Update_Update(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoFieldCreated: 1, api.ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoFieldDeltaCreated: 123}}}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoPublicFieldCreated: 1, api.ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoPublicFieldDeltaCreated: 123}}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -414,7 +414,7 @@ func TestRequest_Save_Update(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoFieldUpdated: 1, api.ChangeInfoFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoFieldDeltaCreated: 123}}}))
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoPublicFieldUpdated: 1, api.ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoPublicFieldDeltaCreated: 123}}}))
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
