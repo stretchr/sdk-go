@@ -259,6 +259,56 @@ func TestRequest_Create(t *testing.T) {
 
 }
 
+func TestRequest_CreateMany(t *testing.T) {
+
+	var resources []*Resource
+
+	resource := MakeResourceAt("people")
+	resource.Set("name", "Mat").Set("age", 29)
+	resources = append(resources, resource)
+	resource = MakeResourceAt("people")
+	resource.Set("name", "Tyler").Set("age", 28)
+	resources = append(resources, resource)
+	resource = MakeResourceAt("people")
+	resource.Set("name", "Stacey").Set("age", 29)
+	resources = append(resources, resource)
+
+	resourceCollection := MakeResourceCollection(resources)
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoFieldCreated: 3, api.ChangeInfoFieldDeltas: []interface{}{
+		map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoFieldDeltaCreated: 123},
+		map[string]interface{}{common.DataFieldID: "goodbye", api.ChangeInfoFieldDeltaCreated: 456},
+		map[string]interface{}{common.DataFieldID: "greetings", api.ChangeInfoFieldDeltaCreated: 789}}}))
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	changeInfo, err := session.At("people").CreateMany(resourceCollection)
+
+	if assert.NoError(t, err) {
+		if assert.NotNil(t, changeInfo) {
+			mockedTransporter.AssertExpectations(t)
+			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
+
+			assert.Equal(t, request.HttpMethod(), common.HttpMethodPost)
+			assert.Equal(t, request.Path(), "people")
+			assert.Equal(t, changeInfo.Created(), 3)
+
+			assert.Equal(t, resourceCollection.Resources[0].ID(), "hello")
+			assert.Equal(t, resourceCollection.Resources[0].ResourceData()[api.ChangeInfoFieldDeltaCreated].(float64), 123)
+			assert.Equal(t, resourceCollection.Resources[1].ID(), "goodbye")
+			assert.Equal(t, resourceCollection.Resources[1].ResourceData()[api.ChangeInfoFieldDeltaCreated].(float64), 456)
+			assert.Equal(t, resourceCollection.Resources[2].ID(), "greetings")
+			assert.Equal(t, resourceCollection.Resources[2].ResourceData()[api.ChangeInfoFieldDeltaCreated].(float64), 789)
+		}
+	}
+
+}
+
 func TestRequest_Save_Create(t *testing.T) {
 
 	resource := MakeResourceAt("people")

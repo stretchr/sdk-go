@@ -70,6 +70,7 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 	} else {
 		return nil, ErrArrayObjectExpectedButGotSomethingElse
 	}
+	return nil, ErrArrayObjectExpectedButGotSomethingElse
 }
 
 // extractChangeInfo checks for errors and returns the change info from a response.
@@ -108,6 +109,37 @@ func (r *Request) Create(resource api.Resource) (api.ChangeInfo, error) {
 	}
 
 	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+
+	return changeInfo, nil
+
+}
+
+// CreateMany creates many resources.
+// If a resource exists, it will be replaced.
+func (r *Request) CreateMany(resourceCollection *ResourceCollection) (api.ChangeInfo, error) {
+
+	// We have to manuall repackage the collection data so the api.CreateMany will accept it
+	var data []api.Resource
+
+	for _, resource := range resourceCollection.Resources {
+		data = append(data, resource)
+	}
+
+	response, err := r.UnderlyingRequest.CreateMany(data)
+
+	if err != nil {
+		return nil, err
+	}
+
+	changeInfo, err := extractChangeInfo(response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for index, resource := range resourceCollection.Resources {
+		resource.ResourceData().MergeHere(changeInfo.Deltas()[index])
+	}
 
 	return changeInfo, nil
 
