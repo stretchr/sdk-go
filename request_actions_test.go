@@ -89,8 +89,11 @@ func TestRequest_ReadMany(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, []map[string]interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
-		map[string]interface{}{"name": "Tyler", common.DataFieldID: "DEF"}}, nil, "", nil)
+
+	responseData := map[string]interface{}{"~c": 2, "~i": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
+		map[string]interface{}{"name": "Tyler", common.DataFieldID: "DEF"}}}
+
+	response := NewTestResponse(200, responseData, nil, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -111,8 +114,8 @@ func TestRequest_ReadMany(t *testing.T) {
 	resource1 := resourceCollection.Resources[0]
 	resource2 := resourceCollection.Resources[1]
 
-	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().([]interface{})[0].(map[string]interface{})["name"])
-	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().([]interface{})[1].(map[string]interface{})["name"])
+	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~i"].([]interface{})[0].(map[string]interface{})["name"])
+	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~i"].([]interface{})[1].(map[string]interface{})["name"])
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
 	assert.Equal(t, resource2.ResourcePath(), "people/DEF")
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")

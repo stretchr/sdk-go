@@ -9,3 +9,7 @@ func MakeResourceCollection(resources []*Resource) *ResourceCollection {
 	c.Resources = resources
 	return c
 }
+
+func (r *ResourceCollection) IsEmpty() bool {
+	return len(r.Resources) == 0
+}

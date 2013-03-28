@@ -54,14 +54,11 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 		return nil, errs[0]
 	}
 
-	switch responseObject.Data().(type) {
-	case []interface{}:
-
-		data := responseObject.Data().([]interface{})
-		resources := make([]*Resource, len(data))
+	if resourceArray, exists := responseObject.Data().(map[string]interface{})["~i"].([]interface{}); exists {
+		resources := make([]*Resource, len(resourceArray))
 
 		// populate the resources
-		for resIndex, responseData := range data {
+		for resIndex, responseData := range resourceArray {
 			resource := MakeResourceAt(r.UnderlyingRequest.Path())
 			resource.data = objects.Map(responseData.(map[string]interface{})).Copy()
 			resources[resIndex] = resource
@@ -70,14 +67,9 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 		resourceCollection := MakeResourceCollection(resources)
 
 		return resourceCollection, nil
-	case map[string]interface{}:
-		return nil, ErrArrayObjectExpectedButGotSingleObject
-	case nil:
-		return nil, ErrArrayObjectExpectedButGotNil
+	} else {
+		return nil, ErrArrayObjectExpectedButGotSomethingElse
 	}
-
-	return nil, ErrArrayObjectExpectedButGotSomethingElse
-
 }
 
 // extractChangeInfo checks for errors and returns the change info from a response.
