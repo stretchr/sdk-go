@@ -70,7 +70,7 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 	} else {
 		return nil, ErrArrayObjectExpectedButGotSomethingElse
 	}
-	return nil, ErrArrayObjectExpectedButGotSomethingElse
+
 }
 
 // extractChangeInfo checks for errors and returns the change info from a response.
