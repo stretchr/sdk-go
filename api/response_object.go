@@ -57,6 +57,13 @@ func (o ResponseObject) Errors() []string {
 
 }
 
+func (o ResponseObject) HasErrors() bool {
+	if _, hasErrors := o[ResponseObjectFieldErrors]; hasErrors {
+		return true
+	}
+	return false
+}
+
 func (o ResponseObject) ChangeInfo() ChangeInfo {
 	if changeInfo, hasChangeInfo := o[ResponseObjectFieldChangeInfo]; hasChangeInfo {
 		return ChangeInfo(changeInfo.(map[string]interface{}))
