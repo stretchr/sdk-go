@@ -108,7 +108,9 @@ func (r *Request) Create(resource api.Resource) (api.ChangeInfo, error) {
 		resource.SetID(changeInfo.Deltas()[0][common.DataFieldID].(string))
 	}
 
-	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	if changeInfo.HasDeltas() {
+		resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	}
 
 	return changeInfo, nil
 
@@ -138,7 +140,9 @@ func (r *Request) CreateMany(resourceCollection *ResourceCollection) (api.Change
 	}
 
 	for index, resource := range resourceCollection.Resources {
-		resource.ResourceData().MergeHere(changeInfo.Deltas()[index])
+		if changeInfo.HasDeltas() {
+			resource.ResourceData().MergeHere(changeInfo.Deltas()[index])
+		}
 	}
 
 	return changeInfo, nil
@@ -161,7 +165,9 @@ func (r *Request) Update(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	if changeInfo.HasDeltas() {
+		resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	}
 
 	return changeInfo, nil
 
@@ -183,7 +189,9 @@ func (r *Request) Replace(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	if changeInfo.HasDeltas() {
+		resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	}
 
 	return changeInfo, nil
 
@@ -219,7 +227,9 @@ func (r *Request) Save(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	if changeInfo.HasDeltas() {
+		resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	}
 
 	return changeInfo, nil
 
