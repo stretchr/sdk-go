@@ -43,6 +43,17 @@ func (c ChangeInfo) Deleted() int {
 	return 0
 }
 
+// HasDeltas gets whether deltas exist in this ChangeInfo object
+func (c ChangeInfo) HasDeltas() bool {
+	if val, ok := c[ChangeInfoFieldDeltas]; ok {
+		if len(val.([]interface{})) == 0 {
+			return false
+		}
+		return true
+	}
+	return false
+}
+
 // Deltas gets the array of (map[string]interface{}) Deltas that were created in the last
 // request if any.
 func (c ChangeInfo) Deltas() []map[string]interface{} {
