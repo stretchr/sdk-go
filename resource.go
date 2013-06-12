@@ -2,10 +2,10 @@ package stretchr
 
 import (
 	"fmt"
-	"github.com/stretchrcom/sdk-go/api"
-	"github.com/stretchrcom/sdk-go/common"
-	"github.com/stretchrcom/stew/objects"
-	stewstrings "github.com/stretchrcom/stew/strings"
+	"github.com/stretchr/sdk-go/api"
+	"github.com/stretchr/sdk-go/common"
+	"github.com/stretchr/stew/objects"
+	stewstrings "github.com/stretchr/stew/strings"
 	"strings"
 	"time"
 )
@@ -70,7 +70,7 @@ func (r *Resource) ResourceData() objects.Map {
 // Get gets a value from the resource.
 //
 // Keypaths are supported with the dot syntax, for more information see
-// http://godoc.org/github.com/stretchrcom/stew/objects#Map.Get
+// http://godoc.org/github.com/stretchr/stew/objects#Map.Get
 func (r *Resource) Get(keypath string) interface{} {
 	return r.data.Get(keypath)
 }
@@ -130,7 +130,7 @@ func (r *Resource) ID() string {
 // Set sets a value to the specified key and returns the Resource for chaining.
 //
 // Keypaths are supported with the dot syntax, for more information see
-// http://godoc.org/github.com/stretchrcom/stew/objects#Map.Set
+// http://godoc.org/github.com/stretchr/stew/objects#Map.Set
 func (r *Resource) Set(keypath string, value interface{}) *Resource {
 
 	toStore := value

@@ -3,8 +3,8 @@ package api
 import (
 	"errors"
 	"fmt"
-	"github.com/stretchrcom/sdk-go/common"
-	"github.com/stretchrcom/signature"
+	"github.com/stretchr/sdk-go/common"
+	"github.com/stretchr/signature"
 	"io/ioutil"
 	"net/http"
 )

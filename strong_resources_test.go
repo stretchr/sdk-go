@@ -8,9 +8,9 @@ package stretchr
 */
 
 import (
-	"github.com/stretchrcom/sdk-go/api"
-	"github.com/stretchrcom/testify/assert"
-	"github.com/stretchrcom/testify/mock"
+	"github.com/stretchr/sdk-go/api"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 	"testing"
 )
 
@@ -33,8 +33,8 @@ type PersonResource struct {
 
 // MakePersonResource makes a new person resource with the given ID.
 //
-// It also configures the actual Resource part of this object by assigning a 
-// new Resource to the .Resource variable. 
+// It also configures the actual Resource part of this object by assigning a
+// new Resource to the .Resource variable.
 func MakePersonResource(id string) *PersonResource {
 	p := new(PersonResource)
 	p.Resource = MakeResourceAt(Path("people", id))

@@ -2,9 +2,9 @@ package api
 
 import (
 	"bytes"
-	"github.com/stretchrcom/sdk-go/common"
-	"github.com/stretchrcom/signature"
-	"github.com/stretchrcom/testify/assert"
+	"github.com/stretchr/sdk-go/common"
+	"github.com/stretchr/signature"
+	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
 	"testing"

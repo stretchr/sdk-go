@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/stretchrcom/sdk-go/common"
-	"github.com/stretchrcom/testify/assert"
+	"github.com/stretchr/sdk-go/common"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 

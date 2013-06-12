@@ -1,9 +1,9 @@
 package stretchr
 
 import (
-	"github.com/stretchrcom/sdk-go/api"
-	"github.com/stretchrcom/sdk-go/common"
-	"github.com/stretchrcom/stew/objects"
+	"github.com/stretchr/sdk-go/api"
+	"github.com/stretchr/sdk-go/common"
+	"github.com/stretchr/stew/objects"
 )
 
 // ReadOne loads a resource from Stretchr with the given path.
@@ -167,7 +167,7 @@ func (r *Request) Replace(resource api.Resource) (api.ChangeInfo, error) {
 
 // Delete deletes one or many resources.
 func (r *Request) Delete() (api.ChangeInfo, error) {
-	// TODO: https://github.com/stretchrcom/sdk-go/issues/7
+	// TODO: https://github.com/stretchr/sdk-go/issues/7
 
 	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Delete()
 

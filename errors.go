@@ -2,7 +2,7 @@ package stretchr
 
 import (
 	"errors"
-	"github.com/stretchrcom/sdk-go/api"
+	"github.com/stretchr/sdk-go/api"
 )
 
 var (

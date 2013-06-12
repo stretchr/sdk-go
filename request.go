@@ -1,7 +1,7 @@
 package stretchr
 
 import (
-	"github.com/stretchrcom/sdk-go/api"
+	"github.com/stretchr/sdk-go/api"
 )
 
 // Request represents a kind of interaction that can be made against

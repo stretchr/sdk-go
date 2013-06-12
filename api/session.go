@@ -1,10 +1,10 @@
 package api
 
 import (
-	"github.com/stretchrcom/codecs"
-	"github.com/stretchrcom/codecs/json"
-	"github.com/stretchrcom/sdk-go/common"
-	stewstrings "github.com/stretchrcom/stew/strings"
+	"github.com/stretchr/codecs"
+	"github.com/stretchr/codecs/json"
+	"github.com/stretchr/sdk-go/common"
+	stewstrings "github.com/stretchr/stew/strings"
 )
 
 // Session provides access to Stretchr services.

@@ -1,10 +1,10 @@
 package api
 
 import (
-	"github.com/stretchrcom/testify/mock"
+	"github.com/stretchr/testify/mock"
 )
 
-// MockedTransporter is a Transporter object that has been mocked (using github.com/stretchrcom/testify/mock)
+// MockedTransporter is a Transporter object that has been mocked (using github.com/stretchr/testify/mock)
 // to allow for the testing of Stretchr code, without having to make real HTTP requests.
 type MockedTransporter struct {
 	mock.Mock

@@ -3,9 +3,9 @@ package stretchr
 import (
 	"bytes"
 	"fmt"
-	"github.com/stretchrcom/sdk-go/api"
-	"github.com/stretchrcom/sdk-go/common"
-	"github.com/stretchrcom/signature"
+	"github.com/stretchr/sdk-go/api"
+	"github.com/stretchr/sdk-go/common"
+	"github.com/stretchr/signature"
 	"io/ioutil"
 	"net/http"
 )

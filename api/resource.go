@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/stretchrcom/stew/objects"
+	"github.com/stretchr/stew/objects"
 )
 
 // Resource describes objects that can be used in conjunction with Stretchr services.

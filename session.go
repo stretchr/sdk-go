@@ -1,7 +1,7 @@
 package stretchr
 
 import (
-	"github.com/stretchrcom/sdk-go/api"
+	"github.com/stretchr/sdk-go/api"
 )
 
 // Session contains project and account information and enables access to
