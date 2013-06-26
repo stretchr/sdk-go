@@ -46,9 +46,9 @@ const (
 */
 
 const (
-	ModifierLimit string = "~limit"
-	ModifierSkip  string = "~skip"
-	ModifierOrder string = "~order"
+	ModifierLimit string = "limit"
+	ModifierSkip  string = "skip"
+	ModifierOrder string = "order"
 )
 
 /*
@@ -56,10 +56,10 @@ const (
 */
 
 const (
-	SignSignature  string = "~sign"
-	SignPrivateKey string = "~private"
-	SignPublicKey  string = "~key"
-	SignBodyHash   string = "~bodyhash"
+	SignSignature  string = "sign"
+	SignPrivateKey string = "private"
+	SignPublicKey  string = "key"
+	SignBodyHash   string = "bodyhash"
 )
 
 /*

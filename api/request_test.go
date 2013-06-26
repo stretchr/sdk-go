@@ -47,7 +47,7 @@ func TestRequest_signedURL(t *testing.T) {
 		assert.Contains(t, urlString, "%3Afield=match")
 		assert.Contains(t, urlString, "%3Afield2=match2")
 		assert.Contains(t, urlString, "key=123")
-		assert.Contains(t, urlString, "sign=b108cec2f96e8e2a859b71063b3d55ec26137010")
+		assert.Contains(t, urlString, "sign=6fb04798acdd3b59513ae93a6667fa57110ba76b")
 	}
 
 }
