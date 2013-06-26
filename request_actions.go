@@ -9,7 +9,7 @@ import (
 // ReadOne loads a resource from Stretchr with the given path.
 func (r *Request) ReadOne() (*Resource, error) {
 
-	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Read()
+	response, err := r.UnderlyingRequest.Read()
 
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func (r *Request) ReadOne() (*Resource, error) {
 // ReadMany loads many resources from Stretchr with the given path.
 func (r *Request) ReadMany() (*ResourceCollection, error) {
 
-	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Read()
+	response, err := r.UnderlyingRequest.Read()
 
 	if err != nil {
 		return nil, err
@@ -54,14 +54,11 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 		return nil, errs[0]
 	}
 
-	switch responseObject.Data().(type) {
-	case []interface{}:
-
-		data := responseObject.Data().([]interface{})
-		resources := make([]*Resource, len(data))
+	if resourceArray, exists := responseObject.Data().(map[string]interface{})["~i"].([]interface{}); exists {
+		resources := make([]*Resource, len(resourceArray))
 
 		// populate the resources
-		for resIndex, responseData := range data {
+		for resIndex, responseData := range resourceArray {
 			resource := MakeResourceAt(r.UnderlyingRequest.Path())
 			resource.data = objects.Map(responseData.(map[string]interface{})).Copy()
 			resources[resIndex] = resource
@@ -70,13 +67,9 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 		resourceCollection := MakeResourceCollection(resources)
 
 		return resourceCollection, nil
-	case map[string]interface{}:
-		return nil, ErrArrayObjectExpectedButGotSingleObject
-	case nil:
-		return nil, ErrArrayObjectExpectedButGotNil
+	} else {
+		return nil, ErrArrayObjectExpectedButGotSomethingElse
 	}
-
-	return nil, ErrArrayObjectExpectedButGotSomethingElse
 
 }
 
@@ -99,7 +92,7 @@ func extractChangeInfo(response *api.Response) (api.ChangeInfo, error) {
 // If the resource exists, it will be replaced.
 func (r *Request) Create(resource api.Resource) (api.ChangeInfo, error) {
 
-	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Create(resource)
+	response, err := r.UnderlyingRequest.Create(resource)
 
 	if err != nil {
 		return nil, err
@@ -115,7 +108,42 @@ func (r *Request) Create(resource api.Resource) (api.ChangeInfo, error) {
 		resource.SetID(changeInfo.Deltas()[0][common.DataFieldID].(string))
 	}
 
-	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	if changeInfo.HasDeltas() {
+		resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	}
+
+	return changeInfo, nil
+
+}
+
+// CreateMany creates many resources.
+// If a resource exists, it will be replaced.
+func (r *Request) CreateMany(resourceCollection *ResourceCollection) (api.ChangeInfo, error) {
+
+	// We have to manuall repackage the collection data so the api.CreateMany will accept it
+	var data []api.Resource
+
+	for _, resource := range resourceCollection.Resources {
+		data = append(data, resource)
+	}
+
+	response, err := r.UnderlyingRequest.CreateMany(data)
+
+	if err != nil {
+		return nil, err
+	}
+
+	changeInfo, err := extractChangeInfo(response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for index, resource := range resourceCollection.Resources {
+		if changeInfo.HasDeltas() {
+			resource.ResourceData().MergeHere(changeInfo.Deltas()[index])
+		}
+	}
 
 	return changeInfo, nil
 
@@ -125,7 +153,7 @@ func (r *Request) Create(resource api.Resource) (api.ChangeInfo, error) {
 // If the resource does not exist, it will be Updated.
 func (r *Request) Update(resource api.Resource) (api.ChangeInfo, error) {
 
-	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Update(resource)
+	response, err := r.UnderlyingRequest.Update(resource)
 
 	if err != nil {
 		return nil, err
@@ -137,7 +165,9 @@ func (r *Request) Update(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	if changeInfo.HasDeltas() {
+		resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	}
 
 	return changeInfo, nil
 
@@ -147,7 +177,7 @@ func (r *Request) Update(resource api.Resource) (api.ChangeInfo, error) {
 // If the resource does not exist, it will be created.
 func (r *Request) Replace(resource api.Resource) (api.ChangeInfo, error) {
 
-	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Replace(resource)
+	response, err := r.UnderlyingRequest.Replace(resource)
 
 	if err != nil {
 		return nil, err
@@ -159,7 +189,9 @@ func (r *Request) Replace(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	if changeInfo.HasDeltas() {
+		resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	}
 
 	return changeInfo, nil
 
@@ -169,7 +201,7 @@ func (r *Request) Replace(resource api.Resource) (api.ChangeInfo, error) {
 func (r *Request) Delete() (api.ChangeInfo, error) {
 	// TODO: https://github.com/stretchr/sdk-go/issues/7
 
-	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Delete()
+	response, err := r.UnderlyingRequest.Delete()
 
 	if err != nil {
 		return nil, err
@@ -183,7 +215,7 @@ func (r *Request) Delete() (api.ChangeInfo, error) {
 // If the resource exists, it will be updated.
 func (r *Request) Save(resource api.Resource) (api.ChangeInfo, error) {
 
-	response, err := r.session.underlyingSession.At(r.UnderlyingRequest.Path()).Save(resource)
+	response, err := r.UnderlyingRequest.Save(resource)
 
 	if err != nil {
 		return nil, err
@@ -195,7 +227,9 @@ func (r *Request) Save(resource api.Resource) (api.ChangeInfo, error) {
 		return nil, err
 	}
 
-	resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	if changeInfo.HasDeltas() {
+		resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
+	}
 
 	return changeInfo, nil
 

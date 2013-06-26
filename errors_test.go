@@ -8,7 +8,7 @@ import (
 
 func TestErrors_GetErrorsFromResponseObject(t *testing.T) {
 
-	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~m": "Oops One"}, map[string]interface{}{"~m": "Oops Two"}}, "", nil)
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~message": "Oops One"}, map[string]interface{}{"~message": "Oops Two"}}, "", nil)
 
 	errs := GetErrorsFromResponseObject(response.BodyObject())
 
@@ -21,7 +21,7 @@ func TestErrors_GetErrorsFromResponseObject(t *testing.T) {
 
 func TestErrors_GetErrorFromResponseObject(t *testing.T) {
 
-	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~m": "Oops One"}, map[string]interface{}{"~m": "Oops Two"}}, "", nil)
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~message": "Oops One"}, map[string]interface{}{"~message": "Oops Two"}}, "", nil)
 
 	assert.Equal(t, "Oops One", fmt.Sprintf("%s", GetErrorFromResponseObject(response.BodyObject())))
 

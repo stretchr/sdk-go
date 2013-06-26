@@ -55,11 +55,11 @@ func TestResponse_HttpStatusCode(t *testing.T) {
 
 func TestResponse_BodyObject(t *testing.T) {
 
-	response, _ := MakeTestResponseWithBody(`{"~s":200, "~d":{"name":"Mat"}}`)
+	response, _ := MakeTestResponseWithBody(`{"~status":200, "~data":{"name":"Mat"}}`)
 
 	bodyObj := response.BodyObject()
 
-	assert.Equal(t, 200, bodyObj["~s"])
+	assert.Equal(t, 200, bodyObj["~status"])
 	assert.Equal(t, "Mat", bodyObj[ResponseObjectFieldData].(map[string]interface{})["name"])
 
 }

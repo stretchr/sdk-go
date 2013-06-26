@@ -43,11 +43,11 @@ func TestRequest_signedURL(t *testing.T) {
 
 	if assert.Nil(t, urlErr) {
 		urlString := fullUrl.String()
-		assert.Contains(t, urlString, "http://test.stretchr.com/api/v1/people/123?")
+		assert.Contains(t, urlString, "http://test.stretchr.com/api/v1.1/people/123?")
 		assert.Contains(t, urlString, "%3Afield=match")
 		assert.Contains(t, urlString, "%3Afield2=match2")
-		assert.Contains(t, urlString, "~key=123")
-		assert.Contains(t, urlString, "~sign=a70db8c8966fd4f64d86d2510a6cdef2c2d0749e")
+		assert.Contains(t, urlString, "key=123")
+		assert.Contains(t, urlString, "sign=b108cec2f96e8e2a859b71063b3d55ec26137010")
 	}
 
 }

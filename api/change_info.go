@@ -1,9 +1,9 @@
 package api
 
 const (
-	ChangeInfoPublicFieldCreated      string = "~c"
-	ChangeInfoPublicFieldUpdated      string = "~u"
-	ChangeInfoPublicFieldDeleted      string = "~d"
+	ChangeInfoPublicFieldCreated      string = "~created"
+	ChangeInfoPublicFieldUpdated      string = "~updated"
+	ChangeInfoPublicFieldDeleted      string = "~deleted"
 	ChangeInfoPublicFieldDeltas       string = "~deltas"
 	ChangeInfoPublicFieldDeltaCreated string = "~created"
 	ChangeInfoPublicFieldDeltaUpdated string = "~updated"
@@ -41,6 +41,17 @@ func (c ChangeInfo) Deleted() int {
 		return int(val.(float64))
 	}
 	return 0
+}
+
+// HasDeltas gets whether deltas exist in this ChangeInfo object
+func (c ChangeInfo) HasDeltas() bool {
+	if val, ok := c[ChangeInfoPublicFieldDeltas]; ok {
+		if len(val.([]interface{})) == 0 {
+			return false
+		}
+		return true
+	}
+	return false
 }
 
 // Deltas gets the array of (map[string]interface{}) Deltas that were created in the last

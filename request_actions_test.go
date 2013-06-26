@@ -66,7 +66,7 @@ func TestRequest_ReadOne_StretchrError(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~m": "Something went wrong"}}, "", nil)
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~message": "Something went wrong"}}, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -89,8 +89,11 @@ func TestRequest_ReadMany(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, []map[string]interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
-		map[string]interface{}{"name": "Tyler", common.DataFieldID: "DEF"}}, nil, "", nil)
+
+	responseData := map[string]interface{}{"~created": 2, "~i": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
+		map[string]interface{}{"name": "Tyler", common.DataFieldID: "DEF"}}}
+
+	response := NewTestResponse(200, responseData, nil, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -111,8 +114,8 @@ func TestRequest_ReadMany(t *testing.T) {
 	resource1 := resourceCollection.Resources[0]
 	resource2 := resourceCollection.Resources[1]
 
-	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().([]interface{})[0].(map[string]interface{})["name"])
-	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().([]interface{})[1].(map[string]interface{})["name"])
+	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~i"].([]interface{})[0].(map[string]interface{})["name"])
+	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~i"].([]interface{})[1].(map[string]interface{})["name"])
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
 	assert.Equal(t, resource2.ResourcePath(), "people/DEF")
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
@@ -144,7 +147,7 @@ func TestRequest_ReadMany_StretchrError(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~m": "Something went wrong"}}, "", nil)
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~message": "Something went wrong"}}, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -212,7 +215,7 @@ func TestRequest_Delete_StretchrError(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~m": "Something went wrong"}}, "", nil)
+	response := NewTestResponse(500, nil, []map[string]interface{}{map[string]interface{}{"~message": "Something went wrong"}}, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
@@ -251,6 +254,56 @@ func TestRequest_Create(t *testing.T) {
 			assert.Equal(t, changeInfo.Created(), 1)
 			assert.Equal(t, resource.ID(), "hello")
 			assert.Equal(t, resource.ResourceData()[api.ChangeInfoPublicFieldDeltaCreated].(float64), 123)
+		}
+	}
+
+}
+
+func TestRequest_CreateMany(t *testing.T) {
+
+	var resources []*Resource
+
+	resource := MakeResourceAt("people")
+	resource.Set("name", "Mat").Set("age", 29)
+	resources = append(resources, resource)
+	resource = MakeResourceAt("people")
+	resource.Set("name", "Tyler").Set("age", 28)
+	resources = append(resources, resource)
+	resource = MakeResourceAt("people")
+	resource.Set("name", "Stacey").Set("age", 29)
+	resources = append(resources, resource)
+
+	resourceCollection := MakeResourceCollection(resources)
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+	response := NewTestResponse(200, nil, nil, "", api.ChangeInfo(map[string]interface{}{api.ChangeInfoPublicFieldCreated: 3, api.ChangeInfoPublicFieldDeltas: []interface{}{
+		map[string]interface{}{common.DataFieldID: "hello", api.ChangeInfoPublicFieldDeltaCreated: 123},
+		map[string]interface{}{common.DataFieldID: "goodbye", api.ChangeInfoPublicFieldDeltaCreated: 456},
+		map[string]interface{}{common.DataFieldID: "greetings", api.ChangeInfoPublicFieldDeltaCreated: 789}}}))
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	changeInfo, err := session.At("people").CreateMany(resourceCollection)
+
+	if assert.NoError(t, err) {
+		if assert.NotNil(t, changeInfo) {
+			mockedTransporter.AssertExpectations(t)
+			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
+
+			assert.Equal(t, request.HttpMethod(), common.HttpMethodPost)
+			assert.Equal(t, request.Path(), "people")
+			assert.Equal(t, changeInfo.Created(), 3)
+
+			assert.Equal(t, resourceCollection.Resources[0].ID(), "hello")
+			assert.Equal(t, resourceCollection.Resources[0].ResourceData()[api.ChangeInfoPublicFieldDeltaCreated].(float64), 123)
+			assert.Equal(t, resourceCollection.Resources[1].ID(), "goodbye")
+			assert.Equal(t, resourceCollection.Resources[1].ResourceData()[api.ChangeInfoPublicFieldDeltaCreated].(float64), 456)
+			assert.Equal(t, resourceCollection.Resources[2].ID(), "greetings")
+			assert.Equal(t, resourceCollection.Resources[2].ResourceData()[api.ChangeInfoPublicFieldDeltaCreated].(float64), 789)
 		}
 	}
 

@@ -67,6 +67,11 @@ func (r *Resource) ResourceData() objects.Map {
 	return r.data
 }
 
+// MergeData merges the passed data with the internal map
+func (r *Resource) MergeData(data objects.Map) {
+	r.data.MergeHere(data)
+}
+
 // Get gets a value from the resource.
 //
 // Keypaths are supported with the dot syntax, for more information see

@@ -13,7 +13,7 @@ func TestNewSession(t *testing.T) {
 	assert.Equal(t, "123", s.publicKey)
 	assert.Equal(t, "456", s.privateKey)
 	assert.Equal(t, ActiveLiveTransporter, s.transporter, "Should default to ActiveLiveTransporter")
-	assert.Equal(t, "1", s.apiVersion, "apiVersion should default to 1")
+	assert.Equal(t, "1.1", s.apiVersion, "apiVersion should default to 1.1")
 
 }
 

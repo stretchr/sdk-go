@@ -1,13 +1,13 @@
 package api
 
 const (
-	ResponseObjectFieldData          string = "~d"
-	ResponseObjectFieldChangeInfo    string = "~ch"
-	ResponseObjectFieldErrors        string = "~e"
-	ResponseObjectFieldStatusCode    string = "~s"
-	ResponseObjectFieldContext       string = "~x"
-	ResponseObjectFieldErrorsMessage string = "~m"
-	responseObjectFieldErrorStrings  string = "_e"
+	ResponseObjectFieldData          string = "~data"
+	ResponseObjectFieldChangeInfo    string = "~changes"
+	ResponseObjectFieldErrors        string = "~errors"
+	ResponseObjectFieldStatusCode    string = "~status"
+	ResponseObjectFieldContext       string = "~context"
+	ResponseObjectFieldErrorsMessage string = "~message"
+	responseObjectFieldErrorStrings  string = "_errors"
 )
 
 type ResponseObject map[string]interface{}
@@ -55,6 +55,13 @@ func (o ResponseObject) Errors() []string {
 
 	return o[responseObjectFieldErrorStrings].([]string)
 
+}
+
+func (o ResponseObject) HasErrors() bool {
+	if _, hasErrors := o[ResponseObjectFieldErrors]; hasErrors {
+		return true
+	}
+	return false
 }
 
 func (o ResponseObject) ChangeInfo() ChangeInfo {

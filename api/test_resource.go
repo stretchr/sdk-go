@@ -1,9 +1,9 @@
 package api
 
 import (
+	"github.com/stretchr/sdk-go/common"
 	"github.com/stretchr/stew/objects"
 	stewstrings "github.com/stretchr/stew/strings"
-	"github.com/stretchr/sdk-go/common"
 	"strings"
 )
 

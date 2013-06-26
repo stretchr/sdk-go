@@ -5,7 +5,10 @@ import (
 	"github.com/stretchr/codecs/json"
 	"github.com/stretchr/sdk-go/common"
 	stewstrings "github.com/stretchr/stew/strings"
+	"github.com/stretchr/tracer"
 )
+
+var Tracer *tracer.Tracer
 
 // Session provides access to Stretchr services.
 type Session struct {
@@ -25,9 +28,17 @@ func NewSession(project, publicKey, privateKey string) *Session {
 	s.publicKey = publicKey
 	s.privateKey = privateKey
 	s.transporter = ActiveLiveTransporter
-	s.apiVersion = "1"
+	s.apiVersion = "1.1"
 	s.codec = new(json.JsonCodec)
+
+	Tracer.TraceInfo("New session created. Project: %s. Public Key: %s. Private Key: %s. API Version: %s.", project, publicKey, privateKey, "1")
+
 	return s
+}
+
+// BeginTracing starts up the tracer with the specified level
+func BeginTracing(level int) {
+	Tracer = tracer.New(level)
 }
 
 // Project gets the project name that this session relates to.
@@ -42,6 +53,7 @@ func (s *Session) Codec() codecs.Codec {
 
 // SetCodec sets the codec to be used to communicate with Stretchr.
 func (s *Session) SetCodec(codec codecs.Codec) {
+	Tracer.TraceDebug("Setting codec: %s", codec.ContentType())
 	s.codec = codec
 }
 
@@ -69,7 +81,7 @@ func (s *Session) host() string {
 		protocol = common.HttpProtocol
 	}
 
-	return stewstrings.MergeStrings(protocol,
+	host := stewstrings.MergeStrings(protocol,
 		common.ProtocolSeparator,
 		s.project,
 		common.HostSeparator,
@@ -77,9 +89,15 @@ func (s *Session) host() string {
 		common.ApiVersionPathPrefix,
 		s.apiVersion)
 
+	Tracer.TraceInfo("Host string: %s", host)
+
+	return host
+
 }
 
 // At starts a new Request for the specified path.
 func (s *Session) At(path string) *Request {
+	Tracer.TraceDebug("Creating new Request At: %s", path)
+
 	return NewRequest(s, path)
 }

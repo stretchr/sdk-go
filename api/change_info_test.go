@@ -30,6 +30,18 @@ func TestChangeInfo_Deleted(t *testing.T) {
 
 }
 
+func TestChangeInfo_HasDeltas(t *testing.T) {
+
+	changeInfo := ChangeInfo(map[string]interface{}{ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "one"}, map[string]interface{}{common.DataFieldID: "two"}, map[string]interface{}{common.DataFieldID: "three"}}})
+
+	assert.True(t, changeInfo.HasDeltas())
+
+	changeInfo = ChangeInfo(map[string]interface{}{ChangeInfoPublicFieldDeltas: []interface{}{}})
+
+	assert.False(t, changeInfo.HasDeltas())
+
+}
+
 func TestChangeInfo_Deltas(t *testing.T) {
 
 	changeInfo := ChangeInfo(map[string]interface{}{ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "one"}, map[string]interface{}{common.DataFieldID: "two"}, map[string]interface{}{common.DataFieldID: "three"}}})

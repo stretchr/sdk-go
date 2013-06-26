@@ -11,7 +11,7 @@ import (
 
 func MakeTestResponse() (*Response, error) {
 
-	res, err := MakeTestResponseWithBody(`{"~s":200}`)
+	res, err := MakeTestResponseWithBody(`{"~status":200}`)
 
 	if err != nil {
 		panic(fmt.Sprintf("MakeTestResponse: %s", err))
@@ -44,6 +44,6 @@ func GetTestSession() *Session {
 
 func GetTestHttpResponse() *http.Response {
 	testHttpResponse := new(http.Response)
-	testHttpResponse.Body = ioutil.NopCloser(bytes.NewBufferString(`{"~s":200}`))
+	testHttpResponse.Body = ioutil.NopCloser(bytes.NewBufferString(`{"~status":200}`))
 	return testHttpResponse
 }
