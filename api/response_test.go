@@ -60,6 +60,6 @@ func TestResponse_BodyObject(t *testing.T) {
 	bodyObj := response.BodyObject()
 
 	assert.Equal(t, 200, bodyObj["~status"])
-	assert.Equal(t, "Mat", bodyObj[ResponseObjectFieldData].(map[string]interface{})["name"])
+	assert.Equal(t, "Mat", bodyObj[common.ResponseObjectFieldData].(map[string]interface{})["name"])
 
 }

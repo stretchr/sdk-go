@@ -34,6 +34,29 @@ const (
 )
 
 /*
+	Standard response object fields
+*/
+
+const (
+	ResponseObjectFieldData          string = "~data"
+	ResponseObjectFieldChangeInfo    string = "~changes"
+	ResponseObjectFieldErrors        string = "~errors"
+	ResponseObjectFieldStatusCode    string = "~status"
+	ResponseObjectFieldContext       string = "~context"
+	ResponseObjectFieldErrorsMessage string = "~message"
+	ItemsFieldKey                    string = "~items"
+)
+
+const (
+	ChangeInfoPublicFieldCreated      string = "~created"
+	ChangeInfoPublicFieldUpdated      string = "~updated"
+	ChangeInfoPublicFieldDeleted      string = "~deleted"
+	ChangeInfoPublicFieldDeltas       string = "~deltas"
+	ChangeInfoPublicFieldDeltaCreated string = "~created"
+	ChangeInfoPublicFieldDeltaUpdated string = "~updated"
+)
+
+/*
 	Data fields
 */
 

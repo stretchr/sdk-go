@@ -1,7 +1,6 @@
 package stretchr
 
 import (
-	"github.com/stretchr/sdk-go/api"
 	"github.com/stretchr/sdk-go/common"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -11,7 +10,7 @@ func TestTestResponse_NewTestResponse(t *testing.T) {
 
 	status := float64(201)
 	data := map[string]interface{}{"name": "Mat"}
-	errors := []map[string]interface{}{map[string]interface{}{api.ResponseObjectFieldErrorsMessage: "An Error"}}
+	errors := []map[string]interface{}{map[string]interface{}{common.ResponseObjectFieldErrorsMessage: "An Error"}}
 	context := "context"
 	changeInfo := TestChangeInfo
 

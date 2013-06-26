@@ -54,7 +54,7 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 		return nil, errs[0]
 	}
 
-	if resourceArray, exists := responseObject.Data().(map[string]interface{})["~i"].([]interface{}); exists {
+	if resourceArray, exists := responseObject.Data().(map[string]interface{})[common.ItemsFieldKey].([]interface{}); exists {
 		resources := make([]*Resource, len(resourceArray))
 
 		// populate the resources

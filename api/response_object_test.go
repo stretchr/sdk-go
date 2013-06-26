@@ -32,7 +32,7 @@ func TestResponseObject_Context_NoContext(t *testing.T) {
 
 func TestResponseObject_Data(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{ResponseObjectFieldData: map[string]interface{}{"name": "Mat"}})
+	obj := ResponseObject(map[string]interface{}{common.ResponseObjectFieldData: map[string]interface{}{"name": "Mat"}})
 
 	assert.Equal(t, "Mat", obj.Data().(map[string]interface{})["name"])
 
@@ -48,7 +48,7 @@ func TestResponseObject_Data_WithNoData(t *testing.T) {
 
 func TestResponseObject_Errors(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{ResponseObjectFieldErrors: []interface{}{map[string]interface{}{"~message": "Something went wrong"}}})
+	obj := ResponseObject(map[string]interface{}{common.ResponseObjectFieldErrors: []interface{}{map[string]interface{}{"~message": "Something went wrong"}}})
 
 	errs := obj.Errors()
 	if assert.Equal(t, 1, len(errs)) {
@@ -59,7 +59,7 @@ func TestResponseObject_Errors(t *testing.T) {
 
 func TestResponseObject_ChangeInfo(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{ResponseObjectFieldChangeInfo: map[string]interface{}{ChangeInfoPublicFieldCreated: float64(1), ChangeInfoPublicFieldUpdated: float64(2), ChangeInfoPublicFieldDeleted: float64(3), ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "ABC"}, map[string]interface{}{common.DataFieldID: "DEF"}}}})
+	obj := ResponseObject(map[string]interface{}{common.ResponseObjectFieldChangeInfo: map[string]interface{}{common.ChangeInfoPublicFieldCreated: float64(1), common.ChangeInfoPublicFieldUpdated: float64(2), common.ChangeInfoPublicFieldDeleted: float64(3), common.ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "ABC"}, map[string]interface{}{common.DataFieldID: "DEF"}}}})
 
 	changeInfo := obj.ChangeInfo()
 
@@ -82,7 +82,7 @@ func TestResponseObject_ChangeInfo(t *testing.T) {
 
 func TestResponseObject_ChangeInfo_NoChangeInfo(t *testing.T) {
 
-	obj := ResponseObject(map[string]interface{}{"nope": map[string]interface{}{ChangeInfoPublicFieldCreated: float64(1), ChangeInfoPublicFieldUpdated: float64(2), ChangeInfoPublicFieldDeleted: float64(3), "~ids": []interface{}{"ABC", "DEF"}}})
+	obj := ResponseObject(map[string]interface{}{"nope": map[string]interface{}{common.ChangeInfoPublicFieldCreated: float64(1), common.ChangeInfoPublicFieldUpdated: float64(2), common.ChangeInfoPublicFieldDeleted: float64(3), "~ids": []interface{}{"ABC", "DEF"}}})
 
 	changeInfo := obj.ChangeInfo()
 

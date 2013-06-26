@@ -10,17 +10,17 @@ import (
 	"net/http"
 )
 
-var TestChangeInfo = api.ChangeInfo{api.ChangeInfoPublicFieldCreated: 1, api.ChangeInfoPublicFieldUpdated: 2, api.ChangeInfoPublicFieldDeleted: 3, api.ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "ABC"}, map[string]interface{}{common.DataFieldID: "DEF"}}}
+var TestChangeInfo = api.ChangeInfo{common.ChangeInfoPublicFieldCreated: 1, common.ChangeInfoPublicFieldUpdated: 2, common.ChangeInfoPublicFieldDeleted: 3, common.ChangeInfoPublicFieldDeltas: []interface{}{map[string]interface{}{common.DataFieldID: "ABC"}, map[string]interface{}{common.DataFieldID: "DEF"}}}
 
 func NewTestResponse(status float64, data interface{}, errors []map[string]interface{}, context string, changeInfo api.ChangeInfo) *api.Response {
 
 	httpResponse := new(http.Response)
 
-	sro := map[string]interface{}{api.ResponseObjectFieldStatusCode: status,
-		api.ResponseObjectFieldData:       data,
-		api.ResponseObjectFieldErrors:     errors,
-		api.ResponseObjectFieldChangeInfo: changeInfo,
-		api.ResponseObjectFieldContext:    context}
+	sro := map[string]interface{}{common.ResponseObjectFieldStatusCode: status,
+		common.ResponseObjectFieldData:       data,
+		common.ResponseObjectFieldErrors:     errors,
+		common.ResponseObjectFieldChangeInfo: changeInfo,
+		common.ResponseObjectFieldContext:    context}
 
 	session := api.NewSession("project", "publicKey", "privateKey")
 

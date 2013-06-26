@@ -1,12 +1,7 @@
 package api
 
-const (
-	ChangeInfoPublicFieldCreated      string = "~created"
-	ChangeInfoPublicFieldUpdated      string = "~updated"
-	ChangeInfoPublicFieldDeleted      string = "~deleted"
-	ChangeInfoPublicFieldDeltas       string = "~deltas"
-	ChangeInfoPublicFieldDeltaCreated string = "~created"
-	ChangeInfoPublicFieldDeltaUpdated string = "~updated"
+import (
+	"github.com/stretchr/sdk-go/common"
 )
 
 // ChangeInfo represents a data object containing information about
@@ -19,7 +14,7 @@ var NoChangeInfo ChangeInfo = nil
 // Created gets the number of records that were created as indicated by
 // this ChangeInfo object.
 func (c ChangeInfo) Created() int {
-	if val, ok := c[ChangeInfoPublicFieldCreated]; ok {
+	if val, ok := c[common.ChangeInfoPublicFieldCreated]; ok {
 		return int(val.(float64))
 	}
 	return 0
@@ -28,7 +23,7 @@ func (c ChangeInfo) Created() int {
 // Updated gets the number of records that were updated as indicated by
 // this ChangeInfo object.
 func (c ChangeInfo) Updated() int {
-	if val, ok := c[ChangeInfoPublicFieldUpdated]; ok {
+	if val, ok := c[common.ChangeInfoPublicFieldUpdated]; ok {
 		return int(val.(float64))
 	}
 	return 0
@@ -37,7 +32,7 @@ func (c ChangeInfo) Updated() int {
 // Deleted gets the number of records that were deleted as indicated by
 // this ChangeInfo object.
 func (c ChangeInfo) Deleted() int {
-	if val, ok := c[ChangeInfoPublicFieldDeleted]; ok {
+	if val, ok := c[common.ChangeInfoPublicFieldDeleted]; ok {
 		return int(val.(float64))
 	}
 	return 0
@@ -45,7 +40,7 @@ func (c ChangeInfo) Deleted() int {
 
 // HasDeltas gets whether deltas exist in this ChangeInfo object
 func (c ChangeInfo) HasDeltas() bool {
-	if val, ok := c[ChangeInfoPublicFieldDeltas]; ok {
+	if val, ok := c[common.ChangeInfoPublicFieldDeltas]; ok {
 		if len(val.([]interface{})) == 0 {
 			return false
 		}
@@ -58,7 +53,7 @@ func (c ChangeInfo) HasDeltas() bool {
 // request if any.
 func (c ChangeInfo) Deltas() []map[string]interface{} {
 	deltas := []map[string]interface{}{}
-	if val, ok := c[ChangeInfoPublicFieldDeltas]; ok {
+	if val, ok := c[common.ChangeInfoPublicFieldDeltas]; ok {
 		for _, delta := range val.([]interface{}) {
 			deltas = append(deltas, delta.(map[string]interface{}))
 		}
