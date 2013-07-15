@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestMakeResourceCollection(t *testing.T) {
+func TestNewResourceCollection(t *testing.T) {
 
 }
 
@@ -13,7 +13,7 @@ func TestResourceCollection_IsEmpty(t *testing.T) {
 
 	resource := MakeResourceAt("test")
 	resources := []*Resource{resource}
-	rc := MakeResourceCollection(resources)
+	rc := NewResourceCollection(resources)
 	assert.Equal(t, rc.IsEmpty(), false)
 
 }

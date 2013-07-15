@@ -64,7 +64,7 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 			resources[resIndex] = resource
 		}
 
-		resourceCollection := MakeResourceCollection(resources)
+		resourceCollection := NewResourceCollection(resources)
 
 		return resourceCollection, nil
 	} else {

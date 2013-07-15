@@ -4,7 +4,7 @@ type ResourceCollection struct {
 	Resources []*Resource
 }
 
-func MakeResourceCollection(resources []*Resource) *ResourceCollection {
+func NewResourceCollection(resources []*Resource) *ResourceCollection {
 	c := new(ResourceCollection)
 	if resources == nil {
 		resources = make([]*Resource, 0)

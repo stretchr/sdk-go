@@ -273,7 +273,7 @@ func TestRequest_CreateMany(t *testing.T) {
 	resource.Set("name", "Stacey").Set("age", 29)
 	resources = append(resources, resource)
 
-	resourceCollection := MakeResourceCollection(resources)
+	resourceCollection := NewResourceCollection(resources)
 
 	mockedTransporter := new(api.MockedTransporter)
 	api.ActiveLiveTransporter = mockedTransporter
