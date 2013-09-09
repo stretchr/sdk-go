@@ -1,10 +1,6 @@
 package api
 
 import (
-	"errors"
-	"fmt"
-	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/signature"
 	"io/ioutil"
 	"net/http"
 )
@@ -59,18 +55,6 @@ func (r *Response) processResponse() error {
 
 	// set the body object
 	r.bodyObject = ResponseObject(bodyObject)
-
-	if !r.bodyObject.HasErrors() {
-		if responseHash, ok := r.httpResponse.Header[common.HeaderResponseHash]; ok {
-			// Validate the signature
-			calculatedHash := signature.HashWithKeys(bodyBytes, []byte(r.session.publicKey), []byte(r.session.privateKey))
-			if responseHash[0] != calculatedHash {
-				return errors.New(fmt.Sprintf("Signature validation failed. Got %s. Expected %s.", calculatedHash, responseHash[0]))
-			}
-		} else {
-			return errors.New(fmt.Sprintf("%s not present. Unable to validate server response.", common.HeaderResponseHash))
-		}
-	}
 
 	// all went well
 	return nil

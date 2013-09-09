@@ -3,7 +3,6 @@ package api
 import (
 	"bytes"
 	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/signature"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
@@ -43,7 +42,6 @@ func TestResponse_HttpStatusCode(t *testing.T) {
 	httpResponse.Body = ioutil.NopCloser(bytes.NewBufferString(`{}`))
 	httpResponse.StatusCode = http.StatusNotAcceptable
 	httpResponse.Header = make(map[string][]string)
-	httpResponse.Header[common.HeaderResponseHash] = []string{signature.HashWithKeys([]byte(`{}`), []byte(session.publicKey), []byte(session.privateKey))}
 
 	response, err := NewResponse(session, httpResponse)
 
