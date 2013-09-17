@@ -2,9 +2,9 @@ package stretchr
 
 import (
 	"fmt"
+	"github.com/stretchr/objx"
 	"github.com/stretchr/sdk-go/api"
 	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/stew/objects"
 	stewstrings "github.com/stretchr/stew/strings"
 	"strings"
 	"time"
@@ -20,7 +20,7 @@ type Resource struct {
 	// Path is the path of this resource.
 	path string
 	// Data holds the data for the resource.
-	data objects.Map
+	data objx.Map
 }
 
 // MakeResourceAt makes a new Resource with the specified path.
@@ -63,21 +63,21 @@ func (r *Resource) ResourcePath() string {
 }
 
 // ResourceData gets the data for this Resource.
-func (r *Resource) ResourceData() objects.Map {
+func (r *Resource) ResourceData() objx.Map {
 	return r.data
 }
 
 // MergeData merges the passed data with the internal map
-func (r *Resource) MergeData(data objects.Map) {
+func (r *Resource) MergeData(data objx.Map) {
 	r.data.MergeHere(data)
 }
 
 // Get gets a value from the resource.
 //
 // Keypaths are supported with the dot syntax, for more information see
-// http://godoc.org/github.com/stretchr/stew/objects#Map.Get
+// http://godoc.org/github.com/stretchr/objx#Map.Get
 func (r *Resource) Get(keypath string) interface{} {
-	return r.data.Get(keypath)
+	return r.data.Get(keypath).Data()
 }
 
 // GetString gets a strongly typed value from the data of this Resource
@@ -135,7 +135,7 @@ func (r *Resource) ID() string {
 // Set sets a value to the specified key and returns the Resource for chaining.
 //
 // Keypaths are supported with the dot syntax, for more information see
-// http://godoc.org/github.com/stretchr/stew/objects#Map.Set
+// http://godoc.org/github.com/stretchr/objx#Map.Set
 func (r *Resource) Set(keypath string, value interface{}) *Resource {
 
 	toStore := value

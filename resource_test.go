@@ -1,9 +1,9 @@
 package stretchr
 
 import (
+	"github.com/stretchr/objx"
 	"github.com/stretchr/sdk-go/api"
 	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/stew/objects"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -98,7 +98,7 @@ func TestResource_Get(t *testing.T) {
 	assert.Equal(t, resource.Get("now"), atime)
 	assert.Equal(t, resource.Get("number"), 123)
 
-	deep := objects.Map{"name": objects.Map{"first": "Mat", "last": "Ryer"}}
+	deep := objx.Map{"name": objx.Map{"first": "Mat", "last": "Ryer"}}
 
 	resource.data["deep"] = deep
 	assert.Equal(t, "Mat", resource.Get("deep.name.first"))

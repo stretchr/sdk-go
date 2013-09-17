@@ -1,14 +1,14 @@
 package api
 
 import (
-	"github.com/stretchr/stew/objects"
+	"github.com/stretchr/objx"
 )
 
 // Resource describes objects that can be used in conjunction with Stretchr services.
 type Resource interface {
 
 	// ResourceData gets the data for this Resource.
-	ResourceData() objects.Map
+	ResourceData() objx.Map
 
 	// ID gets the ID for this Resource.
 	ID() string

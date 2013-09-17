@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/stew/objects"
+	"github.com/stretchr/objx"
 	stewstrings "github.com/stretchr/stew/strings"
 	"strings"
 )
@@ -11,7 +11,7 @@ type TestResource struct {
 	// Path is the path of this resource.
 	Path string
 	// Data holds the data for the resource.
-	Data objects.Map
+	Data objx.Map
 }
 
 func MakeTestResourceAt(path string) *TestResource {
@@ -52,7 +52,7 @@ func (r *TestResource) ResourcePath() string {
 }
 
 // ResourceData gets the data for this Resource.
-func (r *TestResource) ResourceData() objects.Map {
+func (r *TestResource) ResourceData() objx.Map {
 	return r.Data
 }
 
