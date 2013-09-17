@@ -96,8 +96,8 @@ func TestStrongResources_StrongGettersAndSetters(t *testing.T) {
 	assert.Equal(t, int(30), p.Age())
 
 	// ensure also that the actual data is set in the resource
-	assert.Equal(t, "Mat", p.Resource.ResourceData().Get("name"))
-	assert.Equal(t, 30, p.Resource.ResourceData().Get("age"))
+	assert.Equal(t, "Mat", p.Resource.ResourceData().Get("name").Data())
+	assert.Equal(t, 30, p.Resource.ResourceData().Get("age").Data())
 
 }
 
