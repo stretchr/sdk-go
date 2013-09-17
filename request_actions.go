@@ -3,7 +3,7 @@ package stretchr
 import (
 	"github.com/stretchr/sdk-go/api"
 	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/stew/objects"
+	"github.com/stretchr/objx"
 )
 
 // ReadOne loads a resource from Stretchr with the given path.
@@ -26,7 +26,7 @@ func (r *Request) ReadOne() (*Resource, error) {
 	switch responseObject.Data().(type) {
 	case map[string]interface{}:
 		resource := MakeResourceAt(r.UnderlyingRequest.Path())
-		resource.data = objects.Map(responseObject.Data().(map[string]interface{})).Copy()
+		resource.data = objx.Map(responseObject.Data().(map[string]interface{})).Copy()
 		return resource, nil
 	case []interface{}:
 		return nil, ErrSingleObjectExpectedButGotArray
@@ -60,7 +60,7 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 		// populate the resources
 		for resIndex, responseData := range resourceArray {
 			resource := MakeResourceAt(r.UnderlyingRequest.Path())
-			resource.data = objects.Map(responseData.(map[string]interface{})).Copy()
+			resource.data = objx.Map(responseData.(map[string]interface{})).Copy()
 			resources[resIndex] = resource
 		}
 
