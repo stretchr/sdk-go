@@ -79,10 +79,7 @@ const (
 */
 
 const (
-	SignSignature  string = "sign"
-	SignPrivateKey string = "private"
-	SignAPIKey  string = "key"
-	SignBodyHash   string = "bodyhash"
+	ParameterAPIKey string = "key"
 )
 
 /*
