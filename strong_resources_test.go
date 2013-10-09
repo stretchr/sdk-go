@@ -113,7 +113,7 @@ func TestStrongResources_StrongGettersAndSetters(t *testing.T) {
 func TestStrongResources_UsingTheResource(t *testing.T) {
 
 	// make a session object
-	session := NewSession("project", "publicKey", "privateKey")
+	session := NewSession("project", "apiKey")
 
 	// don't make real requests
 	mockedTransporter := new(api.MockedTransporter)

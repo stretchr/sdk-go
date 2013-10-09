@@ -13,8 +13,7 @@ var Tracer *tracer.Tracer
 // Session provides access to Stretchr services.
 type Session struct {
 	project     string
-	privateKey  string
-	publicKey   string
+	apiKey      string
 	transporter Transporter
 	apiVersion  string
 	codec       codecs.Codec
@@ -22,16 +21,15 @@ type Session struct {
 }
 
 // NewSession creates a new Session object with the specified project.
-func NewSession(project, publicKey, privateKey string) *Session {
+func NewSession(project, apiKey string) *Session {
 	s := new(Session)
 	s.project = project
-	s.publicKey = publicKey
-	s.privateKey = privateKey
+	s.apiKey = apiKey
 	s.transporter = ActiveLiveTransporter
 	s.apiVersion = "1.1"
 	s.codec = new(json.JsonCodec)
 
-	Tracer.TraceInfo("New session created. Project: %s. Public Key: %s. Private Key: %s. API Version: %s.", project, publicKey, privateKey, "1")
+	Tracer.TraceInfo("New session created. Project: %s. API Key: %s. API Version: %s.", project, apiKey, s.apiVersion)
 
 	return s
 }

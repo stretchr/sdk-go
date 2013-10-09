@@ -2,7 +2,6 @@ package api
 
 import (
 	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/signature"
 	stewstrings "github.com/stretchr/stew/strings"
 	"net/http"
 	"net/url"
@@ -29,9 +28,9 @@ func NewRequest(session *Session, path string) *Request {
 	return r
 }
 
-// signedUrl generates the absolute URL that will be used to make
+// url generates the absolute URL that will be used to make
 // this request.
-func (r *Request) signedUrl() (*url.URL, error) {
+func (r *Request) url() (*url.URL, error) {
 
 	urlString := stewstrings.MergeStrings(r.session.host(), common.PathSeparator, r.path)
 
@@ -44,29 +43,7 @@ func (r *Request) signedUrl() (*url.URL, error) {
 	// set the query values
 	theUrl.RawQuery = r.queryValues.Encode()
 
-	urlString = theUrl.String()
-
-	var urlToSign string
-
-	if strings.Contains(urlString, "?") {
-		urlToSign = stewstrings.MergeStrings(urlString, "&", common.SignPublicKey, "=", r.session.publicKey)
-	} else {
-		urlToSign = stewstrings.MergeStrings(urlString, "?", common.SignPublicKey, "=", r.session.publicKey)
-	}
-
-	signedURLString, signErr := signature.GetSignedURL(r.httpMethod, urlToSign, string(r.body), r.session.privateKey)
-
-	if signErr != nil {
-		return nil, signErr
-	}
-
-	signedURL, signedURLErr := url.Parse(signedURLString)
-
-	if signedURLErr != nil {
-		return nil, signedURLErr
-	}
-
-	return signedURL, nil
+	return theUrl, nil
 
 }
 
@@ -89,16 +66,16 @@ func (r *Request) httpRequest() (*http.Request, error) {
 	var httpRequest *http.Request
 	var requestErr error
 
-	signedUrl, urlErr := r.signedUrl()
+	requestURL, urlErr := r.url()
 
 	if urlErr != nil {
 		return nil, urlErr
 	}
 
 	if r.hasBody() {
-		httpRequest, requestErr = http.NewRequest(r.httpMethod, signedUrl.String(), strings.NewReader(string(r.body)))
+		httpRequest, requestErr = http.NewRequest(r.httpMethod, requestURL.String(), strings.NewReader(string(r.body)))
 	} else {
-		httpRequest, requestErr = http.NewRequest(r.httpMethod, signedUrl.String(), nil)
+		httpRequest, requestErr = http.NewRequest(r.httpMethod, requestURL.String(), nil)
 	}
 
 	return httpRequest, requestErr

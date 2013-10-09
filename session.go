@@ -20,14 +20,14 @@ type Session struct {
 //
 // For example,
 //
-//     Stretchr := stretchr.NewSession(project, publicKey, privateKey)
+//     Stretchr := stretchr.NewSession(project, apiKey, privateKey)
 //
 // This enables the following code:
 //
 //     person, err := Stretchr.ReadOne("people/123")
-func NewSession(project, publicKey, privateKey string) *Session {
+func NewSession(project, apiKey string) *Session {
 	s := new(Session)
-	s.underlyingSession = api.NewSession(project, publicKey, privateKey)
+	s.underlyingSession = api.NewSession(project, apiKey)
 	return s
 }
 
