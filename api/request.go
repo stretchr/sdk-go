@@ -43,6 +43,20 @@ func (r *Request) url() (*url.URL, error) {
 	// set the query values
 	theUrl.RawQuery = r.queryValues.Encode()
 
+	urlString = theUrl.String()
+
+	if strings.Contains(urlString, "?") {
+		urlString = stewstrings.MergeStrings(urlString, "&", common.ParameterAPIKey, "=", r.session.apiKey)
+	} else {
+		urlString = stewstrings.MergeStrings(urlString, "?", common.ParameterAPIKey, "=", r.session.apiKey)
+	}
+
+	theUrl, urlErr = url.Parse(urlString)
+
+	if urlErr != nil {
+		return nil, urlErr
+	}
+
 	return theUrl, nil
 
 }
