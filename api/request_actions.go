@@ -50,7 +50,7 @@ func (r *Request) CreateMany(resources []Resource) (*Response, error) {
 // createOrReplace performs the Create or Replace action (they are currently the same)
 func (r *Request) createOrReplace(resource Resource) (*Response, error) {
 
-	r.httpMethod = common.HttpMethodPost
+	r.httpMethod = common.HttpMethodPut
 	r.setBodyObject(resource.ResourceData())
 
 	return r.session.transporter.MakeRequest(r)
