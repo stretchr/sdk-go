@@ -2,6 +2,7 @@ package stretchr
 
 type ResourceCollection struct {
 	Resources []*Resource
+	Total     float64
 }
 
 func NewResourceCollection(resources []*Resource) *ResourceCollection {

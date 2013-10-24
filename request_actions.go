@@ -1,9 +1,9 @@
 package stretchr
 
 import (
+	"github.com/stretchr/objx"
 	"github.com/stretchr/sdk-go/api"
 	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/objx"
 )
 
 // ReadOne loads a resource from Stretchr with the given path.
@@ -54,7 +54,7 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 		return nil, errs[0]
 	}
 
-	if resourceArray, exists := responseObject.Data().(map[string]interface{})[common.ItemsFieldKey].([]interface{}); exists {
+	if resourceArray, exists := responseObject.Data().(map[string]interface{})[common.ResponseObjectFieldItems].([]interface{}); exists {
 		resources := make([]*Resource, len(resourceArray))
 
 		// populate the resources
@@ -65,6 +65,14 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 		}
 
 		resourceCollection := NewResourceCollection(resources)
+
+		// set the total (if there is one)
+		if total, ok := responseObject.Data().(map[string]interface{})[common.ResponseObjectFieldTotal]; ok {
+
+			if totalNum, ok := total.(float64); ok {
+				resourceCollection.Total = totalNum
+			}
+		}
 
 		return resourceCollection, nil
 	} else {

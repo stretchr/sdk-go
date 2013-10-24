@@ -123,6 +123,48 @@ func TestRequest_ReadMany(t *testing.T) {
 
 }
 
+func TestRequest_ReadMany_WithTotal(t *testing.T) {
+
+	mockedTransporter := new(api.MockedTransporter)
+	api.ActiveLiveTransporter = mockedTransporter
+
+	// make a response
+
+	responseData := map[string]interface{}{"~count": 2, common.ResponseObjectFieldTotal: 500, "~items": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
+		map[string]interface{}{"name": "Tyler", common.DataFieldID: "DEF"}}}
+
+	response := NewTestResponse(200, responseData, nil, "", nil)
+	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
+
+	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+
+	resourceCollection, err := session.At("people").ReadMany()
+
+	if assert.NoError(t, err) {
+		assert.Equal(t, 2, len(resourceCollection.Resources))
+	}
+
+	mockedTransporter.AssertExpectations(t)
+	request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
+
+	assert.Equal(t, request.HttpMethod(), common.HttpMethodGet)
+	assert.Equal(t, request.Path(), "people")
+	assert.Equal(t, request.Body(), []byte(""))
+
+	assert.Equal(t, resourceCollection.Total, 500)
+
+	resource1 := resourceCollection.Resources[0]
+	resource2 := resourceCollection.Resources[1]
+
+	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~items"].([]interface{})[0].(map[string]interface{})["name"])
+	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~items"].([]interface{})[1].(map[string]interface{})["name"])
+	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
+	assert.Equal(t, resource2.ResourcePath(), "people/DEF")
+	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
+	assert.Equal(t, resource2.ResourcePath(), "people/DEF")
+
+}
+
 func TestRequest_ReadMany_ReadError(t *testing.T) {
 
 	mockedTransporter := new(api.MockedTransporter)

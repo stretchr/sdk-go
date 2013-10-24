@@ -44,7 +44,8 @@ const (
 	ResponseObjectFieldStatusCode    string = "~status"
 	ResponseObjectFieldContext       string = "~context"
 	ResponseObjectFieldErrorsMessage string = "~message"
-	ItemsFieldKey                    string = "~items"
+	ResponseObjectFieldItems         string = "~items"
+	ResponseObjectFieldTotal         string = "~total"
 )
 
 const (
