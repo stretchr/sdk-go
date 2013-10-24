@@ -1,8 +1,11 @@
 package stretchr
 
 type ResourceCollection struct {
+	// Resources represents the resources that make up this collection.
 	Resources []*Resource
-	Total     float64
+	// Total gets the total number of resources if known.  To get a total,
+	// set total=1 when making the initial request.
+	Total float64
 }
 
 func NewResourceCollection(resources []*Resource) *ResourceCollection {
