@@ -249,7 +249,7 @@ func TestRequest_Create(t *testing.T) {
 			mockedTransporter.AssertExpectations(t)
 			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-			assert.Equal(t, request.HttpMethod(), common.HttpMethodPost)
+			assert.Equal(t, request.HttpMethod(), common.HttpMethodPut)
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Created(), 1)
 			assert.Equal(t, resource.ID(), "hello")
@@ -388,7 +388,7 @@ func TestRequest_Replace_Create(t *testing.T) {
 			mockedTransporter.AssertExpectations(t)
 			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-			assert.Equal(t, request.HttpMethod(), common.HttpMethodPost)
+			assert.Equal(t, request.HttpMethod(), common.HttpMethodPut)
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Created(), 1)
 		}
@@ -417,7 +417,7 @@ func TestRequest_Replace_Replace(t *testing.T) {
 			mockedTransporter.AssertExpectations(t)
 			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-			assert.Equal(t, request.HttpMethod(), common.HttpMethodPost)
+			assert.Equal(t, request.HttpMethod(), common.HttpMethodPut)
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Created(), 1)
 		}

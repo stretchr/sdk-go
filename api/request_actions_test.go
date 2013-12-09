@@ -59,7 +59,7 @@ func TestRequest_Create(t *testing.T) {
 
 	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
-	assert.Equal(t, request.httpMethod, common.HttpMethodPost)
+	assert.Equal(t, request.httpMethod, common.HttpMethodPut)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
 	expectedBody, _ := request.session.codec.Marshal(resource.Data, nil)
@@ -144,7 +144,7 @@ func TestRequest_Replace(t *testing.T) {
 
 	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
-	assert.Equal(t, request.httpMethod, common.HttpMethodPost)
+	assert.Equal(t, request.httpMethod, common.HttpMethodPut)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
 	expectedBody, _ := request.session.codec.Marshal(resource.Data, nil)
