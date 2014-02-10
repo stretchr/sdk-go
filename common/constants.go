@@ -11,6 +11,8 @@ const (
 	HttpMethodPost string = "POST"
 	// common.HttpMethodGet represents the HTTP Method for PUT requests, literally "PUT".
 	HttpMethodPut string = "PUT"
+	// common.HttpMethodGet represents the HTTP Method for PATCH requests, literally "PATCH".
+	HttpMethodPatch string = "PATCH"
 	// common.HttpMethodGet represents the HTTP Method for DELETE requests, literally "DELETE".
 	HttpMethodDelete string = "DELETE"
 )
@@ -80,10 +82,7 @@ const (
 */
 
 const (
-	SignSignature  string = "sign"
-	SignPrivateKey string = "private"
-	SignPublicKey  string = "key"
-	SignBodyHash   string = "bodyhash"
+	ParameterAPIKey string = "key"
 )
 
 /*

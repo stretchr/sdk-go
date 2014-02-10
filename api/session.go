@@ -13,37 +13,42 @@ var Tracer *tracer.Tracer
 // Session provides access to Stretchr services.
 type Session struct {
 	project     string
-	privateKey  string
-	publicKey   string
+	account     string
+	apiKey      string
 	transporter Transporter
 	apiVersion  string
 	codec       codecs.Codec
-	useSSL      bool
+	UseSSL      bool
 }
 
 // NewSession creates a new Session object with the specified project.
-func NewSession(project, publicKey, privateKey string) *Session {
+func NewSession(project, account, apiKey string) *Session {
 	s := new(Session)
 	s.project = project
-	s.publicKey = publicKey
-	s.privateKey = privateKey
+	s.account = account
+	s.apiKey = apiKey
 	s.transporter = ActiveLiveTransporter
 	s.apiVersion = "1.1"
 	s.codec = new(json.JsonCodec)
 
-	Tracer.TraceInfo("New session created. Project: %s. Public Key: %s. Private Key: %s. API Version: %s.", project, publicKey, privateKey, "1")
+	Tracer.TraceInfo("New session created. Project: %s. API Key: %s. API Version: %s.", project, apiKey, s.apiVersion)
 
 	return s
 }
 
 // BeginTracing starts up the tracer with the specified level
-func BeginTracing(level int) {
+func BeginTracing(level tracer.Level) {
 	Tracer = tracer.New(level)
 }
 
 // Project gets the project name that this session relates to.
 func (s *Session) Project() string {
 	return s.project
+}
+
+// Account gets the account name that this session relates to.
+func (s *Session) Account() string {
+	return s.account
 }
 
 // Codec gets the codec currently being used to communicate with Stretchr.
@@ -75,7 +80,7 @@ func (s *Session) host() string {
 
 	// get the protocol
 	var protocol string
-	if s.useSSL {
+	if s.UseSSL {
 		protocol = common.HttpProtocolSecure
 	} else {
 		protocol = common.HttpProtocol
@@ -83,11 +88,14 @@ func (s *Session) host() string {
 
 	host := stewstrings.MergeStrings(protocol,
 		common.ProtocolSeparator,
-		s.project,
+		s.account,
 		common.HostSeparator,
 		common.TopLevelHostName,
 		common.ApiVersionPathPrefix,
-		s.apiVersion)
+		s.apiVersion,
+		common.PathSeparator,
+		s.project,
+	)
 
 	Tracer.TraceInfo("Host string: %s", host)
 

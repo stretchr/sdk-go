@@ -217,28 +217,3 @@ func (r *Request) Delete() (api.ChangeInfo, error) {
 
 	return extractChangeInfo(response)
 }
-
-// Save creates or updates a resource.
-// If the resource doesn't exist, it will be created.
-// If the resource exists, it will be updated.
-func (r *Request) Save(resource api.Resource) (api.ChangeInfo, error) {
-
-	response, err := r.UnderlyingRequest.Save(resource)
-
-	if err != nil {
-		return nil, err
-	}
-
-	changeInfo, err := extractChangeInfo(response)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if changeInfo.HasDeltas() {
-		resource.ResourceData().MergeHere(changeInfo.Deltas()[0])
-	}
-
-	return changeInfo, nil
-
-}

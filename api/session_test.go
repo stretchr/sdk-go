@@ -7,11 +7,11 @@ import (
 
 func TestNewSession(t *testing.T) {
 
-	s := NewSession("project.company", "123", "456")
+	s := NewSession("project", "company", "123")
 
-	assert.Equal(t, "project.company", s.project)
-	assert.Equal(t, "123", s.publicKey)
-	assert.Equal(t, "456", s.privateKey)
+	assert.Equal(t, "project", s.project)
+	assert.Equal(t, "company", s.account)
+	assert.Equal(t, "123", s.apiKey)
 	assert.Equal(t, ActiveLiveTransporter, s.transporter, "Should default to ActiveLiveTransporter")
 	assert.Equal(t, "1.1", s.apiVersion, "apiVersion should default to 1.1")
 
@@ -27,17 +27,15 @@ func TestSession_Project(t *testing.T) {
 
 func TestSession_host(t *testing.T) {
 
-	var s *Session
-
-	s = NewSession("project.company", "123", "456")
+	s := NewSession("project", "company", "123")
 	s.apiVersion = "2"
-	s.useSSL = false
-	assert.Equal(t, "http://project.company.stretchr.com/api/v2", s.host())
+	s.UseSSL = false
+	assert.Equal(t, "http://company.stretchr.com/api/v2/project", s.host())
 
-	s = NewSession("project.company2", "123", "456")
+	s = NewSession("project", "company2", "123")
 	s.apiVersion = "1"
-	s.useSSL = true
-	assert.Equal(t, "https://project.company2.stretchr.com/api/v1", s.host())
+	s.UseSSL = true
+	assert.Equal(t, "https://company2.stretchr.com/api/v1/project", s.host())
 
 }
 

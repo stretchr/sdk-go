@@ -10,7 +10,7 @@ import (
 var mockedTransporter *MockedTransporter
 
 func getTestSession() *Session {
-	testSession = NewSession("test", "123", "456")
+	testSession = NewSession("project", "account", "apiKey")
 	mockedTransporter = new(MockedTransporter)
 	testSession.transporter = mockedTransporter
 	return testSession
@@ -31,24 +31,6 @@ func TestRequest_Session(t *testing.T) {
 	r := NewRequest(getTestSession(), "people")
 
 	assert.Equal(t, testSession, r.Session())
-
-}
-
-func TestRequest_signedURL(t *testing.T) {
-
-	r := NewRequest(getTestSession(), "people/123")
-	r.Where("field", "match").Where("field2", "match2")
-
-	fullUrl, urlErr := r.signedUrl()
-
-	if assert.Nil(t, urlErr) {
-		urlString := fullUrl.String()
-		assert.Contains(t, urlString, "http://test.stretchr.com/api/v1.1/people/123?")
-		assert.Contains(t, urlString, "%3Afield=match")
-		assert.Contains(t, urlString, "%3Afield2=match2")
-		assert.Contains(t, urlString, "key=123")
-		assert.Contains(t, urlString, "sign=6fb04798acdd3b59513ae93a6667fa57110ba76b")
-	}
 
 }
 
@@ -85,7 +67,7 @@ func TestRequest_httpRequest(t *testing.T) {
 	httpRequest, _ := r.httpRequest()
 
 	assert.Equal(t, httpRequest.Method, r.httpMethod)
-	expectedUrl, _ := r.signedUrl()
+	expectedUrl, _ := r.url()
 	assert.Equal(t, httpRequest.URL.String(), expectedUrl.String())
 	expectedBody, _ := ioutil.ReadAll(httpRequest.Body)
 	assert.Equal(t, expectedBody, r.body)
