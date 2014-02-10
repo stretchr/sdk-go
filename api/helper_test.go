@@ -34,7 +34,7 @@ var testSession *Session
 
 func GetTestSession() *Session {
 	if testSession == nil {
-		testSession = NewSession("project", "apiKey")
+		testSession = NewSession("project", "account", "apiKey")
 	}
 	return testSession
 }

@@ -25,9 +25,9 @@ type Session struct {
 // This enables the following code:
 //
 //     person, err := Stretchr.ReadOne("people/123")
-func NewSession(project, apiKey string) *Session {
+func NewSession(project, account, apiKey string) *Session {
 	s := new(Session)
-	s.underlyingSession = api.NewSession(project, apiKey)
+	s.underlyingSession = api.NewSession(project, account, apiKey)
 	return s
 }
 
@@ -48,9 +48,19 @@ func (s *Session) Project() string {
 	return s.underlyingSession.Project()
 }
 
+// Account gets the name of the project that this Session interacts with.
+func (s *Session) Account() string {
+	return s.underlyingSession.Account()
+}
+
 // SetTransporter sets the Transporter instance to use when interacting with
 // Stretchr services.
 func (s *Session) SetTransporter(transporter api.Transporter) *Session {
 	s.underlyingSession.SetTransporter(transporter)
 	return s
+}
+
+// SetUseSSL sets whether or not to use SSL
+func (s *Session) SetUseSSL(value bool) {
+	s.underlyingSession.UseSSL = value
 }

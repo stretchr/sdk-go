@@ -10,7 +10,7 @@ import (
 var mockedTransporter *MockedTransporter
 
 func getTestSession() *Session {
-	testSession = NewSession("test", "123")
+	testSession = NewSession("project", "account", "apiKey")
 	mockedTransporter = new(MockedTransporter)
 	testSession.transporter = mockedTransporter
 	return testSession

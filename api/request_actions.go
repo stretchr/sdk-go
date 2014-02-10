@@ -47,45 +47,31 @@ func (r *Request) CreateMany(resources []Resource) (*Response, error) {
 	return r.session.transporter.MakeRequest(r)
 }
 
-// createOrReplace performs the Create or Replace action (they are currently the same)
-func (r *Request) createOrReplace(resource Resource) (*Response, error) {
-
-	r.httpMethod = common.HttpMethodPut
+// Create tells Stretchr to create the specified resource.
+// If an ID is provided, a resource with that ID will be created.
+// If the ID exists in the database, the creation will fail.
+func (r *Request) Create(resource Resource) (*Response, error) {
+	r.httpMethod = common.HttpMethodPost
 	r.setBodyObject(resource.ResourceData())
 
 	return r.session.transporter.MakeRequest(r)
-}
-
-// Create tells Stretchr to create the specified resource.
-func (r *Request) Create(resource Resource) (*Response, error) {
-	return r.createOrReplace(resource)
 }
 
 // Replace tells Stretchr to replace the specified resource.
 // If the resource does not exist, it will be created.
 func (r *Request) Replace(resource Resource) (*Response, error) {
-	return r.createOrReplace(resource)
-}
-
-// createOrUpdate perform the Create or Update action.
-func (r *Request) createOrUpdate(resource Resource) (*Response, error) {
-
 	r.httpMethod = common.HttpMethodPut
 	r.setBodyObject(resource.ResourceData())
 
 	return r.session.transporter.MakeRequest(r)
-
 }
 
 // Update tells Stretchr to update the specified resource.
+// An ID is required. If the ID doesn't not exist in the database,
+// this call is an error.
 func (r *Request) Update(resource Resource) (*Response, error) {
-	return r.createOrUpdate(resource)
-}
+	r.httpMethod = common.HttpMethodPatch
+	r.setBodyObject(resource.ResourceData())
 
-// Save tells Stretchr to save the resource.
-// If the resource does not exist, it will be created.
-// If the resource does exist, it will be updated.
-// This is the preferred method of saving data to Stretchr.
-func (r *Request) Save(resource Resource) (*Response, error) {
-	return r.createOrUpdate(resource)
+	return r.session.transporter.MakeRequest(r)
 }

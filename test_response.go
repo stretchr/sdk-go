@@ -21,7 +21,7 @@ func NewTestResponse(status float64, data interface{}, errors []map[string]inter
 		common.ResponseObjectFieldChangeInfo: changeInfo,
 		common.ResponseObjectFieldContext:    context}
 
-	session := api.NewSession("project", "apiKey")
+	session := api.NewSession("project", "company", "apiKey")
 
 	responseBytes, _ := session.Codec().Marshal(sro, nil)
 	httpResponse.Body = ioutil.NopCloser(bytes.NewBuffer(responseBytes))

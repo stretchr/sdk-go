@@ -11,8 +11,8 @@ var testSession *Session
 var mockedTransporter *api.MockedTransporter
 
 func getTestSession() *Session {
-	testSession = NewSession("test", "123")
-	testSession.underlyingSession = api.NewSession("project", "apiKey")
+	testSession = NewSession("test", "account", "123")
+	testSession.underlyingSession = api.NewSession("project", "company", "apiKey")
 	mockedTransporter = new(api.MockedTransporter)
 	testSession.SetTransporter(mockedTransporter)
 	return testSession
