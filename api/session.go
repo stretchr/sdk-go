@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/tracer"
 )
 
+// Tracer provides a tracer.Tracer to trace execution throughout the system
 var Tracer *tracer.Tracer
 
 // Session provides access to Stretchr services.
@@ -81,9 +82,9 @@ func (s *Session) host() string {
 	// get the protocol
 	var protocol string
 	if s.UseSSL {
-		protocol = common.HttpProtocolSecure
+		protocol = common.HTTPProtocolSecure
 	} else {
-		protocol = common.HttpProtocol
+		protocol = common.HTTPProtocol
 	}
 
 	host := stewstrings.MergeStrings(protocol,
@@ -91,7 +92,7 @@ func (s *Session) host() string {
 		s.account,
 		common.HostSeparator,
 		common.TopLevelHostName,
-		common.ApiVersionPathPrefix,
+		common.APIVersionPathPrefix,
 		s.apiVersion,
 		common.PathSeparator,
 		s.project,

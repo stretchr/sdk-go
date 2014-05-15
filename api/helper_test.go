@@ -21,12 +21,12 @@ func MakeTestResponse() (*Response, error) {
 
 func MakeTestResponseWithBody(body string) (*Response, error) {
 
-	testHttpResponse := new(http.Response)
-	testHttpResponse.Body = ioutil.NopCloser(bytes.NewBufferString(body))
-	testHttpResponse.StatusCode = 200
-	testHttpResponse.Header = make(map[string][]string)
+	testHTTPResponse := new(http.Response)
+	testHTTPResponse.Body = ioutil.NopCloser(bytes.NewBufferString(body))
+	testHTTPResponse.StatusCode = 200
+	testHTTPResponse.Header = make(map[string][]string)
 
-	return NewResponse(GetTestSession(), testHttpResponse)
+	return NewResponse(GetTestSession(), testHTTPResponse)
 
 }
 
@@ -39,8 +39,8 @@ func GetTestSession() *Session {
 	return testSession
 }
 
-func GetTestHttpResponse() *http.Response {
-	testHttpResponse := new(http.Response)
-	testHttpResponse.Body = ioutil.NopCloser(bytes.NewBufferString(`{"~status":200}`))
-	return testHttpResponse
+func GettestHTTPResponse() *http.Response {
+	testHTTPResponse := new(http.Response)
+	testHTTPResponse.Body = ioutil.NopCloser(bytes.NewBufferString(`{"~status":200}`))
+	return testHTTPResponse
 }

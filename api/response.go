@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// Repsonse represents a response from a Stretchr request.
+// Response represents a response from a Stretchr request.
 type Response struct {
 	session      *Session
 	httpResponse *http.Response
@@ -15,7 +15,7 @@ type Response struct {
 	bodyObject     ResponseObject
 }
 
-// NewReponse creates a new Response object from the given Session and http.Response.
+// NewResponse creates a new Response object from the given Session and http.Response.
 func NewResponse(session *Session, httpResponse *http.Response) (*Response, error) {
 
 	response := new(Response)
@@ -60,8 +60,8 @@ func (r *Response) processResponse() error {
 	return nil
 }
 
-// HttpResponse gets the http.Response that this Response represents.
-func (r *Response) HttpResponse() *http.Response {
+// HTTPResponse gets the http.Response that this Response represents.
+func (r *Response) HTTPResponse() *http.Response {
 	return r.httpResponse
 }
 
@@ -70,8 +70,8 @@ func (r *Response) Session() *Session {
 	return r.session
 }
 
-// HttpStatusCode gets the HTTP Status Code of this response.
-func (r *Response) HttpStatusCode() int {
+// HTTPStatusCode gets the HTTP Status Code of this response.
+func (r *Response) HTTPStatusCode() int {
 	return r.httpResponse.StatusCode
 }
 
