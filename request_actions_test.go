@@ -2,11 +2,12 @@ package stretchr
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/stretchr/sdk-go/api"
 	"github.com/stretchr/sdk-go/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"testing"
 )
 
 /*
@@ -19,7 +20,7 @@ func TestRequest_ReadOne(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, map[string]interface{}{"name": "Mat"}, nil, "", nil)
+	response := NewTestResponse(200, map[string]interface{}{"~data": []interface{}{map[string]interface{}{"name": "Mat"}}}, nil, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestAccountName, TestAPIKey)
@@ -37,7 +38,7 @@ func TestRequest_ReadOne(t *testing.T) {
 	assert.Equal(t, request.Path(), "people/123")
 	assert.Equal(t, request.Body(), []byte(""))
 
-	assert.Equal(t, resource.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["name"])
+	assert.Equal(t, resource.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~data"].([]interface{})[0].(map[string]interface{})["name"])
 	assert.Equal(t, resource.ResourcePath(), "people/123")
 
 }
@@ -90,7 +91,7 @@ func TestRequest_ReadMany(t *testing.T) {
 
 	// make a response
 
-	responseData := map[string]interface{}{"~count": 2, "~items": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
+	responseData := map[string]interface{}{"~count": 2, "~data": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
 		map[string]interface{}{"name": "Tyler", common.DataFieldID: "DEF"}}}
 
 	response := NewTestResponse(200, responseData, nil, "", nil)
@@ -114,8 +115,8 @@ func TestRequest_ReadMany(t *testing.T) {
 	resource1 := resourceCollection.Resources[0]
 	resource2 := resourceCollection.Resources[1]
 
-	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~items"].([]interface{})[0].(map[string]interface{})["name"])
-	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~items"].([]interface{})[1].(map[string]interface{})["name"])
+	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~data"].([]interface{})[0].(map[string]interface{})["name"])
+	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~data"].([]interface{})[1].(map[string]interface{})["name"])
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
 	assert.Equal(t, resource2.ResourcePath(), "people/DEF")
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
@@ -130,13 +131,13 @@ func TestRequest_ReadMany_WithTotal(t *testing.T) {
 
 	// make a response
 
-	responseData := map[string]interface{}{"~count": 2, common.ResponseObjectFieldTotal: 500, "~items": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
+	responseData := map[string]interface{}{"~count": 2, common.ResponseObjectFieldTotal: 500, "~data": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
 		map[string]interface{}{"name": "Tyler", common.DataFieldID: "DEF"}}}
 
 	response := NewTestResponse(200, responseData, nil, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
-	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+	session := NewSession(TestProjectName, TestAccountName, TestAPIKey)
 
 	resourceCollection, err := session.At("people").ReadMany()
 
@@ -156,8 +157,8 @@ func TestRequest_ReadMany_WithTotal(t *testing.T) {
 	resource1 := resourceCollection.Resources[0]
 	resource2 := resourceCollection.Resources[1]
 
-	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~items"].([]interface{})[0].(map[string]interface{})["name"])
-	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~items"].([]interface{})[1].(map[string]interface{})["name"])
+	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~data"].([]interface{})[0].(map[string]interface{})["name"])
+	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~data"].([]interface{})[1].(map[string]interface{})["name"])
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
 	assert.Equal(t, resource2.ResourcePath(), "people/DEF")
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
