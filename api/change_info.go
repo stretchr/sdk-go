@@ -9,7 +9,7 @@ import (
 type ChangeInfo map[string]interface{}
 
 // NoChangeInfo is a nil ChangeInfo object, and a useful shortcut.
-var NoChangeInfo ChangeInfo = nil
+var NoChangeInfo ChangeInfo
 
 // Created gets the number of records that were created as indicated by
 // this ChangeInfo object.

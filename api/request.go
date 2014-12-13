@@ -1,12 +1,13 @@
 package api
 
 import (
-	"github.com/stretchr/sdk-go/common"
-	stewstrings "github.com/stretchr/stew/strings"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/stretchr/sdk-go/common"
+	stewstrings "github.com/stretchr/stew/strings"
 )
 
 // Request represents a kind of interaction that can be made against
@@ -34,16 +35,16 @@ func (r *Request) url() (*url.URL, error) {
 
 	urlString := stewstrings.MergeStrings(r.session.host(), common.PathSeparator, r.path)
 
-	theUrl, urlErr := url.Parse(urlString)
+	theURL, urlErr := url.Parse(urlString)
 
 	if urlErr != nil {
 		return nil, urlErr
 	}
 
 	// set the query values
-	theUrl.RawQuery = r.queryValues.Encode()
+	theURL.RawQuery = r.queryValues.Encode()
 
-	urlString = theUrl.String()
+	urlString = theURL.String()
 
 	if strings.Contains(urlString, "?") {
 		urlString = stewstrings.MergeStrings(urlString, "&", common.ParameterAPIKey, "=", r.session.apiKey)
@@ -51,13 +52,13 @@ func (r *Request) url() (*url.URL, error) {
 		urlString = stewstrings.MergeStrings(urlString, "?", common.ParameterAPIKey, "=", r.session.apiKey)
 	}
 
-	theUrl, urlErr = url.Parse(urlString)
+	theURL, urlErr = url.Parse(urlString)
 
 	if urlErr != nil {
 		return nil, urlErr
 	}
 
-	return theUrl, nil
+	return theURL, nil
 
 }
 
@@ -121,8 +122,8 @@ func (r *Request) Path() string {
 	return r.path
 }
 
-// HttpMethod gets the HTTP Method that this request will use.
-func (r *Request) HttpMethod() string {
+// HTTPMethod gets the HTTP Method that this request will use.
+func (r *Request) HTTPMethod() string {
 	return r.httpMethod
 }
 

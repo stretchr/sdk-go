@@ -1,12 +1,14 @@
 package api
 
 import (
-	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/objx"
-	stewstrings "github.com/stretchr/stew/strings"
 	"strings"
+
+	"github.com/stretchr/objx"
+	"github.com/stretchr/sdk-go/common"
+	stewstrings "github.com/stretchr/stew/strings"
 )
 
+// TestResource is an object used solely for testing the Resource objects
 type TestResource struct {
 	// Path is the path of this resource.
 	Path string
@@ -14,6 +16,7 @@ type TestResource struct {
 	Data objx.Map
 }
 
+// MakeTestResourceAt makes a new test resource
 func MakeTestResourceAt(path string) *TestResource {
 	resource := new(TestResource)
 	resource.Path = path
@@ -37,7 +40,7 @@ func (r *TestResource) ResourcePath() string {
 	pathSegments := strings.Split(r.Path, common.PathSeparator)
 
 	// do we have an ID in the data?
-	if id, hasId := r.Data[common.DataFieldID]; hasId {
+	if id, hasID := r.Data[common.DataFieldID]; hasID {
 		// do we have an ID in the path?
 		if len(pathSegments)%2 == 0 {
 			// update the ID
@@ -56,10 +59,12 @@ func (r *TestResource) ResourceData() objx.Map {
 	return r.Data
 }
 
+// ID Gets the ID for this resource
 func (r *TestResource) ID() string {
 	return r.Data[common.DataFieldID].(string)
 }
 
+// SetID sets the ID for this resource
 func (r *TestResource) SetID(ID string) Resource {
 	r.Data[common.DataFieldID] = ID
 	return r

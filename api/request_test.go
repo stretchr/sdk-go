@@ -1,10 +1,11 @@
 package api
 
 import (
-	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"testing"
+
+	"github.com/stretchr/sdk-go/common"
+	"github.com/stretchr/testify/assert"
 )
 
 var mockedTransporter *MockedTransporter
@@ -67,8 +68,8 @@ func TestRequest_httpRequest(t *testing.T) {
 	httpRequest, _ := r.httpRequest()
 
 	assert.Equal(t, httpRequest.Method, r.httpMethod)
-	expectedUrl, _ := r.url()
-	assert.Equal(t, httpRequest.URL.String(), expectedUrl.String())
+	expectedURL, _ := r.url()
+	assert.Equal(t, httpRequest.URL.String(), expectedURL.String())
 	expectedBody, _ := ioutil.ReadAll(httpRequest.Body)
 	assert.Equal(t, expectedBody, r.body)
 
@@ -86,12 +87,12 @@ func TestRequest_QueryValues(t *testing.T) {
 /*
 	Properties
 */
-func TestRequest_HttpMethod(t *testing.T) {
+func TestRequest_HTTPMethod(t *testing.T) {
 
 	request := new(Request)
 	request.httpMethod = "GET"
 
-	assert.Equal(t, request.httpMethod, request.HttpMethod())
+	assert.Equal(t, request.httpMethod, request.HTTPMethod())
 
 }
 

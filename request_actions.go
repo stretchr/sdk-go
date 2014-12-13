@@ -26,7 +26,7 @@ func (r *Request) ReadOne() (*Resource, error) {
 	switch responseObject.Data().(type) {
 	case map[string]interface{}:
 		resource := MakeResourceAt(r.UnderlyingRequest.Path())
-		resource.data = objx.Map(responseObject.Data().(map[string]interface{})).Copy()
+		resource.data = objx.Map(responseObject.Data().(map[string]interface{})[common.ResponseObjectFieldData].([]interface{})[0].(map[string]interface{})).Copy()
 		return resource, nil
 	case []interface{}:
 		return nil, ErrSingleObjectExpectedButGotArray
@@ -54,7 +54,7 @@ func (r *Request) ReadMany() (*ResourceCollection, error) {
 		return nil, errs[0]
 	}
 
-	if resourceArray, exists := responseObject.Data().(map[string]interface{})[common.ResponseObjectFieldItems].([]interface{}); exists {
+	if resourceArray, exists := responseObject.Data().(map[string]interface{})[common.ResponseObjectFieldData].([]interface{}); exists {
 		resources := make([]*Resource, len(resourceArray))
 
 		// populate the resources

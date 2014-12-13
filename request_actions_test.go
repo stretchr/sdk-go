@@ -2,11 +2,12 @@ package stretchr
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/stretchr/sdk-go/api"
 	"github.com/stretchr/sdk-go/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"testing"
 )
 
 /*
@@ -19,7 +20,7 @@ func TestRequest_ReadOne(t *testing.T) {
 	api.ActiveLiveTransporter = mockedTransporter
 
 	// make a response
-	response := NewTestResponse(200, map[string]interface{}{"name": "Mat"}, nil, "", nil)
+	response := NewTestResponse(200, map[string]interface{}{"~data": []interface{}{map[string]interface{}{"name": "Mat"}}}, nil, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
 	session := NewSession(TestProjectName, TestAccountName, TestAPIKey)
@@ -33,11 +34,11 @@ func TestRequest_ReadOne(t *testing.T) {
 	mockedTransporter.AssertExpectations(t)
 	request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-	assert.Equal(t, request.HttpMethod(), common.HttpMethodGet)
+	assert.Equal(t, request.HTTPMethod(), common.HTTPMethodGet)
 	assert.Equal(t, request.Path(), "people/123")
 	assert.Equal(t, request.Body(), []byte(""))
 
-	assert.Equal(t, resource.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["name"])
+	assert.Equal(t, resource.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~data"].([]interface{})[0].(map[string]interface{})["name"])
 	assert.Equal(t, resource.ResourcePath(), "people/123")
 
 }
@@ -90,7 +91,7 @@ func TestRequest_ReadMany(t *testing.T) {
 
 	// make a response
 
-	responseData := map[string]interface{}{"~count": 2, "~items": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
+	responseData := map[string]interface{}{"~count": 2, "~data": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
 		map[string]interface{}{"name": "Tyler", common.DataFieldID: "DEF"}}}
 
 	response := NewTestResponse(200, responseData, nil, "", nil)
@@ -107,15 +108,15 @@ func TestRequest_ReadMany(t *testing.T) {
 	mockedTransporter.AssertExpectations(t)
 	request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-	assert.Equal(t, request.HttpMethod(), common.HttpMethodGet)
+	assert.Equal(t, request.HTTPMethod(), common.HTTPMethodGet)
 	assert.Equal(t, request.Path(), "people")
 	assert.Equal(t, request.Body(), []byte(""))
 
 	resource1 := resourceCollection.Resources[0]
 	resource2 := resourceCollection.Resources[1]
 
-	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~items"].([]interface{})[0].(map[string]interface{})["name"])
-	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~items"].([]interface{})[1].(map[string]interface{})["name"])
+	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~data"].([]interface{})[0].(map[string]interface{})["name"])
+	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~data"].([]interface{})[1].(map[string]interface{})["name"])
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
 	assert.Equal(t, resource2.ResourcePath(), "people/DEF")
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
@@ -130,13 +131,13 @@ func TestRequest_ReadMany_WithTotal(t *testing.T) {
 
 	// make a response
 
-	responseData := map[string]interface{}{"~count": 2, common.ResponseObjectFieldTotal: 500, "~items": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
+	responseData := map[string]interface{}{"~count": 2, common.ResponseObjectFieldTotal: 500, "~data": []interface{}{map[string]interface{}{"name": "Mat", common.DataFieldID: "ABC"},
 		map[string]interface{}{"name": "Tyler", common.DataFieldID: "DEF"}}}
 
 	response := NewTestResponse(200, responseData, nil, "", nil)
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(response, nil)
 
-	session := NewSession(TestProjectName, TestPublicKey, TestPrivateKey)
+	session := NewSession(TestProjectName, TestAccountName, TestAPIKey)
 
 	resourceCollection, err := session.At("people").ReadMany()
 
@@ -147,7 +148,7 @@ func TestRequest_ReadMany_WithTotal(t *testing.T) {
 	mockedTransporter.AssertExpectations(t)
 	request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-	assert.Equal(t, request.HttpMethod(), common.HttpMethodGet)
+	assert.Equal(t, request.HTTPMethod(), common.HTTPMethodGet)
 	assert.Equal(t, request.Path(), "people")
 	assert.Equal(t, request.Body(), []byte(""))
 
@@ -156,8 +157,8 @@ func TestRequest_ReadMany_WithTotal(t *testing.T) {
 	resource1 := resourceCollection.Resources[0]
 	resource2 := resourceCollection.Resources[1]
 
-	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~items"].([]interface{})[0].(map[string]interface{})["name"])
-	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~items"].([]interface{})[1].(map[string]interface{})["name"])
+	assert.Equal(t, resource1.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~data"].([]interface{})[0].(map[string]interface{})["name"])
+	assert.Equal(t, resource2.ResourceData()["name"], response.BodyObject().Data().(map[string]interface{})["~data"].([]interface{})[1].(map[string]interface{})["name"])
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
 	assert.Equal(t, resource2.ResourcePath(), "people/DEF")
 	assert.Equal(t, resource1.ResourcePath(), "people/ABC")
@@ -225,7 +226,7 @@ func TestRequest_Delete(t *testing.T) {
 	mockedTransporter.AssertExpectations(t)
 	request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-	assert.Equal(t, request.HttpMethod(), common.HttpMethodDelete)
+	assert.Equal(t, request.HTTPMethod(), common.HTTPMethodDelete)
 	assert.Equal(t, request.Path(), "people/123")
 	assert.Equal(t, request.Body(), []byte(""))
 
@@ -291,7 +292,7 @@ func TestRequest_Create(t *testing.T) {
 			mockedTransporter.AssertExpectations(t)
 			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-			assert.Equal(t, request.HttpMethod(), common.HttpMethodPost)
+			assert.Equal(t, request.HTTPMethod(), common.HTTPMethodPost)
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Created(), 1)
 			assert.Equal(t, resource.ID(), "hello")
@@ -336,7 +337,7 @@ func TestRequest_CreateMany(t *testing.T) {
 			mockedTransporter.AssertExpectations(t)
 			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-			assert.Equal(t, request.HttpMethod(), common.HttpMethodPost)
+			assert.Equal(t, request.HTTPMethod(), common.HTTPMethodPost)
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Created(), 3)
 
@@ -372,7 +373,7 @@ func TestRequest_Update_Create(t *testing.T) {
 			mockedTransporter.AssertExpectations(t)
 			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-			assert.Equal(t, request.HttpMethod(), common.HttpMethodPatch)
+			assert.Equal(t, request.HTTPMethod(), common.HTTPMethodPatch)
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Updated(), 1)
 		}
@@ -401,7 +402,7 @@ func TestRequest_Replace_Create(t *testing.T) {
 			mockedTransporter.AssertExpectations(t)
 			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-			assert.Equal(t, request.HttpMethod(), common.HttpMethodPut)
+			assert.Equal(t, request.HTTPMethod(), common.HTTPMethodPut)
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Created(), 1)
 		}
@@ -430,7 +431,7 @@ func TestRequest_Replace_Replace(t *testing.T) {
 			mockedTransporter.AssertExpectations(t)
 			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-			assert.Equal(t, request.HttpMethod(), common.HttpMethodPut)
+			assert.Equal(t, request.HTTPMethod(), common.HTTPMethodPut)
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Created(), 1)
 		}
@@ -463,7 +464,7 @@ func TestRequest_Update_Update(t *testing.T) {
 			mockedTransporter.AssertExpectations(t)
 			request := mockedTransporter.Calls[0].Arguments[0].(*api.Request)
 
-			assert.Equal(t, request.HttpMethod(), common.HttpMethodPatch)
+			assert.Equal(t, request.HTTPMethod(), common.HTTPMethodPatch)
 			assert.Equal(t, request.Path(), "people")
 			assert.Equal(t, changeInfo.Created(), 1)
 		}

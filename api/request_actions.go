@@ -9,7 +9,7 @@ import (
 func (r *Request) Read() (*Response, error) {
 
 	// set the HTTP method
-	r.httpMethod = common.HttpMethodGet
+	r.httpMethod = common.HTTPMethodGet
 
 	// get the transporter to do the work
 	return r.session.transporter.MakeRequest(r)
@@ -20,7 +20,7 @@ func (r *Request) Read() (*Response, error) {
 func (r *Request) Delete() (*Response, error) {
 
 	// set the HTTP method
-	r.httpMethod = common.HttpMethodDelete
+	r.httpMethod = common.HTTPMethodDelete
 
 	// get the transporter to do the work
 	return r.session.transporter.MakeRequest(r)
@@ -34,10 +34,10 @@ func (r *Request) Delete() (*Response, error) {
 func (r *Request) CreateMany(resources []Resource) (*Response, error) {
 
 	// set the HTTP method
-	r.httpMethod = common.HttpMethodPost
+	r.httpMethod = common.HTTPMethodPost
 
 	// collect the data objects
-	var dataObjects []interface{} = make([]interface{}, len(resources))
+	dataObjects := make([]interface{}, len(resources))
 	for resourceIndex, resource := range resources {
 		dataObjects[resourceIndex] = resource.ResourceData()
 	}
@@ -51,7 +51,7 @@ func (r *Request) CreateMany(resources []Resource) (*Response, error) {
 // If an ID is provided, a resource with that ID will be created.
 // If the ID exists in the database, the creation will fail.
 func (r *Request) Create(resource Resource) (*Response, error) {
-	r.httpMethod = common.HttpMethodPost
+	r.httpMethod = common.HTTPMethodPost
 	r.setBodyObject(resource.ResourceData())
 
 	return r.session.transporter.MakeRequest(r)
@@ -60,7 +60,7 @@ func (r *Request) Create(resource Resource) (*Response, error) {
 // Replace tells Stretchr to replace the specified resource.
 // If the resource does not exist, it will be created.
 func (r *Request) Replace(resource Resource) (*Response, error) {
-	r.httpMethod = common.HttpMethodPut
+	r.httpMethod = common.HTTPMethodPut
 	r.setBodyObject(resource.ResourceData())
 
 	return r.session.transporter.MakeRequest(r)
@@ -70,7 +70,7 @@ func (r *Request) Replace(resource Resource) (*Response, error) {
 // An ID is required. If the ID doesn't not exist in the database,
 // this call is an error.
 func (r *Request) Update(resource Resource) (*Response, error) {
-	r.httpMethod = common.HttpMethodPatch
+	r.httpMethod = common.HTTPMethodPatch
 	r.setBodyObject(resource.ResourceData())
 
 	return r.session.transporter.MakeRequest(r)

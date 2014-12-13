@@ -23,9 +23,9 @@ type Transporter interface {
 */
 
 // ActiveLiveTransporter represents the live transporter instance.
-var ActiveLiveTransporter Transporter = &LiveTransporter{}
+var ActiveLiveTransporter = &LiveTransporter{}
 
-// liveTransporter makes real HTTP requests to remote servers.
+// LiveTransporter makes real HTTP requests to remote servers.
 type LiveTransporter struct{}
 
 // MakeRequest makes the Request and returns the Response, or an error

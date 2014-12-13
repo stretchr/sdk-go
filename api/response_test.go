@@ -2,11 +2,12 @@ package api
 
 import (
 	"bytes"
-	"github.com/stretchr/sdk-go/common"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/sdk-go/common"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestResponse_NewResponse(t *testing.T) {
@@ -18,7 +19,7 @@ func TestResponse_NewResponse(t *testing.T) {
 
 }
 
-func TestResponse_HttpResponse(t *testing.T) {
+func TestResponse_HTTPResponse(t *testing.T) {
 
 	response, _ := MakeTestResponse()
 
@@ -34,7 +35,7 @@ func TestResponse_Session(t *testing.T) {
 
 }
 
-func TestResponse_HttpStatusCode(t *testing.T) {
+func TestResponse_HTTPStatusCode(t *testing.T) {
 
 	session := GetTestSession()
 
@@ -46,7 +47,7 @@ func TestResponse_HttpStatusCode(t *testing.T) {
 	response, err := NewResponse(session, httpResponse)
 
 	if assert.Nil(t, err) {
-		assert.Equal(t, http.StatusNotAcceptable, response.HttpStatusCode())
+		assert.Equal(t, http.StatusNotAcceptable, response.HTTPStatusCode())
 	}
 
 }

@@ -8,8 +8,11 @@ const (
 	responseObjectFieldErrorStrings string = "_errors"
 )
 
+// ResponseObject is a map[string]interface{} with some nice methods on it to
+// make working with a response object easier.
 type ResponseObject map[string]interface{}
 
+// StatusCode returns the status code in the response
 func (o ResponseObject) StatusCode() int {
 	if status, ok := o[common.ResponseObjectFieldStatusCode]; ok {
 		return int(status.(float64))
@@ -17,6 +20,7 @@ func (o ResponseObject) StatusCode() int {
 	panic("stretchr: Failed to get status code from the response object, and all responses should have a status code.")
 }
 
+// Context returns the context in the response if present, otherwise it returns an empty string.
 func (o ResponseObject) Context() string {
 	if context, ok := o[common.ResponseObjectFieldContext].(string); ok {
 		return context
@@ -24,10 +28,12 @@ func (o ResponseObject) Context() string {
 	return ""
 }
 
+// Data returns the ~data object from the response
 func (o ResponseObject) Data() interface{} {
 	return o[common.ResponseObjectFieldData]
 }
 
+// Errors returns the array of errors returned by Stretchr or an empty array if no errors are present.
 func (o ResponseObject) Errors() []string {
 
 	if _, ok := o[responseObjectFieldErrorStrings]; !ok {
@@ -55,6 +61,7 @@ func (o ResponseObject) Errors() []string {
 
 }
 
+// HasErrors determines if the response contains errors sent by stretchr
 func (o ResponseObject) HasErrors() bool {
 	if _, hasErrors := o[common.ResponseObjectFieldErrors]; hasErrors {
 		return true
@@ -62,6 +69,7 @@ func (o ResponseObject) HasErrors() bool {
 	return false
 }
 
+// ChangeInfo returns the ChangeInfo object from the response
 func (o ResponseObject) ChangeInfo() ChangeInfo {
 	if changeInfo, hasChangeInfo := o[common.ResponseObjectFieldChangeInfo]; hasChangeInfo {
 		return ChangeInfo(changeInfo.(map[string]interface{}))

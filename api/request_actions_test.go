@@ -1,10 +1,11 @@
 package api
 
 import (
+	"testing"
+
 	"github.com/stretchr/sdk-go/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"testing"
 )
 
 func TestRequest_Read(t *testing.T) {
@@ -12,7 +13,7 @@ func TestRequest_Read(t *testing.T) {
 	request := NewRequest(getTestSession(), "people")
 
 	returnResponse := new(Response)
-	var returnErr error = nil
+	var returnErr error
 
 	mockedTransporter.On("MakeRequest", request).Return(returnResponse, returnErr)
 	res, err := request.Read()
@@ -20,7 +21,7 @@ func TestRequest_Read(t *testing.T) {
 	assert.Equal(t, returnErr, err)
 	assert.Equal(t, returnResponse, res)
 
-	assert.Equal(t, common.HttpMethodGet, request.httpMethod)
+	assert.Equal(t, common.HTTPMethodGet, request.httpMethod)
 
 }
 
@@ -29,7 +30,7 @@ func TestRequest_Delete(t *testing.T) {
 	request := NewRequest(getTestSession(), "people")
 
 	returnResponse := new(Response)
-	var returnErr error = nil
+	var returnErr error
 
 	mockedTransporter.On("MakeRequest", request).Return(returnResponse, returnErr)
 	res, err := request.Delete()
@@ -37,7 +38,7 @@ func TestRequest_Delete(t *testing.T) {
 	assert.Equal(t, returnErr, err)
 	assert.Equal(t, returnResponse, res)
 
-	assert.Equal(t, common.HttpMethodDelete, request.httpMethod)
+	assert.Equal(t, common.HTTPMethodDelete, request.httpMethod)
 
 }
 
@@ -46,7 +47,7 @@ func TestRequest_Create(t *testing.T) {
 	request := NewRequest(getTestSession(), "monkey/123")
 
 	returnResponse := new(Response)
-	var returnErr error = nil
+	var returnErr error
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(returnResponse, returnErr)
 
 	resource := MakeTestResourceAt("monkey/123")
@@ -59,7 +60,7 @@ func TestRequest_Create(t *testing.T) {
 
 	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
-	assert.Equal(t, request.httpMethod, common.HttpMethodPost)
+	assert.Equal(t, request.httpMethod, common.HTTPMethodPost)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
 	expectedBody, _ := request.session.codec.Marshal(resource.Data, nil)
@@ -72,7 +73,7 @@ func TestRequest_CreateMany(t *testing.T) {
 	request := NewRequest(getTestSession(), "monkey")
 
 	returnResponse := new(Response)
-	var returnErr error = nil
+	var returnErr error
 	mockedTransporter.On("MakeRequest", request).Return(returnResponse, returnErr)
 
 	resource1 := MakeTestResourceAt("people/123")
@@ -92,7 +93,7 @@ func TestRequest_CreateMany(t *testing.T) {
 
 	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
-	assert.Equal(t, request.httpMethod, common.HttpMethodPost)
+	assert.Equal(t, request.httpMethod, common.HTTPMethodPost)
 	assert.Equal(t, request.path, "monkey")
 
 	expectedBody, _ := request.session.codec.Marshal([]interface{}{resource1.Data, resource2.Data}, nil)
@@ -105,7 +106,7 @@ func TestRequest_Update(t *testing.T) {
 	request := NewRequest(getTestSession(), "monkey/123")
 
 	returnResponse := new(Response)
-	var returnErr error = nil
+	var returnErr error
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(returnResponse, returnErr)
 
 	resource := MakeTestResourceAt("monkey/123")
@@ -118,7 +119,7 @@ func TestRequest_Update(t *testing.T) {
 
 	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
-	assert.Equal(t, request.httpMethod, common.HttpMethodPatch)
+	assert.Equal(t, request.httpMethod, common.HTTPMethodPatch)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
 	expectedBody, _ := request.session.codec.Marshal(resource.Data, nil)
@@ -131,7 +132,7 @@ func TestRequest_Replace(t *testing.T) {
 	request := NewRequest(getTestSession(), "monkey/123")
 
 	returnResponse := new(Response)
-	var returnErr error = nil
+	var returnErr error
 	mockedTransporter.On("MakeRequest", mock.Anything).Return(returnResponse, returnErr)
 
 	resource := MakeTestResourceAt("monkey/123")
@@ -144,7 +145,7 @@ func TestRequest_Replace(t *testing.T) {
 
 	request = mockedTransporter.Calls[0].Arguments.Get(0).(*Request)
 
-	assert.Equal(t, request.httpMethod, common.HttpMethodPut)
+	assert.Equal(t, request.httpMethod, common.HTTPMethodPut)
 	assert.Equal(t, request.path, resource.ResourcePath())
 
 	expectedBody, _ := request.session.codec.Marshal(resource.Data, nil)

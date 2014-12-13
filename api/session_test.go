@@ -1,8 +1,9 @@
 package api
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewSession(t *testing.T) {
@@ -42,7 +43,7 @@ func TestSession_host(t *testing.T) {
 func TestSession_At(t *testing.T) {
 
 	s := new(Session)
-	var request *Request = s.At("path")
+	request := s.At("path")
 
 	if assert.NotNil(t, request) {
 		assert.Equal(t, s, request.session)
